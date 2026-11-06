@@ -188,3 +188,9 @@
   object-position:center;transform:none;z-index:1;pointer-events:none;
 }
 :root .home-section .product-art:has(.photo-ribbon) .photo-ribbon{top:27%;left:7%;max-width:86%;box-sizing:border-box}
+/* Below the intro, match the opaque catalog header so content never shows through. */
+:root .site-header.intro-header.home-header-solid{
+  background:linear-gradient(125deg,#0a0b0e,#202329 55%,#0a0b0e);
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+}

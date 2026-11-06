@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useShop } from './stores/shop'
 import StoreFooter from './components/StoreFooter.vue'
@@ -10,7 +10,30 @@ const store = useShop()
 const route = useRoute()
 const router = useRouter()
 const search = ref('')
-onMounted(() => store.load())
+const homeHeaderSolid = ref(false)
+let headerFrame = 0
+// Keep the intro overlap in place; only the header paint changes at its boundary.
+function scheduleHeaderAppearance() {
+  if (headerFrame) return
+  headerFrame = window.requestAnimationFrame(() => {
+    headerFrame = 0
+    const intro = route.path === '/' ? document.querySelector('.store-intro') : null
+    const header = document.querySelector('.site-header')
+    homeHeaderSolid.value = Boolean(intro && header && intro.getBoundingClientRect().bottom <= header.getBoundingClientRect().bottom + 1)
+  })
+}
+watch(() => [route.path, store.busy], scheduleHeaderAppearance, {flush:'post'})
+onMounted(() => {
+  store.load()
+  scheduleHeaderAppearance()
+  window.addEventListener('scroll', scheduleHeaderAppearance, {passive:true})
+  window.addEventListener('resize', scheduleHeaderAppearance)
+})
+onUnmounted(() => {
+  window.removeEventListener('scroll', scheduleHeaderAppearance)
+  window.removeEventListener('resize', scheduleHeaderAppearance)
+  window.cancelAnimationFrame(headerFrame)
+})
 function scrollHome(event) {
   if (route.path === '/' && event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
     window.scrollTo({top:0,behavior:'instant'})
@@ -24,7 +47,7 @@ function signOut() {
 
 <template>
   <template v-if="route.meta.role !== 'ADMIN'">
-    <header class="site-header" :class="{'intro-header':route.path === '/'}">
+    <header class="site-header" :class="{'intro-header':route.path === '/', 'home-header-solid':route.path === '/' && homeHeaderSolid}">
       <div class="wrap header-row">
         <RouterLink class="brand" to="/" aria-label="GT전자 홈" @click="scrollHome"><img src="/gt-logo-chrome.png" alt=""></RouterLink>
         <nav class="shop-nav" aria-label="쇼핑 카테고리">
