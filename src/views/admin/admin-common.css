@@ -1,0 +1,38 @@
+/* Shared list and detail rules across administrative screens. */
+.admin-layout{--admin-border:#e3ded4;--admin-muted:#6a6256;--admin-radius:12px;--admin-gap:16px}
+.admin-content{width:100%;padding:24px;min-width:0}
+.ops-page-title{margin-bottom:20px}
+.ops-page-title h1,.delivery-title h1{font-size:clamp(1.65rem,2.5vw,2.2rem);line-height:1.2;margin:0}
+.ops-page-title .eyebrow{font-size:.68rem;margin-bottom:7px}
+.ops-toolbar{display:flex;align-items:end;gap:12px;padding:14px 16px;border:1px solid var(--admin-border);border-radius:var(--admin-radius);background:#fff;margin-bottom:16px}
+.ops-toolbar>label{display:grid;gap:5px;font-size:.76rem;font-weight:650;min-width:0}
+.ops-toolbar>span{margin-right:auto;align-self:center;color:var(--admin-muted);font-size:.8rem}
+.ops-toolbar input,.ops-toolbar select{width:100%;height:38px;font-size:.83rem}
+.ops-records{grid-template-columns:minmax(260px,.85fr) minmax(0,1.15fr);gap:16px;align-items:start}
+.ops-records>.ops-panel{border:1px solid var(--admin-border);border-radius:var(--admin-radius);background:#fff;margin-top:0!important}
+.ops-records>.ops-panel:last-child{padding:20px}
+.ops-records>.ops-panel:last-child>h2{padding-bottom:14px;margin-bottom:18px;border-bottom:1px solid #eee8dc;font-size:1.15rem;line-height:1.45}
+.ops-records .ops-list{padding:6px;max-height:calc(100dvh - 270px);min-height:220px;scrollbar-width:thin;scrollbar-color:#ddd6ca transparent}
+.ops-records .ops-list-group h3{padding:10px 12px;font-size:.78rem;background:#f6f3ec}
+.ops-records .ops-list button{padding:12px;border:1px solid transparent;border-bottom-color:#f0ece5;border-radius:7px;gap:6px;font-size:.85rem}
+.ops-records .ops-list button strong{font-size:.85rem;line-height:1.45}
+.ops-records .ops-list button span{font-size:.74rem;line-height:1.5;color:var(--admin-muted)}
+.ops-records .ops-list button[aria-pressed=true]{background:#f6ecd9;border-color:#d6bc89}
+.ops-records .ops-list button:hover:not([aria-pressed=true]){background:#faf8f3}
+.ops-records .stack{gap:14px}
+.ops-records .stack label{font-size:.8rem;font-weight:600;gap:6px}
+.ops-records :is(input,select,textarea){border:1px solid #dcd6cb;border-radius:6px;padding:9px 11px;font-size:.85rem;background:#fff;color:#25221d}
+.ops-records textarea{line-height:1.7}
+.ops-records .button,.delivery-page .button{min-height:38px;border-radius:7px;font-size:.8rem;padding:8px 13px}
+.ops-records .button.gold,.delivery-page .button.gold{background:#20201e;border-color:#20201e;color:#f1d69c}
+.ops-records .actions{padding-top:14px;border-top:1px solid #eee8dc;margin-top:4px}
+.ops-records .error,.ops-records [role=status]{font-size:.82rem;line-height:1.6}
+.delivery-panel{border-color:var(--admin-border);border-radius:var(--admin-radius)}
+.delivery-panel h2{font-size:1.1rem;padding-bottom:12px;margin-bottom:14px;border-bottom:1px solid #eee8dc}
+.delivery-columns{gap:16px}
+.delivery-form{gap:12px}
+.delivery-form :is(input,select,textarea){font-size:.85rem;border-color:#dcd6cb;border-radius:6px;padding:9px 11px}
+.delivery-form-actions{padding-top:14px;border-top:1px solid #eee8dc}
+@media(max-width:1000px){.ops-records{grid-template-columns:1fr}.ops-records .ops-list{max-height:340px;min-height:0}}
+@media(max-width:640px){.admin-content{padding:12px}.ops-toolbar{padding:12px;flex-wrap:wrap}.ops-toolbar>label{flex:1 1 130px}.ops-records>.ops-panel:last-child{padding:14px}.ops-records .ops-list{max-height:280px}}
+

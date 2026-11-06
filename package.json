@@ -1,0 +1,26 @@
+{
+  "name": "gt-electronics",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check:storage": "node scripts/check-storage.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@vitejs/plugin-vue": "^6.0.10",
+    "axios": "^1.21.0",
+    "chart.js": "^4.6.1",
+    "pinia": "^4.1.0",
+    "vite": "^8.3.5",
+    "vue": "^3.5.44",
+    "vue-router": "^4.6.4"
+  }
+}
