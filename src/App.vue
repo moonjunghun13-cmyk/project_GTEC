@@ -6,6 +6,7 @@ import StoreFooter from './components/StoreFooter.vue'
 import CartRail from './components/CartRail.vue'
 import AuthDialog from './components/AuthDialog.vue'
 import StatePanel from './components/StatePanel.vue'
+import ThemeToggle from './components/ThemeToggle.vue'
 const store = useShop()
 const route = useRoute()
 const router = useRouter()
@@ -57,7 +58,7 @@ function signOut() {
           <input v-model="search" aria-label="상품 검색" placeholder="상품 검색">
           <button aria-label="검색"><svg class="header-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
         </form>
-        <nav aria-label="회원 메뉴">
+        <nav aria-label="회원 메뉴"><ThemeToggle/>
           <RouterLink to="/cart"><svg class="header-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h3l2.5 12h11L22 6H6"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg> 장바구니<span v-if="store.cartCount"> {{ store.cartCount }}</span></RouterLink>
           <button v-if="store.role === 'GUEST'" @click="store.openAuth()"><svg class="header-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/></svg> 로그인</button>
           <template v-else>

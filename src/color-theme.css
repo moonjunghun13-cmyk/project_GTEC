@@ -1,0 +1,85 @@
+/* Color themes affect UI surfaces only. Product artwork and banners keep their colors. */
+:root[data-theme=light]{color-scheme:light;--ui-bg:#fff;--ui-surface:#fff;--ui-raised:#f2f4f7;--ui-text:#20252d;--ui-muted:#66717e;--ui-border:#dce2e9}
+:root[data-theme=dark]{color-scheme:dark;--ui-bg:#101216;--ui-surface:#191d24;--ui-raised:#242b35;--ui-text:#eef1f6;--ui-muted:#b0bac8;--ui-border:#39414e;--ink:#eef1f6;--line:#39414e;--muted:#b0bac8;--gold:#c5cedd}
+:root[data-theme]{background:var(--ui-bg);color:var(--ui-text);accent-color:#8796aa}
+:root[data-theme] body{background:var(--ui-bg);color:var(--ui-text)}
+.theme-toggle{display:inline-grid!important;place-items:center;flex:none;width:32px;height:32px;padding:6px!important;border:1px solid #ffffff38;border-radius:50%;color:#e1e6ee;background:#ffffff09;transition:background .18s,border-color .18s}
+.theme-toggle svg{display:block;width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.theme-toggle:hover{background:#ffffff20;border-color:#aab8cd}
+.admin-header .theme-toggle{color:var(--ui-text);border-color:var(--ui-border);background:var(--ui-raised)}
+:root[data-theme] .theme-toggle:focus-visible{outline:2px solid #a6b6cc;outline-offset:3px}
+:root[data-theme=dark] :is(.home-section,.member-dashboard){color:var(--ui-text);--member-line:var(--ui-border)}
+:root[data-theme=dark] :is(.home-section p,.home-section .section-head>a,.feature-grid strong,.card-meta,.eyebrow,.member-identity small,.member-section-head>a,.member-section-head>button,.member-identity p,.member-section-head>div>p,.member-overview-heading p){color:var(--ui-muted)}
+:root[data-theme=dark] :is(.product-card,.filters,.form-panel,.state,.review,.line,.cart-item,.cart-summary,.support-entry,.support-form,.support-signin,.support-answer,.member-profile,.member-empty){background:var(--ui-surface);color:var(--ui-text);border-color:var(--ui-border)}
+:root[data-theme=dark] .home-section .product-card{background:transparent}
+:root[data-theme=dark] :is(input,select,textarea){background:var(--ui-surface);color:var(--ui-text);border-color:var(--ui-border)}
+:root[data-theme=dark] input::placeholder,:root[data-theme=dark] textarea::placeholder{color:#9da9ba}
+:root[data-theme=dark] :is(.button,.card-add-button,.cart-rail-toggle){background:var(--ui-raised);color:var(--ui-text);border-color:#4b586b;box-shadow:none}
+:root[data-theme=dark] .button.gold{background:#d2dae7;color:#151b24;border-color:#d2dae7}
+:root[data-theme=dark] .button:hover:not(:disabled){background:#354152;border-color:#9baac0;color:#fff}
+:root[data-theme=dark] :is(.filters,.support-tabs,.support-field,.support-form-heading,.support-form-footer,.member-edit,.member-section-head,.member-order,.member-activity .member-section-head){border-color:var(--ui-border)}
+:root[data-theme=dark] :is(.support-field label,.support-form-heading h2,.support-entry summary,.member-section-head h2,.member-profile h2,.member-profile label,.member-order strong){color:var(--ui-text)}
+:root[data-theme=dark] :is(.support-form-heading span,.support-field small,.support-form-footer p,.support-entry p,.member-profile p,.member-empty p,.member-order small){color:var(--ui-muted)}
+:root[data-theme=dark] :is(.cart-rail,.cart-rail footer,.cart-rail-items,.cart-added-dialog){background:var(--ui-surface);color:var(--ui-text);border-color:var(--ui-border)}
+:root[data-theme=dark] :is(.cart-rail article,.cart-rail-item-controls>div){border-color:var(--ui-border)}
+:root[data-theme=dark] :is(.cart-rail-notice,.cart-rail-latest,.cart-select-all,.checkout-steps){background:var(--ui-raised);color:var(--ui-muted)}
+:root[data-theme=dark] .cart-summary :is(p,dt){color:var(--ui-muted)}
+:root[data-theme=dark] :is(.cart-summary strong,.cart-item strong,.cart-rail footer strong){color:var(--ui-text)}
+:root[data-theme=dark] .product-detail-page :is(.product-highlights article,.product-story-chapter,.product-specifications,.product-compatibility,.product-color-showcase,.review){background:var(--ui-surface);border-color:var(--ui-border);color:var(--ui-text)}
+:root[data-theme=dark] .product-detail-page :is(.product-highlights h3,.product-story-chapter h3,.product-specifications h2,.product-specifications dd,.product-compatibility h3,.review strong){color:var(--ui-text)}
+:root[data-theme=dark] .product-detail-page :is(.product-highlights p,.product-story-chapter p,.product-compatibility p,.review p){color:var(--ui-muted)}
+:root[data-theme=dark] .product-detail-page :is(.product-specifications dl,.product-specifications dl>div,.product-color-showcase figure){border-color:var(--ui-border)}
+:root[data-theme=dark] .product-detail-page :is(.product-specifications dt,.product-color-showcase figcaption,.product-compatibility li){background:var(--ui-raised);color:var(--ui-muted);border-color:var(--ui-border)}
+:root[data-theme=dark] .product-detail-page .product-specifications dl{background:var(--ui-surface)}
+:root[data-theme=dark] .product-detail-page #product-reviews{color:var(--ui-text);border-color:var(--ui-border)}
+:root[data-theme=dark] :is(.product-gallery-toolbar,.product-gallery-toolbar button){color:var(--ui-muted)}
+:root[data-theme=dark] :is(.account-nav a,.product-section-nav a,.support-tabs a){color:var(--ui-muted)}
+:root[data-theme=dark] :is(.account-nav a,.product-section-nav a,.support-tabs a):hover{color:#fff}
+/* Preserve the original white backing and RGB/PCB colors of all merchandise photos. */
+:root[data-theme=dark] :is(.product-art,.feature-photo,.product-gallery-thumbnails button,.detail-gallery-comparison){background:#fff}
+:root[data-theme=dark] .admin-layout{--admin-border:var(--ui-border);--admin-muted:var(--ui-muted);background:var(--ui-bg);color:var(--ui-text)}
+:root[data-theme=dark] .admin-layout :is(.admin-content,.admin-header,.ops-panel,.ops-metrics article,.ops-toolbar,.reference-kpis>a,.reference-card,.board-panel,.board-card,.customer-panel,.sentiment-panel,.delivery-panel,.delivery-summary){background:var(--ui-surface);color:var(--ui-text);border-color:var(--ui-border)}
+:root[data-theme=dark] .admin-layout:has(.reference-dashboard) .admin-content{background:var(--ui-bg)}
+:root[data-theme=dark] .admin-layout :is(.reference-title p,.reference-card p,.ops-list button span,.ops-metrics span,.delivery-title p,.delivery-history time,.delivery-steps li){color:var(--ui-muted)}
+:root[data-theme=dark] .admin-layout :is(.admin-global-search,.ops-list-group h3,.delivery-fields dt,.delivery-totals,.delivery-note,.delivery-alert,.delivery-table thead,.board-table thead,.reference-range time){background:var(--ui-raised);color:var(--ui-text);border-color:var(--ui-border)}
+:root[data-theme=dark] .admin-layout :is(.ops-list button,.board-table td,.board-table th,.delivery-table td,.delivery-table th,.delivery-fields>div,.delivery-panel h2,.delivery-form-actions){border-color:var(--ui-border)}
+:root[data-theme=dark] .admin-layout :is(.ops-list button[aria-pressed=true],.ops-list button:hover,.board-table tbody tr:hover){background:#303b4b;color:var(--ui-text);border-color:#7f91ad}
+:root[data-theme=dark] .admin-layout :is(input,select,textarea,.admin-profile>button){background:var(--ui-raised);color:var(--ui-text);border-color:var(--ui-border)}
+:root[data-theme=dark] .admin-layout .delivery-form :is(input,select,textarea){background:var(--ui-raised);color:var(--ui-text);border-color:var(--ui-border)}
+:root[data-theme=dark] .admin-layout .delivery-page{color:var(--ui-text)}
+:root[data-theme=dark] .admin-layout .delivery-state{color:#d2dce9}
+/* The chrome emblem keeps a dark brand panel; the form follows the light theme. */
+:root[data-theme=light] .gt-auth.auth{background:#f9fafc;color:#20252d;border-color:#c6ced9;box-shadow:0 24px 90px #0005}
+:root[data-theme=light] .gt-auth-content{color:#20252d}
+:root[data-theme=light] .gt-auth .gt-auth-brand{color:#eef2f8;border-color:#d6dde6}
+:root[data-theme=light] .gt-auth input:not([type=checkbox]){background:#fff;border-color:#c6cfdb;color:#20252d}
+:root[data-theme=light] .gt-auth :is(.gt-term,.gt-social-profile){background:#edf1f6;color:#263343;border-color:#d8e0e9}
+:root[data-theme=light] .gt-auth .button{background:#202731;color:#fff;border-color:#202731}
+:root[data-theme=light] .gt-auth .button.outline{background:#fff;color:#263343;border-color:#b6c2d2}
+:root[data-theme=light] .gt-auth :is(.close,.auth-link,.gt-social-heading){color:#526379}
+:root[data-theme=light] .gt-auth :is(.gt-auth-notice,.gt-social-mock-note,.gt-social-divider,.gt-auth-steps){color:#617187}
+@media(prefers-reduced-motion:reduce){.theme-toggle{transition:none}}
+/* Screen-specific panels share the same neutral surfaces and contrast. */
+:root[data-theme=dark] :is(.cart-selection-summary,.cart-workspace .selectable-cart-line){background:var(--ui-surface);color:var(--ui-text);border-color:var(--ui-border)}
+:root[data-theme=dark] :is(.cart-selected-total,.cart-selection-toolbar,.cart-line-quantity){border-color:var(--ui-border)}
+:root[data-theme=dark] :is(.cart-selected-total strong,.cart-product strong){color:var(--ui-text)}
+:root[data-theme=dark] :is(.cart-selection-summary dt,.cart-selection-summary>p,.cart-selection-toolbar span,.cart-line-delete){color:var(--ui-muted)}
+:root[data-theme=dark] .admin-layout :is(.reference-panel,.reference-kpis>article,.customer-metrics article,.customer-charts>article){background:var(--ui-surface);color:var(--ui-text);border-color:var(--ui-border)}
+:root[data-theme=dark] .admin-layout :is(.reference-kpis small,.reference-panel header>a,.board-faq details p,.customer-metrics p,.customer-charts header span,.customer-analysis-note){color:var(--ui-muted)}
+:root[data-theme=dark] .admin-layout :is(.board-help,.customer-table thead){background:var(--ui-raised);color:var(--ui-muted)}
+:root[data-theme=dark] .admin-layout :is(.customer-table th,.customer-table td,.board-faq details,.board-notices li){border-color:var(--ui-border)}
+:root[data-theme=dark] .admin-layout :is(.reference-kpis svg,.reference-panel h2 svg,.board-stars){color:#bdcce0}
+:root[data-theme=dark] .admin-layout .sales-period button{color:var(--ui-muted)}
+:root[data-theme=dark] .admin-layout .sales-period button[aria-pressed=true]{background:#50627b;color:#fff}
+:root[data-theme=dark] .admin-layout .sales-period{background:var(--ui-raised);border-color:var(--ui-border)}
+:root[data-theme=dark] .admin-layout .board-notices :is(a,p,small){color:var(--ui-muted)}
+:root[data-theme=dark] .admin-layout .board-add{background:#50627b;color:#fff!important}
+:root[data-theme=dark] .error{color:#ffaaa5}
+:root[data-theme=light] .gt-auth .error{color:#a32121}
+:root[data-theme=light] .gt-auth .gt-social-button{background:#fff;color:#263343;border-color:#d4dce7}
+:root[data-theme=light] .gt-auth .gt-social-button:hover:not(:disabled){background:#edf1f6;border-color:#8d9eb5}
+:root[data-theme=light] .gt-auth .gt-social-divider::before,:root[data-theme=light] .gt-auth .gt-social-divider::after{background:#d6dee8}
+:root[data-theme=light] .gt-auth input:autofill{box-shadow:0 0 0 100px #fff inset;-webkit-text-fill-color:#20252d}
+:root[data-theme=light] .gt-auth-steps [aria-current=step]{color:#263343}
+:root[data-theme=light] .gt-auth :is(.gt-social-description,.gt-social-terms,.gt-social-profile small){color:#617187}
+:root[data-theme=light] .gt-auth .gt-auth-brand .auth-link{color:#d6dfec}
