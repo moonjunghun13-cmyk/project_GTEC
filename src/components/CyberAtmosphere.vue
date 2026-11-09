@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, onUnmounted, ref } from 'vue'
-const props = defineProps({ interactive: { type: Boolean, default: true }, ambient: { type: Boolean, default: true } })
+const props = defineProps({ interactive: { type: Boolean, default: true }, ambient: { type: Boolean, default: true }, viewportDensity: Boolean })
 const canvas = ref(null)
 let frame, observer, resize, surface, ctx, motion
 let width=0,height=0,visible=true,last=0,elapsed=0,particles=[]
@@ -12,7 +12,8 @@ function size(){
   const ratio=Math.min(window.devicePixelRatio || 1,1.5)
   canvas.value.width=Math.round(width*ratio);canvas.value.height=Math.round(height*ratio)
   ctx.setTransform(ratio,0,0,ratio,0,0)
-  particles=Array.from({length:Math.min(110,Math.round(width/11))},()=>({x:Math.random()*width,y:Math.random()*height,r:.5+Math.random()*1.8,s:8+Math.random()*22,phase:Math.random()*Math.PI*2}))
+  const density=props.viewportDensity ? Math.max(1,height/window.innerHeight) : 1
+  particles=Array.from({length:Math.min(props.viewportDensity ? 440 : 110,Math.round(width/11*density))},()=>({x:Math.random()*width,y:Math.random()*height,r:.5+Math.random()*1.8,s:8+Math.random()*22,phase:Math.random()*Math.PI*2}))
   draw(0)
 }
 function glow(x,y,r,alpha){const light=ctx.createRadialGradient(x,y,0,x,y,r);light.addColorStop(0,`rgba(242,246,255,${alpha})`);light.addColorStop(.28,`rgba(211,220,234,${alpha*.38})`);light.addColorStop(1,'rgba(211,220,234,0)');ctx.fillStyle=light;ctx.fillRect(x-r,y-r,r*2,r*2)}
