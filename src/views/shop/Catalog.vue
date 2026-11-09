@@ -29,8 +29,9 @@ const results = computed(() => {
 })
 </script>
 <template>
-  <section class="wrap section catalog-page">
+  <div class="catalog-scene">
     <div v-if="theme.mode === 'dark'" class="catalog-atmosphere"><CyberAtmosphere :interactive="false" :ambient="false" viewport-density/></div>
+  <section class="wrap section catalog-page">
     <p class="eyebrow">THE CATALOG</p><h1>{{ purpose ? purpose.label + ' 추천 부품' : route.query.category || (route.query.q ? '검색 결과' : route.query.sort === 'new' ? '신상품' : route.query.sort === 'popular' ? '베스트 상품' : '전체 상품') }}</h1>
     <p v-if="purpose">{{ purpose.description }}</p><p v-if="purpose" class="muted">개별 부품 추천입니다. 구매 전 부품 간 호환성을 확인해 주세요.</p><p v-if="route.query.q">“{{ route.query.q }}” 검색</p>
     <div class="filters">
@@ -43,9 +44,11 @@ const results = computed(() => {
     <div v-if="results.length" class="product-grid"><ProductCard v-for="product in results" :key="product.productId" :product="product"/></div>
     <StatePanel v-else empty="조건에 맞는 상품이 없습니다."/>
   </section>
+  </div>
 </template>
 
 <style scoped>
-.catalog-page{position:relative;isolation:isolate}
+.catalog-scene{position:relative;isolation:isolate}
+.catalog-page{position:relative}
 .catalog-atmosphere{position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.8;overflow:hidden}
 </style>
