@@ -156,3 +156,17 @@
 :root[data-theme=dark] .home-section .featured-buy-card:is(:hover,:focus-within){transform:translateY(-4px)}
 :root[data-theme] .home-section .card-body>p{font-size:clamp(.8rem,.95vw,1rem);line-height:1.6;margin-bottom:.75rem;overflow-wrap:anywhere}
 @media(prefers-reduced-motion:reduce){:root[data-theme=dark] .home-section :is(.product-art,.feature-photo,.featured-buy-card){transition:none}:root[data-theme=dark] .home-section .featured-buy-card:is(:hover,:focus-within){transform:none}}
+
+/* Mini-cart foregrounds are explicit for every dark surface and light control. */
+:root[data-theme=dark] .cart-rail-items>article>a{color:#f1f4f8}
+:root[data-theme=dark] .cart-rail-item-controls>strong{color:#f5f7fa;font-size:.82rem}
+:root[data-theme=dark] .cart-rail-item-controls>div{background:#fff;border-color:#a9b3c1;color:#20262e}
+:root[data-theme=dark] .cart-rail-item-controls>div :is(button,span){color:#20262e;font-weight:650}
+:root[data-theme=dark] .cart-rail-item-controls>div button:hover:not(:disabled){background:#e5e9ef;color:#11161d}
+:root[data-theme=dark] .cart-rail-remove{color:#bcc6d3}
+:root[data-theme=dark] .cart-rail-remove:hover{color:#fff}
+:root[data-theme=dark] .cart-rail footer>div{color:#d8dfe8}
+:root[data-theme=dark] .cart-rail footer>p{color:#b8c2cf}
+:root[data-theme=dark] .cart-rail footer .button{background:#262e39;color:#f1f4f8;border-color:#657184}
+:root[data-theme=dark] .cart-rail footer .button.gold{background:#d8e0eb;color:#161c25;border-color:#d8e0eb}
+:root[data-theme=dark] .cart-rail footer .button:hover:not(:disabled){background:#3a4657;color:#fff}
