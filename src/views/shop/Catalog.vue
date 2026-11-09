@@ -4,7 +4,10 @@ import { useRoute, useRouter } from 'vue-router'
 import { useShop } from '../../stores/shop'
 import ProductCard from '../../components/ProductCard.vue'
 import StatePanel from '../../components/StatePanel.vue'
+import CyberAtmosphere from '../../components/CyberAtmosphere.vue'
+import { useTheme } from '../../stores/theme'
 const store = useShop()
+const theme = useTheme()
 const route = useRoute()
 const router = useRouter()
 const inStock = ref(false)
@@ -26,7 +29,8 @@ const results = computed(() => {
 })
 </script>
 <template>
-  <section class="wrap section">
+  <section class="wrap section catalog-page">
+    <div v-if="theme.mode === 'dark'" class="catalog-atmosphere"><CyberAtmosphere :interactive="false" :ambient="false"/></div>
     <p class="eyebrow">THE CATALOG</p><h1>{{ purpose ? purpose.label + ' 추천 부품' : route.query.category || (route.query.q ? '검색 결과' : route.query.sort === 'new' ? '신상품' : route.query.sort === 'popular' ? '베스트 상품' : '전체 상품') }}</h1>
     <p v-if="purpose">{{ purpose.description }}</p><p v-if="purpose" class="muted">개별 부품 추천입니다. 구매 전 부품 간 호환성을 확인해 주세요.</p><p v-if="route.query.q">“{{ route.query.q }}” 검색</p>
     <div class="filters">
@@ -40,3 +44,8 @@ const results = computed(() => {
     <StatePanel v-else empty="조건에 맞는 상품이 없습니다."/>
   </section>
 </template>
+
+<style scoped>
+.catalog-page{position:relative;isolation:isolate}
+.catalog-atmosphere{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.8}
+</style>
