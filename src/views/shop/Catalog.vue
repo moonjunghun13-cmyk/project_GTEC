@@ -47,5 +47,5 @@ const results = computed(() => {
 
 <style scoped>
 .catalog-page{position:relative;isolation:isolate}
-.catalog-atmosphere{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.8}
+.catalog-atmosphere{position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.8;overflow:hidden}
 </style>
