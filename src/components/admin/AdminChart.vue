@@ -10,8 +10,8 @@ function render() {
   chart?.destroy()
   const line = props.type === 'line'
   const seriesColor = (props.dark || theme.mode === 'dark') ? '#b7c8e0' : '#596b87'
-  const axisColor = (props.dark || theme.mode === 'dark') ? '#b4c0d1' : '#655e54'
-  const gridColor = (props.dark || theme.mode === 'dark') ? '#ffffff18' : '#24201a12'
+  const axisColor = (props.dark || theme.mode === 'dark') ? '#b4c0d1' : '#62666e'
+  const gridColor = (props.dark || theme.mode === 'dark') ? '#ffffff18' : '#22262d12'
   const gradient = canvas.value.getContext('2d').createLinearGradient(0,0,0,220)
   gradient.addColorStop(0,'#aeb9cc40')
   gradient.addColorStop(1,'#aeb9cc00')

@@ -20,33 +20,33 @@
 .operations-board .board-trend{overflow:hidden}
 .board-trend .admin-chart{flex:1;min-height:0;height:120px;position:relative;margin-top:0}
 .board-trend canvas{position:absolute;inset:0}
-.board-add{background:#c6a05a;color:white!important;border-radius:5px;padding:.25rem .45rem}
+.board-add{background:#a2a3a6;color:white!important;border-radius:5px;padding:.25rem .45rem}
 .board-table{width:100%;overflow-x:auto}
 .board-table table{border-collapse:collapse;table-layout:fixed;width:100%;font-size:.68rem}
-.board-table :is(th,td){text-align:left;padding:.38rem .25rem;border-bottom:1px solid #ece8df;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.board-table :is(th,td){text-align:left;padding:.38rem .25rem;border-bottom:1px solid #e7e8eb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .board-table th:first-child{width:33%}
 .board-products th:first-child{width:34%}
 .board-products th:nth-child(2){width:15%}.board-products th:nth-child(3){width:11%}.board-products th:nth-child(4){width:18%}.board-products th:nth-child(5){width:13%}.board-products th:last-child{width:9%}
-.board-table thead{background:#f2f1ee;color:#504631}
+.board-table thead{background:#f0f1f4;color:#46474a}
 .board-table tbody th{font-weight:600}
-.board-table tbody a:hover{text-decoration:underline;color:#845c22}
+.board-table tbody a:hover{text-decoration:underline;color:#5f6063}
 .board-products tbody th a{display:flex;gap:.3rem;align-items:center;overflow:hidden;text-overflow:ellipsis}
 .board-products img{width:22px;height:22px;object-fit:contain;flex:none;border-radius:3px;background:white}
-.board-status{display:inline-block;border-radius:99px;padding:.1rem .35rem;background:#f4e8cc;color:#70501f;font-size:.62rem;font-weight:650}
+.board-status{display:inline-block;border-radius:99px;padding:.1rem .35rem;background:#e8e9ec;color:#525356;font-size:.62rem;font-weight:650}
 .board-status[data-status="정상"],.board-status[data-status="판매중"],.board-status[data-status="긍정"],.board-status[data-status="배송 완료"]{background:#e5f2e4;color:#2c6537}
 .board-status[data-status="품절"],.board-status[data-status="부정"],.board-status[data-status="정지"]{background:#f9e6e1;color:#963f34}
-.board-status[data-status="중립"]{background:#ece9e3;color:#60584c}
-.board-stars{color:#94651f;font-weight:700}
-.board-help{font-size:.65rem;background:#f4f0e7;color:#63553f;padding:.3rem .4rem;border-radius:4px;margin:.35rem 0 0}
-.board-faq details{border-bottom:1px solid #eae6dd;font-size:.74rem;padding:.4rem 0}
+.board-status[data-status="중립"]{background:#e8e9ec;color:#58595c}
+.board-stars{color:#696a6d;font-weight:700}
+.board-help{font-size:.65rem;background:#eff0f3;color:#555659;padding:.3rem .4rem;border-radius:4px;margin:.35rem 0 0}
+.board-faq details{border-bottom:1px solid #e5e6e9;font-size:.74rem;padding:.4rem 0}
 .board-faq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:.25rem}
-.board-faq summary::after{content:'›';color:#9c793e}
-.board-faq details p{color:#6d6251;font-size:.7rem;line-height:1.6;margin:.4rem 0}
+.board-faq summary::after{content:'›';color:#7b7c7f}
+.board-faq details p{color:#626366;font-size:.7rem;line-height:1.6;margin:.4rem 0}
 .board-notices ul{list-style:none;margin:0;padding:0}
-.board-notices li{border-bottom:1px solid #ebe6db;padding:.55rem 0}
+.board-notices li{border-bottom:1px solid #e5e6e9;padding:.55rem 0}
 .board-notices li strong{display:block;font-size:.75rem}
-.board-notices li span{display:block;font-size:.71rem;color:#6a6050;line-height:1.7;margin-top:.3rem}
-.board-notice-add{display:inline-block;margin-top:.75rem;font-size:.73rem;color:#855f22;font-weight:700}
+.board-notices li span{display:block;font-size:.71rem;color:#606164;line-height:1.7;margin-top:.3rem}
+.board-notice-add{display:inline-block;margin-top:.75rem;font-size:.73rem;color:#626366;font-weight:700}
 @media(min-width:1250px) and (min-height:730px){.reference-dashboard{grid-template-rows:auto minmax(0,1fr)}}
 @media(max-width:1249px){
 .operations-board{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"trend trend" "products orders" "members reviews" "faq notices";grid-template-rows:230px auto auto auto}
