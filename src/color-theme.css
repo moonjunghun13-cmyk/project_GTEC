@@ -91,3 +91,40 @@
 :root[data-theme] .customer-center :is(.customer-notices,.customer-quick)>a{color:var(--ui-text);border-color:var(--ui-border)}
 :root[data-theme] .customer-center :is(.customer-notices header a,.customer-quick span,.customer-notices>p){color:var(--ui-muted)}
 :root[data-theme] .customer-center :is(.customer-notices,.customer-quick) a:hover{color:var(--ui-text);text-decoration:underline;text-underline-offset:4px}
+
+/* Ambient chrome lighting stays behind the UI, never on top of text or artwork. */
+:root[data-theme=dark] body{isolation:isolate}
+:root[data-theme=dark] body::before,
+:root[data-theme=dark] body::after{
+  content:'';position:fixed;pointer-events:none;z-index:-1;
+}
+:root[data-theme=dark] body::before{
+  inset:-4%;
+  background:
+    radial-gradient(ellipse 35% 48% at 1% 22%,#bccbe51a,transparent 72%),
+    radial-gradient(ellipse 32% 52% at 100% 72%,#a6b4d51c,transparent 74%),
+    radial-gradient(ellipse 24% 36% at 90% 4%,#b5a9d80a,transparent 74%),
+    radial-gradient(ellipse 82% 92% at -34% 62%,transparent 77%,#c6d5ef16 77.15%,transparent 77.4%),
+    radial-gradient(ellipse 72% 100% at 135% 34%,transparent 77%,#c6d5ef12 77.15%,transparent 77.4%);
+  animation:gt-dark-ambient 18s ease-in-out infinite alternate;
+}
+:root[data-theme=dark] body::after{
+  inset:0;opacity:.65;
+  background:
+    radial-gradient(circle at 4% 16%,#e3ecfc7a 0 1px,transparent 2px),
+    radial-gradient(circle at 7% 59%,#d2e1f54d 0 1px,transparent 2px),
+    radial-gradient(circle at 2% 83%,#d2e1f533 0 1px,transparent 2px),
+    radial-gradient(circle at 96% 26%,#e3ecfc66 0 1px,transparent 2px),
+    radial-gradient(circle at 92% 67%,#d2e1f54d 0 1px,transparent 2px),
+    radial-gradient(circle at 98% 91%,#d2e1f533 0 1px,transparent 2px),
+    linear-gradient(#c5d3e908 1px,transparent 1px),
+    linear-gradient(90deg,#c5d3e908 1px,transparent 1px);
+  background-size:auto,auto,auto,auto,auto,auto,84px 84px,84px 84px;
+  mask-image:linear-gradient(90deg,#000,transparent 28%,transparent 72%,#000);
+}
+:root[data-theme=dark] .admin-layout,
+:root[data-theme=dark] .admin-layout .admin-content,
+:root[data-theme=dark] .admin-layout:has(.reference-dashboard) .admin-content{background:transparent}
+@keyframes gt-dark-ambient{from{opacity:.58;transform:translateY(-.6%)}to{opacity:1;transform:translateY(.6%)}}
+@media(max-width:650px){:root[data-theme=dark] body::before{animation:none;opacity:.8}:root[data-theme=dark] body::after{opacity:.4}}
+@media(prefers-reduced-motion:reduce){:root[data-theme=dark] body::before{animation:none;opacity:.8}}
