@@ -83,3 +83,11 @@
 :root[data-theme=light] .gt-auth-steps [aria-current=step]{color:#263343}
 :root[data-theme=light] .gt-auth :is(.gt-social-description,.gt-social-terms,.gt-social-profile small){color:#617187}
 :root[data-theme=light] .gt-auth .gt-auth-brand .auth-link{color:#d6dfec}
+
+/* Home support cards must change background and foreground together. */
+:root[data-theme] .customer-center{border-color:var(--ui-border)}
+:root[data-theme] .customer-center :is(.customer-notices,.customer-quick){background:var(--ui-surface);color:var(--ui-text);border-color:var(--ui-border)}
+:root[data-theme] .customer-center :is(.customer-notices,.customer-quick) h3{color:var(--ui-text)}
+:root[data-theme] .customer-center :is(.customer-notices,.customer-quick)>a{color:var(--ui-text);border-color:var(--ui-border)}
+:root[data-theme] .customer-center :is(.customer-notices header a,.customer-quick span,.customer-notices>p){color:var(--ui-muted)}
+:root[data-theme] .customer-center :is(.customer-notices,.customer-quick) a:hover{color:var(--ui-text);text-decoration:underline;text-underline-offset:4px}
