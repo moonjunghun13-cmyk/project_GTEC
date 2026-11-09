@@ -194,3 +194,11 @@
   backdrop-filter:none;
   -webkit-backdrop-filter:none;
 }
+
+/* Mobile hero follows the artwork ratio instead of centering it in a viewport-tall gap. */
+@media(max-width:850px){
+  :root .store-intro{display:block;height:auto;min-height:0;aspect-ratio:1672/941;margin:0;padding:0}
+  :root .store-intro>img{display:block;width:100%;height:auto;aspect-ratio:1672/941;object-fit:contain;animation:none;transform:none;opacity:1;filter:none}
+  :root .store-intro::before{height:32%;background:linear-gradient(180deg,#0a0b0e99,transparent)}
+  :root .store-intro+.home-banner{margin-top:0;animation:none;transform:none;opacity:1;filter:none}
+}

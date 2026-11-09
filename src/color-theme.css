@@ -170,3 +170,6 @@
 :root[data-theme=dark] .cart-rail footer .button{background:#262e39;color:#f1f4f8;border-color:#657184}
 :root[data-theme=dark] .cart-rail footer .button.gold{background:#d8e0eb;color:#161c25;border-color:#d8e0eb}
 :root[data-theme=dark] .cart-rail footer .button:hover:not(:disabled){background:#3a4657;color:#fff}
+
+/* Newly added items keep the same row surface; the notice already confirms addition. */
+:root[data-theme] .cart-rail-items>article.cart-rail-latest{background:transparent;color:var(--ui-text)}
