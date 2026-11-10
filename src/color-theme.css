@@ -185,3 +185,6 @@
 :root[data-theme] .admin-layout .ops-records .ops-list button:is(:hover,[aria-pressed=true]){background:transparent;border-color:var(--admin-border);box-shadow:inset 2px 0 #8e9bad}
 :root[data-theme=dark] .admin-layout .ops-records .ops-list button:is(:hover,[aria-pressed=true]){color:#fff;box-shadow:inset 2px 0 #d6deeb}
 @media(max-width:1000px){:root[data-theme] .admin-layout .ops-records>.ops-panel:last-child{padding:24px 0 0;border-left:0;border-top:1px solid var(--admin-border)}}
+
+/* Recommendation badges sit at the top edge, including over the brand watermark. */
+:root[data-theme] .home-section .product-art:has(.photo-ribbon) .photo-ribbon{top:.65rem;left:.65rem;bottom:auto;right:auto;z-index:2}
