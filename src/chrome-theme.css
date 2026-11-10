@@ -202,3 +202,9 @@
   :root .store-intro::before{height:32%;background:linear-gradient(180deg,#0a0b0e99,transparent)}
   :root .store-intro+.home-banner{margin-top:0;animation:none;transform:none;opacity:1;filter:none}
 }
+
+/* Fit the additional monitor menu in the existing desktop header row. */
+@media(min-width:1251px){
+  :root .site-header .shop-nav:has(a:nth-child(12)){column-gap:clamp(2px,.35vw,8px)}
+  :root .site-header .shop-nav:has(a:nth-child(12)) a{padding-inline:clamp(1px,.2vw,4px)}
+}

@@ -6,6 +6,7 @@ export const purposes = [
 ]
 // Temporary front-end merchandising rules. These are individual component recommendations.
 export function purposeTags(product) {
+  if (product.category === '모니터') return product.monitorPurposes ?? []
   const rules = {
     gaming:['CPU','그래픽카드','메모리','케이스','마우스','키보드'],
     office:['CPU','메모리','SSD','HDD','키보드','마우스','스피커'],

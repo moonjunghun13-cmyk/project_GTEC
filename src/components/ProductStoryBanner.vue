@@ -3,6 +3,7 @@ import { computed, useId } from 'vue'
 const props = defineProps({product:{type:Object,required:true}})
 // Presentation themes only. Product copy and image URLs arrive through the service UI model.
 const themes = {
+  '모니터':{mood:'flare',accent:'#e6edf8',glow:'137,151,173',base:'#090d15'},
   CPU:{mood:'orbit',accent:'#e4e8ed',glow:'112,120,132',base:'#0b0d10'},
   '메인보드':{mood:'circuit',accent:'#cbd2da',glow:'90,102,114',base:'#0c1013'},
   '메모리':{mood:'light',accent:'#e1e5e8',glow:'112,120,126',base:'#0d1012'},

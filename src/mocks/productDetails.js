@@ -2,6 +2,7 @@ import lifestyle from './lifestyle.json'
 import { productGuides } from './productGuides'
 // Temporary editorial content for the mock catalog. Confirm manufacturer specifications before API integration.
 const categoryCopy = {
+  '모니터':['화면을 넘어, 나만의 몰입으로.','화면 크기와 해상도, 주사율을 살펴보고 데스크 공간과 그래픽 출력 환경에 맞는 모니터를 선택하세요.',['화면 크기','해상도','주사율']],
   'CPU': ['시스템의 중심을 선택하세요.','프로세서의 코어 구성과 소켓을 확인하고, 사용하는 프로그램에 맞는 시스템을 구성해 보세요.',['프로세서 구성','소켓 호환성','시스템 구성']],
   '메인보드': ['모든 부품을 하나로 연결합니다.','폼팩터와 메모리 규격을 확인하고, 케이스와 주변 부품에 맞는 메인보드를 선택하세요.',['폼팩터 확인','메모리 규격','확장 구성']],
   '메모리': ['작업 흐름에 맞는 메모리.','메모리 용량과 동작 규격을 확인하고, 메인보드가 지원하는 조합으로 구성하세요.',['메모리 용량','동작 규격','플랫폼 호환성']],
@@ -24,11 +25,11 @@ export function withProductDetails(product) {
     sections:guide.sections,
     usage:guide.usage,
     checks:guide.checks,
-    headline,description:product.description || description,
+    headline:product.headline || headline,description:product.description || description,
     features,
     specifications:[
       ['상품명',product.name],['브랜드',product.brand],['카테고리',product.category],
-      ...product.spec.split(' · ').map((value,index) => ['주요 사양 '+(index+1),value]),
+      ...(product.displaySpecifications ?? product.spec.split(' · ').map((value,index) => ['주요 사양 '+(index+1),value])),
     ],
   }}
 }

@@ -66,3 +66,10 @@ SSD/HDD는 이제 제조사 실물 사진을 표방하지 않는 GT Select Mock 
 
 ### Product styled images
 Storage mock models now expose `lifestyle: [{label,image}]` separately from original `gallery` images, via `src/mocks/storageCatalog.js`. Future service adapters should preserve this presentation distinction for the five-slide gallery and large detail story banner; no backend API schema is assumed. Assets and generation prompts are documented in STORAGE_ASSETS.md / STORAGE_SCENE_PROMPTS.json.
+
+## Monitor Mock category
+- `src/mocks/monitorModels.json` and `monitorCatalog.js` define ten fictional GT Select monitors. Sizes, prices, ports and color variants are temporary frontend UI data, not manufacturer-verified listings or an API schema.
+- `categories` in `src/mocks/catalog.js` places 모니터 before CPU. Existing product IDs, image bindings and ordering are preserved; ten monitor products are appended.
+- Gallery photos: `public/storefront/monitors/` (black/white). Styled campaign images: `public/storefront/monitor-scenes/` (black/white). The existing five-slide detail gallery and paired story banner consume these same service-level fields.
+- Monitor copy/specifications are provided by `productDetails.js` and `productGuides.js`. Future API adapters should map verified screen size, resolution, refresh rate, panel, ports and color/image data into this UI model. No endpoint or authentication contract has been assumed.
+- `npm run check:monitors` checks count, unique designs, black/white gallery pairs and all forty distinct local image files. `npm run check:storage` also checks ten products in every category.

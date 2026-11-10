@@ -1,0 +1,246 @@
+{
+  "tool": "built-in image_gen",
+  "purpose": "Fictional frontend mock catalog assets; existing product artwork preserved",
+  "assets": [
+    {
+      "key": "GT-MON-1-black",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-c52e37f0-133f-4d77-bcb6-1cc7a5ff08c7.png",
+      "target": "public/storefront/monitors/GT-MON-1-black.png",
+      "prompt": "Square white seamless catalog photo of AERO 24 FHD 180 black monitor, V feet, illuminated cyan and violet futuristic racing landscape."
+    },
+    {
+      "key": "GT-MON-2-black",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-cc7521cf-06fb-4348-910e-305ef407104a.png",
+      "target": "public/storefront/monitors/GT-MON-2-black.png",
+      "prompt": "Create ONE square premium ecommerce studio product photo. Fictional GT Select LUMA 27 QHD 165 monitor BLACK edition. Exact physical design: 27-inch flat 16:9 thin panel with softly rounded outer corners, tall cylindrical neck through an open circular ring, perfectly round disc base. Entire monitor and stand visible centered with 9% clear margins, three-quarter front view from slightly above, pure white seamless backdrop, soft grounded shadow, sharp realistic product photography. Matte black housing. Powered-on screen displays luminous emerald alpine lake and mountain aurora. Beautiful saturated real sale-ready display content, NOT a blank screen. No text, no logos, no watermark, no keyboard, no computer, no extra devices. This model must have its distinctive described silhouette and stand."
+    },
+    {
+      "key": "GT-MON-3-black",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-a36a44f2-343c-4175-9809-bb003435b767.png",
+      "target": "public/storefront/monitors/GT-MON-3-black.png",
+      "prompt": "Create ONE square premium ecommerce studio product photo. Fictional GT Select PRISM 27 4K 60 monitor BLACK edition. Exact physical design: 27-inch flat 16:9 elegant thin brushed-metal frame, single angled sculptural blade neck offset slightly to right, very thin square flat slab base. Entire monitor and stand visible centered with 9% clear margins, three-quarter front view from slightly above, pure white seamless backdrop, soft grounded shadow, sharp realistic product photography. Matte black housing. Powered-on screen displays brilliant coral magenta and amber fluid abstract macro art. Beautiful saturated real sale-ready display content, NOT a blank screen. No text, no logos, no watermark, no keyboard, no computer, no extra devices. This model must have its distinctive described silhouette and stand."
+    },
+    {
+      "key": "GT-MON-4-black",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-c22f6fd4-a400-4df4-96d4-7f22ea7c8c76.png",
+      "target": "public/storefront/monitors/GT-MON-4-black.png",
+      "prompt": "Create ONE square premium ecommerce studio product photo. Fictional GT Select ORBIT 32 QHD 240 monitor BLACK edition. Exact physical design: 32-inch 16:9 strongly curved 1000R gaming display with slightly thick sculpted chassis, angular armor-like central neck, broad crescent-moon base, subtle rear RGB rim. Entire monitor and stand visible centered with 9% clear margins, three-quarter front view from slightly above, pure white seamless backdrop, soft grounded shadow, sharp realistic product photography. Matte black housing. Powered-on screen displays vivid orange planet over blue science fiction city horizon. Beautiful saturated real sale-ready display content, NOT a blank screen. No text, no logos, no watermark, no keyboard, no computer, no extra devices. This model must have its distinctive described silhouette and stand."
+    },
+    {
+      "key": "GT-MON-5-black",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-4f50169f-c60d-4029-b913-1ce91943c6b8.png",
+      "target": "public/storefront/monitors/GT-MON-5-black.png",
+      "prompt": "Create ONE square premium ecommerce studio product photo. Fictional GT Select HORIZON 34 UWQHD 180 monitor BLACK edition. Exact physical design: 34-inch wide 21:9 curved gaming display, thin horizontal panel, tall slender central support with triangular negative-space cutout, three-pronged low tripod stand. Entire monitor and stand visible centered with 9% clear margins, three-quarter front view from slightly above, pure white seamless backdrop, soft grounded shadow, sharp realistic product photography. Matte black housing. Powered-on screen displays panoramic purple cosmic nebula with blue crystalline terrain. Beautiful saturated real sale-ready display content, NOT a blank screen. No text, no logos, no watermark, no keyboard, no computer, no extra devices. This model must have its distinctive described silhouette and stand."
+    },
+    {
+      "key": "GT-MON-6-black",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-9cf44d7e-0772-4339-91a7-f3938eba1b0a.png",
+      "target": "public/storefront/monitors/GT-MON-6-black.png",
+      "prompt": "Create ONE square premium ecommerce studio product photo. Fictional GT Select PANORAMA 49 DQHD 144 monitor BLACK edition. Exact physical design: 49-inch super ultrawide 32:9 curved panoramic screen, exceptionally long horizontal silhouette, sturdy short center spine, broad low symmetrical twin boomerang legs. Entire monitor and stand visible centered with 9% clear margins, three-quarter front view from slightly above, pure white seamless backdrop, soft grounded shadow, sharp realistic product photography. Matte black housing. Powered-on screen displays spectacular panoramic cyan ocean and pink sunrise across futuristic coastline. Beautiful saturated real sale-ready display content, NOT a blank screen. No text, no logos, no watermark, no keyboard, no computer, no extra devices. This model must have its distinctive described silhouette and stand."
+    },
+    {
+      "key": "GT-MON-7-black",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-82c32215-9022-48a6-bfa5-0a60fc8fd882.png",
+      "target": "public/storefront/monitors/GT-MON-7-black.png",
+      "prompt": "Create ONE square premium ecommerce studio product photo. Fictional GT Select PIVOT 28 4K 144 monitor BLACK edition. Exact physical design: 28-inch 16:9 panel ROTATED into portrait orientation, genuinely tall vertical screen, robust rectangular telescoping height-adjustable column, flat rounded-rectangle base with small central cable slot. Entire monitor and stand visible centered with 9% clear margins, three-quarter front view from slightly above, pure white seamless backdrop, soft grounded shadow, sharp realistic product photography. Matte black housing. Powered-on screen displays vertical luminous cyan violet digital waterfall. Beautiful saturated real sale-ready display content, NOT a blank screen. No text, no logos, no watermark, no keyboard, no computer, no extra devices. This model must have its distinctive described silhouette and stand."
+    },
+    {
+      "key": "GT-MON-8-black",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-79551741-1129-4e92-bf23-8715b587cb7f.png",
+      "target": "public/storefront/monitors/GT-MON-8-black.png",
+      "prompt": "Create ONE square premium ecommerce studio product photo. Fictional GT Select STUDIO 32 4K 60 monitor BLACK edition. Exact physical design: 32-inch flat 16:9 professional creator display, thicker smooth bottom chin, distinctive inverted U-frame easel stand with two side supports and horizontal low foot, minimal elegant construction. Entire monitor and stand visible centered with 9% clear margins, three-quarter front view from slightly above, pure white seamless backdrop, soft grounded shadow, sharp realistic product photography. Matte black housing. Powered-on screen displays highly detailed saturated turquoise orange tropical bird photograph. Beautiful saturated real sale-ready display content, NOT a blank screen. No text, no logos, no watermark, no keyboard, no computer, no extra devices. This model must have its distinctive described silhouette and stand."
+    },
+    {
+      "key": "GT-MON-9-black",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-e900d773-3d54-49eb-92fe-3adbf901a7a9.png",
+      "target": "public/storefront/monitors/GT-MON-9-black.png",
+      "prompt": "Create ONE square premium ecommerce studio product photo. Fictional GT Select ARC 38 WQHD+ 160 monitor BLACK edition. Exact physical design: 38-inch curved 24:10 expansive screen, slim swept-back chassis with silver bevel edge on black housing, polished arch-shaped hollow pedestal support, wide flat oval base. Entire monitor and stand visible centered with 9% clear margins, three-quarter front view from slightly above, pure white seamless backdrop, soft grounded shadow, sharp realistic product photography. Matte black housing. Powered-on screen displays luxurious vivid violet blue liquid chrome ribbons on dark space. Beautiful saturated real sale-ready display content, NOT a blank screen. No text, no logos, no watermark, no keyboard, no computer, no extra devices. This model must have its distinctive described silhouette and stand."
+    },
+    {
+      "key": "GT-MON-10-black",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-641d3308-8226-4752-b9e3-5ea1466d29e5.png",
+      "target": "public/storefront/monitors/GT-MON-10-black.png",
+      "prompt": "Create ONE square premium ecommerce studio product photo. Fictional GT Select DUALVIEW 28 SDQHD 60 monitor BLACK edition. Exact physical design: 28-inch unusual nearly square but slightly tall 16:18 dual-up productivity screen, rounded top corners, single thick L-shaped articulated side arm rising from back-left, deep D-shaped desktop base. Entire monitor and stand visible centered with 9% clear margins, three-quarter front view from slightly above, pure white seamless backdrop, soft grounded shadow, sharp realistic product photography. Matte black housing. Powered-on screen displays two stacked beautiful abstract wallpapers upper violet crystal waves lower emerald flowing dunes, no UI no text. Beautiful saturated real sale-ready display content, NOT a blank screen. No text, no logos, no watermark, no keyboard, no computer, no extra devices. This model must have its distinctive described silhouette and stand."
+    },
+    {
+      "key": "GT-MON-1-white",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-62a433b4-36ce-4eb3-9d35-c84858a98b42.png",
+      "target": "public/storefront/monitors/GT-MON-1-white.png",
+      "prompt": "Edit this monitor catalog photo: change ONLY the physical monitor frame, stand neck and V feet from black to clean satin WHITE with subtle silver hardware. Preserve exactly the same shape, proportions, perspective, vivid cyan/violet racing screen content, pure white background, shadow and composition. This must be the identical AERO 24 model in white. No text, no logos, no watermark."
+    },
+    {
+      "key": "GT-MON-1-scene-black",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-56976b35-6d9e-4888-88da-be59163b8be3.png",
+      "target": "public/storefront/monitor-scenes/GT-MON-1-black.png",
+      "prompt": "Use this exact BLACK AERO 24 monitor as product identity reference. Create one square spectacular high-end product campaign photograph. Preserve monitor geometry: compact 16:9 flat display, angular central neck, two slim V feet; preserve powered-on neon racing landscape screen. Single monitor elevated hero on a circular brushed CHROME pedestal in a black futuristic showroom. Dazzling but tasteful silver orbital arcs, cyan/violet prismatic light trails, cinematic reflection, subtle mist and star points, luxury computer hardware advertising. Frame entire monitor large with no clipping and 10% margin. No extra monitors, no keyboard, no PC. No gold, no brown, no blank screen, no text, no watermark. Product remains photorealistic, crisp and identifiable. Different camera viewpoint slightly lower than catalog."
+    },
+    {
+      "key": "GT-MON-1-scene-white",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-b61bff8d-cd51-4c7e-865e-d26ca3edcad9.png",
+      "target": "public/storefront/monitor-scenes/GT-MON-1-white.png",
+      "prompt": "Edit the first campaign image: change ONLY the AERO 24 monitor housing and its entire stand from black to satin WHITE, using the second white catalog photo for the exact white product appearance. Preserve the identical model shape, on-screen neon racing image, chromed pedestal, silver orbit arcs, vivid cyan/violet lighting, scene, perspective and framing. Keep the rest of the image colorful and unchanged. No text, no watermark. One square luxury advertising image."
+    },
+    {
+      "key": "GT-MON-2-white",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-4b7385ff-592a-4bf4-84ec-0cde4ed9d53b.png",
+      "target": "public/storefront/monitors/GT-MON-2-white.png",
+      "prompt": "Edit this catalog photograph to create the WHITE color version of the SAME LUMA 27 QHD 165 monitor. Change ONLY the black physical bezel, rear casing, support/arm and entire stand into satin white with subtle silver hardware. Preserve exact silhouette, screen aspect ratio, curvature, feet/base geometry, camera perspective, composition, white seamless background and shadow. Keep the screen powered on with its exact vivid original image and colors unchanged. No extra objects, no text, no logos, no watermark."
+    },
+    {
+      "key": "GT-MON-2-scene-black",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-e80ee31d-4cc2-4941-a670-280d7b7f93b2.png",
+      "target": "public/storefront/monitor-scenes/GT-MON-2-black.png",
+      "prompt": "Create ONE square premium computer monitor campaign photograph, using this LUMA 27 QHD 165 BLACK monitor as exact identity reference. Preserve its distinctive 27-inch flat 16:9 thin panel with softly rounded outer corners, tall cylindrical neck through an open circular ring, perfectly round disc base, original screen shape/ratio and powered-on luminous emerald alpine lake and mountain aurora. Entire single monitor hero large in frame on a polished circular chrome platform framed by emerald and silver aurora arcs. Expensive photorealistic hardware advertising, dazzling SILVER/BLACK cyber atmosphere, cinematic edge light, realistic reflections, tiny tasteful stars. Camera slightly lower three-quarter view; keep the ENTIRE monitor and base visible with margins. Bright vivid display content remains focus. No gold or brown set lighting, no text, no watermark, no logo, no PC, no keyboard, no second monitor. Do not replace the stand or alter the model."
+    },
+    {
+      "key": "GT-MON-3-white",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-9d136aa4-0f2f-43ca-9dea-0f3dcbf5f2dc.png",
+      "target": "public/storefront/monitors/GT-MON-3-white.png",
+      "prompt": "Edit this catalog photograph to create the WHITE color version of the SAME PRISM 27 4K 60 monitor. Change ONLY the black physical bezel, rear casing, support/arm and entire stand into satin white with subtle silver hardware. Preserve exact silhouette, screen aspect ratio, curvature, feet/base geometry, camera perspective, composition, white seamless background and shadow. Keep the screen powered on with its exact vivid original image and colors unchanged. No extra objects, no text, no logos, no watermark."
+    },
+    {
+      "key": "GT-MON-3-scene-black",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-076442ef-f24f-436b-88b0-35ee2a76da16.png",
+      "target": "public/storefront/monitor-scenes/GT-MON-3-black.png",
+      "prompt": "Create ONE square premium computer monitor campaign photograph, using this PRISM 27 4K 60 BLACK monitor as exact identity reference. Preserve its distinctive 27-inch flat 16:9 elegant thin brushed-metal frame, single angled sculptural blade neck offset slightly to right, very thin square flat slab base, original screen shape/ratio and powered-on brilliant coral magenta and amber fluid abstract macro art. Entire single monitor hero large in frame on floating silver rectangular plinths in a black architectural studio with prismatic magenta reflections. Expensive photorealistic hardware advertising, dazzling SILVER/BLACK cyber atmosphere, cinematic edge light, realistic reflections, tiny tasteful stars. Camera slightly lower three-quarter view; keep the ENTIRE monitor and base visible with margins. Bright vivid display content remains focus. No gold or brown set lighting, no text, no watermark, no logo, no PC, no keyboard, no second monitor. Do not replace the stand or alter the model."
+    },
+    {
+      "key": "GT-MON-4-white",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-94e8b971-de62-4563-ab3c-a8dc7910d2c6.png",
+      "target": "public/storefront/monitors/GT-MON-4-white.png",
+      "prompt": "Edit this catalog photograph to create the WHITE color version of the SAME ORBIT 32 QHD 240 monitor. Change ONLY the black physical bezel, rear casing, support/arm and entire stand into satin white with subtle silver hardware. Preserve exact silhouette, screen aspect ratio, curvature, feet/base geometry, camera perspective, composition, white seamless background and shadow. Keep the screen powered on with its exact vivid original image and colors unchanged. No extra objects, no text, no logos, no watermark."
+    },
+    {
+      "key": "GT-MON-4-scene-black",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-dd5a822e-4fb1-4f9e-a6c3-b4eb255116ea.png",
+      "target": "public/storefront/monitor-scenes/GT-MON-4-black.png",
+      "prompt": "Create ONE square premium computer monitor campaign photograph, using this ORBIT 32 QHD 240 BLACK monitor as exact identity reference. Preserve its distinctive 32-inch 16:9 strongly curved 1000R gaming display with slightly thick sculpted chassis, angular armor-like central neck, broad crescent-moon base, subtle rear RGB rim, original screen shape/ratio and powered-on vivid orange planet over blue science fiction city horizon. Entire single monitor hero large in frame on a deep-space orbital stage with bright silver rings and controlled cyan/purple beams. Expensive photorealistic hardware advertising, dazzling SILVER/BLACK cyber atmosphere, cinematic edge light, realistic reflections, tiny tasteful stars. Camera slightly lower three-quarter view; keep the ENTIRE monitor and base visible with margins. Bright vivid display content remains focus. No gold or brown set lighting, no text, no watermark, no logo, no PC, no keyboard, no second monitor. Do not replace the stand or alter the model."
+    },
+    {
+      "key": "GT-MON-5-white",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-229a6ef7-137a-4d59-b2df-26f243b05971.png",
+      "target": "public/storefront/monitors/GT-MON-5-white.png",
+      "prompt": "Edit this catalog photograph to create the WHITE color version of the SAME HORIZON 34 UWQHD 180 monitor. Change ONLY the black physical bezel, rear casing, support/arm and entire stand into satin white with subtle silver hardware. Preserve exact silhouette, screen aspect ratio, curvature, feet/base geometry, camera perspective, composition, white seamless background and shadow. Keep the screen powered on with its exact vivid original image and colors unchanged. No extra objects, no text, no logos, no watermark."
+    },
+    {
+      "key": "GT-MON-5-scene-black",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-b162e367-c3ff-4c02-8fd7-f8743fe65d1e.png",
+      "target": "public/storefront/monitor-scenes/GT-MON-5-black.png",
+      "prompt": "Create ONE square premium computer monitor campaign photograph, using this HORIZON 34 UWQHD 180 BLACK monitor as exact identity reference. Preserve its distinctive 34-inch wide 21:9 curved gaming display, thin horizontal panel, tall slender central support with triangular negative-space cutout, three-pronged low tripod stand, original screen shape/ratio and powered-on panoramic purple cosmic nebula with blue crystalline terrain. Entire single monitor hero large in frame on a luminous crystalline silver runway with violet nebula mist and sweeping laser ribbons. Expensive photorealistic hardware advertising, dazzling SILVER/BLACK cyber atmosphere, cinematic edge light, realistic reflections, tiny tasteful stars. Camera slightly lower three-quarter view; keep the ENTIRE monitor and base visible with margins. Bright vivid display content remains focus. No gold or brown set lighting, no text, no watermark, no logo, no PC, no keyboard, no second monitor. Do not replace the stand or alter the model."
+    },
+    {
+      "key": "GT-MON-6-white",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-ac28189f-73fa-45a2-a38d-e2393beb89af.png",
+      "target": "public/storefront/monitors/GT-MON-6-white.png",
+      "prompt": "Edit this catalog photograph to create the WHITE color version of the SAME PANORAMA 49 DQHD 144 monitor. Change ONLY the black physical bezel, rear casing, support/arm and entire stand into satin white with subtle silver hardware. Preserve exact silhouette, screen aspect ratio, curvature, feet/base geometry, camera perspective, composition, white seamless background and shadow. Keep the screen powered on with its exact vivid original image and colors unchanged. No extra objects, no text, no logos, no watermark."
+    },
+    {
+      "key": "GT-MON-6-scene-black",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-73ea3a31-50df-404f-8587-e05f439eb0b1.png",
+      "target": "public/storefront/monitor-scenes/GT-MON-6-black.png",
+      "prompt": "Create ONE square premium computer monitor campaign photograph, using this PANORAMA 49 DQHD 144 BLACK monitor as exact identity reference. Preserve its distinctive 49-inch super ultrawide 32:9 curved panoramic screen, exceptionally long horizontal silhouette, sturdy short center spine, broad low symmetrical twin boomerang legs, original screen shape/ratio and powered-on spectacular panoramic cyan ocean and pink sunrise across futuristic coastline. Entire single monitor hero large in frame on a sweeping futuristic panoramic bridge of chrome and glass with cyan horizon trails. Expensive photorealistic hardware advertising, dazzling SILVER/BLACK cyber atmosphere, cinematic edge light, realistic reflections, tiny tasteful stars. Camera slightly lower three-quarter view; keep the ENTIRE monitor and base visible with margins. Bright vivid display content remains focus. No gold or brown set lighting, no text, no watermark, no logo, no PC, no keyboard, no second monitor. Do not replace the stand or alter the model."
+    },
+    {
+      "key": "GT-MON-7-white",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-21ac4dd5-9ca3-483b-9d0d-223e077fb390.png",
+      "target": "public/storefront/monitors/GT-MON-7-white.png",
+      "prompt": "Edit this catalog photograph to create the WHITE color version of the SAME PIVOT 28 4K 144 monitor. Change ONLY the black physical bezel, rear casing, support/arm and entire stand into satin white with subtle silver hardware. Preserve exact silhouette, screen aspect ratio, curvature, feet/base geometry, camera perspective, composition, white seamless background and shadow. Keep the screen powered on with its exact vivid original image and colors unchanged. No extra objects, no text, no logos, no watermark."
+    },
+    {
+      "key": "GT-MON-7-scene-black",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-f22d1bbb-da4f-45ad-8d51-12c3d51c5900.png",
+      "target": "public/storefront/monitor-scenes/GT-MON-7-black.png",
+      "prompt": "Create ONE square premium computer monitor campaign photograph, using this PIVOT 28 4K 144 BLACK monitor as exact identity reference. Preserve its distinctive 28-inch 16:9 panel ROTATED into portrait orientation, genuinely tall vertical screen, robust rectangular telescoping height-adjustable column, flat rounded-rectangle base with small central cable slot, original screen shape/ratio and powered-on vertical luminous cyan violet digital waterfall. Entire single monitor hero large in frame on a vertical chrome light cathedral with ascending violet/cyan light pillars. Expensive photorealistic hardware advertising, dazzling SILVER/BLACK cyber atmosphere, cinematic edge light, realistic reflections, tiny tasteful stars. Camera slightly lower three-quarter view; keep the ENTIRE monitor and base visible with margins. Bright vivid display content remains focus. No gold or brown set lighting, no text, no watermark, no logo, no PC, no keyboard, no second monitor. Do not replace the stand or alter the model."
+    },
+    {
+      "key": "GT-MON-8-white",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-b03654f5-bd03-4c8d-b46a-6efd1ede048a.png",
+      "target": "public/storefront/monitors/GT-MON-8-white.png",
+      "prompt": "Edit this catalog photograph to create the WHITE color version of the SAME STUDIO 32 4K 60 monitor. Change ONLY the black physical bezel, rear casing, support/arm and entire stand into satin white with subtle silver hardware. Preserve exact silhouette, screen aspect ratio, curvature, feet/base geometry, camera perspective, composition, white seamless background and shadow. Keep the screen powered on with its exact vivid original image and colors unchanged. No extra objects, no text, no logos, no watermark."
+    },
+    {
+      "key": "GT-MON-8-scene-black",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-28e4e40b-2bf3-4299-870e-5c072bcd10fd.png",
+      "target": "public/storefront/monitor-scenes/GT-MON-8-black.png",
+      "prompt": "Create ONE square premium computer monitor campaign photograph, using this STUDIO 32 4K 60 BLACK monitor as exact identity reference. Preserve its distinctive 32-inch flat 16:9 professional creator display, thicker smooth bottom chin, distinctive inverted U-frame easel stand with two side supports and horizontal low foot, minimal elegant construction, original screen shape/ratio and powered-on highly detailed saturated turquoise orange tropical bird photograph. Entire single monitor hero large in frame on a sculptural mirrored gallery with silver folded planes and emerald/cyan highlights. Expensive photorealistic hardware advertising, dazzling SILVER/BLACK cyber atmosphere, cinematic edge light, realistic reflections, tiny tasteful stars. Camera slightly lower three-quarter view; keep the ENTIRE monitor and base visible with margins. Bright vivid display content remains focus. No gold or brown set lighting, no text, no watermark, no logo, no PC, no keyboard, no second monitor. Do not replace the stand or alter the model."
+    },
+    {
+      "key": "GT-MON-9-white",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-20b288bc-6451-413e-aab4-a0da77703298.png",
+      "target": "public/storefront/monitors/GT-MON-9-white.png",
+      "prompt": "Edit this catalog photograph to create the WHITE color version of the SAME ARC 38 WQHD+ 160 monitor. Change ONLY the black physical bezel, rear casing, support/arm and entire stand into satin white with subtle silver hardware. Preserve exact silhouette, screen aspect ratio, curvature, feet/base geometry, camera perspective, composition, white seamless background and shadow. Keep the screen powered on with its exact vivid original image and colors unchanged. No extra objects, no text, no logos, no watermark."
+    },
+    {
+      "key": "GT-MON-9-scene-black",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-f7d08bc9-fb73-47ed-9fd5-ee84296acdce.png",
+      "target": "public/storefront/monitor-scenes/GT-MON-9-black.png",
+      "prompt": "Create ONE square premium computer monitor campaign photograph, using this ARC 38 WQHD+ 160 BLACK monitor as exact identity reference. Preserve its distinctive 38-inch curved 24:10 expansive screen, slim swept-back chassis with silver bevel edge on black housing, polished arch-shaped hollow pedestal support, wide flat oval base, original screen shape/ratio and powered-on luxurious vivid violet blue liquid chrome ribbons on dark space. Entire single monitor hero large in frame on an elevated elliptical chrome island encircled by luminous violet speed trails. Expensive photorealistic hardware advertising, dazzling SILVER/BLACK cyber atmosphere, cinematic edge light, realistic reflections, tiny tasteful stars. Camera slightly lower three-quarter view; keep the ENTIRE monitor and base visible with margins. Bright vivid display content remains focus. No gold or brown set lighting, no text, no watermark, no logo, no PC, no keyboard, no second monitor. Do not replace the stand or alter the model."
+    },
+    {
+      "key": "GT-MON-10-white",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-09f85cb3-bfcc-4854-ad55-cf7874c69d32.png",
+      "target": "public/storefront/monitors/GT-MON-10-white.png",
+      "prompt": "Edit this catalog photograph to create the WHITE color version of the SAME DUALVIEW 28 SDQHD 60 monitor. Change ONLY the black physical bezel, rear casing, support/arm and entire stand into satin white with subtle silver hardware. Preserve exact silhouette, screen aspect ratio, curvature, feet/base geometry, camera perspective, composition, white seamless background and shadow. Keep the screen powered on with its exact vivid original image and colors unchanged. No extra objects, no text, no logos, no watermark."
+    },
+    {
+      "key": "GT-MON-10-scene-black",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-82db454d-0f6a-468c-b103-68c94a73ceaa.png",
+      "target": "public/storefront/monitor-scenes/GT-MON-10-black.png",
+      "prompt": "Create ONE square premium computer monitor campaign photograph, using this DUALVIEW 28 SDQHD 60 BLACK monitor as exact identity reference. Preserve its distinctive 28-inch unusual nearly square but slightly tall 16:18 dual-up productivity screen, rounded top corners, single thick L-shaped articulated side arm rising from back-left, deep D-shaped desktop base, original screen shape/ratio and powered-on two stacked beautiful abstract wallpapers upper violet crystal waves lower emerald flowing dunes, no UI no text. Entire single monitor hero large in frame on a futuristic productivity showcase with stacked silver frames, emerald/violet light sculptures. Expensive photorealistic hardware advertising, dazzling SILVER/BLACK cyber atmosphere, cinematic edge light, realistic reflections, tiny tasteful stars. Camera slightly lower three-quarter view; keep the ENTIRE monitor and base visible with margins. Bright vivid display content remains focus. No gold or brown set lighting, no text, no watermark, no logo, no PC, no keyboard, no second monitor. Do not replace the stand or alter the model."
+    },
+    {
+      "key": "GT-MON-2-scene-white",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-51082845-2ea0-43b9-876b-f38f2a0cefe1.png",
+      "target": "public/storefront/monitor-scenes/GT-MON-2-white.png",
+      "prompt": "Edit the FIRST campaign photograph to make the WHITE color edition of the SAME LUMA 27 QHD 165 monitor. The SECOND catalog image is the exact white monitor appearance reference. Change only its physical bezel, housing, support and stand to satin white with silver hardware, while preserving the identical 27-inch flat 16:9 thin panel with softly rounded outer corners, tall cylindrical neck through an open circular ring, perfectly round disc base. Preserve the first image's entire spectacular chrome/black cyber showroom, colored light trails, vivid powered-on screen image, pedestal, camera view, composition, aspect ratio and all model geometry. Keep colors vibrant; do not desaturate the screen or scene. No text, no logo, no watermark. One square luxury product campaign photo."
+    },
+    {
+      "key": "GT-MON-3-scene-white",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-3e1216de-391b-468e-b411-c08819d61b53.png",
+      "target": "public/storefront/monitor-scenes/GT-MON-3-white.png",
+      "prompt": "Edit the FIRST campaign photograph to make the WHITE color edition of the SAME PRISM 27 4K 60 monitor. The SECOND catalog image is the exact white monitor appearance reference. Change only its physical bezel, housing, support and stand to satin white with silver hardware, while preserving the identical 27-inch flat 16:9 elegant thin brushed-metal frame, single angled sculptural blade neck offset slightly to right, very thin square flat slab base. Preserve the first image's entire spectacular chrome/black cyber showroom, colored light trails, vivid powered-on screen image, pedestal, camera view, composition, aspect ratio and all model geometry. Keep colors vibrant; do not desaturate the screen or scene. No text, no logo, no watermark. One square luxury product campaign photo."
+    },
+    {
+      "key": "GT-MON-4-scene-white",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-835d8e45-3d2d-4231-a38f-f41d92ea3c51.png",
+      "target": "public/storefront/monitor-scenes/GT-MON-4-white.png",
+      "prompt": "Edit the FIRST campaign photograph to make the WHITE color edition of the SAME ORBIT 32 QHD 240 monitor. The SECOND catalog image is the exact white monitor appearance reference. Change only its physical bezel, housing, support and stand to satin white with silver hardware, while preserving the identical 32-inch 16:9 strongly curved 1000R gaming display with slightly thick sculpted chassis, angular armor-like central neck, broad crescent-moon base, subtle rear RGB rim. Preserve the first image's entire spectacular chrome/black cyber showroom, colored light trails, vivid powered-on screen image, pedestal, camera view, composition, aspect ratio and all model geometry. Keep colors vibrant; do not desaturate the screen or scene. No text, no logo, no watermark. One square luxury product campaign photo."
+    },
+    {
+      "key": "GT-MON-5-scene-white",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-b499b3db-1f23-4520-9fca-72f604e3d282.png",
+      "target": "public/storefront/monitor-scenes/GT-MON-5-white.png",
+      "prompt": "Edit the FIRST campaign photograph to make the WHITE color edition of the SAME HORIZON 34 UWQHD 180 monitor. The SECOND catalog image is the exact white monitor appearance reference. Change only its physical bezel, housing, support and stand to satin white with silver hardware, while preserving the identical 34-inch wide 21:9 curved gaming display, thin horizontal panel, tall slender central support with triangular negative-space cutout, three-pronged low tripod stand. Preserve the first image's entire spectacular chrome/black cyber showroom, colored light trails, vivid powered-on screen image, pedestal, camera view, composition, aspect ratio and all model geometry. Keep colors vibrant; do not desaturate the screen or scene. No text, no logo, no watermark. One square luxury product campaign photo."
+    },
+    {
+      "key": "GT-MON-6-scene-white",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-dbeede58-935f-447c-b919-b11726d7b8d9.png",
+      "target": "public/storefront/monitor-scenes/GT-MON-6-white.png",
+      "prompt": "Edit the FIRST campaign photograph to make the WHITE color edition of the SAME PANORAMA 49 DQHD 144 monitor. The SECOND catalog image is the exact white monitor appearance reference. Change only its physical bezel, housing, support and stand to satin white with silver hardware, while preserving the identical 49-inch super ultrawide 32:9 curved panoramic screen, exceptionally long horizontal silhouette, sturdy short center spine, broad low symmetrical twin boomerang legs. Preserve the first image's entire spectacular chrome/black cyber showroom, colored light trails, vivid powered-on screen image, pedestal, camera view, composition, aspect ratio and all model geometry. Keep colors vibrant; do not desaturate the screen or scene. No text, no logo, no watermark. One square luxury product campaign photo."
+    },
+    {
+      "key": "GT-MON-7-scene-white",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-1573e5e9-689f-4ee8-ab9b-ef86a1a81353.png",
+      "target": "public/storefront/monitor-scenes/GT-MON-7-white.png",
+      "prompt": "Edit the FIRST campaign photograph to make the WHITE color edition of the SAME PIVOT 28 4K 144 monitor. The SECOND catalog image is the exact white monitor appearance reference. Change only its physical bezel, housing, support and stand to satin white with silver hardware, while preserving the identical 28-inch 16:9 panel ROTATED into portrait orientation, genuinely tall vertical screen, robust rectangular telescoping height-adjustable column, flat rounded-rectangle base with small central cable slot. Preserve the first image's entire spectacular chrome/black cyber showroom, colored light trails, vivid powered-on screen image, pedestal, camera view, composition, aspect ratio and all model geometry. Keep colors vibrant; do not desaturate the screen or scene. No text, no logo, no watermark. One square luxury product campaign photo."
+    },
+    {
+      "key": "GT-MON-8-scene-white",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-cf5b3534-aaf0-429d-81c4-7eb3b4b9b264.png",
+      "target": "public/storefront/monitor-scenes/GT-MON-8-white.png",
+      "prompt": "Edit the FIRST campaign photograph to make the WHITE color edition of the SAME STUDIO 32 4K 60 monitor. The SECOND catalog image is the exact white monitor appearance reference. Change only its physical bezel, housing, support and stand to satin white with silver hardware, while preserving the identical 32-inch flat 16:9 professional creator display, thicker smooth bottom chin, distinctive inverted U-frame easel stand with two side supports and horizontal low foot, minimal elegant construction. Preserve the first image's entire spectacular chrome/black cyber showroom, colored light trails, vivid powered-on screen image, pedestal, camera view, composition, aspect ratio and all model geometry. Keep colors vibrant; do not desaturate the screen or scene. No text, no logo, no watermark. One square luxury product campaign photo."
+    },
+    {
+      "key": "GT-MON-9-scene-white",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-4a6f715a-3bf9-424d-b739-ea9df95103b7.png",
+      "target": "public/storefront/monitor-scenes/GT-MON-9-white.png",
+      "prompt": "Edit the FIRST campaign photograph to make the WHITE color edition of the SAME ARC 38 WQHD+ 160 monitor. The SECOND catalog image is the exact white monitor appearance reference. Change only its physical bezel, housing, support and stand to satin white with silver hardware, while preserving the identical 38-inch curved 24:10 expansive screen, slim swept-back chassis with silver bevel edge on black housing, polished arch-shaped hollow pedestal support, wide flat oval base. Preserve the first image's entire spectacular chrome/black cyber showroom, colored light trails, vivid powered-on screen image, pedestal, camera view, composition, aspect ratio and all model geometry. Keep colors vibrant; do not desaturate the screen or scene. No text, no logo, no watermark. One square luxury product campaign photo."
+    },
+    {
+      "key": "GT-MON-10-scene-white",
+      "source": "C:\\Users\\mbc\\.codex\\generated_images\\01a1a402-c756-7040-9051-ac58dbb5dc5e\\exec-e315af05-f863-4d29-8a64-c561c2fb2690.png",
+      "target": "public/storefront/monitor-scenes/GT-MON-10-white.png",
+      "prompt": "Edit the FIRST campaign photograph to make the WHITE color edition of the SAME DUALVIEW 28 SDQHD 60 monitor. The SECOND catalog image is the exact white monitor appearance reference. Change only its physical bezel, housing, support and stand to satin white with silver hardware, while preserving the identical 28-inch unusual nearly square but slightly tall 16:18 dual-up productivity screen, rounded top corners, single thick L-shaped articulated side arm rising from back-left, deep D-shaped desktop base. Preserve the first image's entire spectacular chrome/black cyber showroom, colored light trails, vivid powered-on screen image, pedestal, camera view, composition, aspect ratio and all model geometry. Keep colors vibrant; do not desaturate the screen or scene. No text, no logo, no watermark. One square luxury product campaign photo."
+    }
+  ]
+}

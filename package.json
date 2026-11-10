@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "check:storage": "node scripts/check-storage.mjs"
+    "check:storage": "node scripts/check-storage.mjs",
+    "check:monitors": "node scripts/check-monitors.mjs"
   },
   "keywords": [],
   "author": "",
