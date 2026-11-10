@@ -173,3 +173,15 @@
 
 /* Newly added items keep the same row surface; the notice already confirms addition. */
 :root[data-theme] .cart-rail-items>article.cart-rail-latest{background:transparent;color:var(--ui-text)}
+
+/* Admin lists are open columns, not nested cards. Inputs keep their own boundaries. */
+:root[data-theme] .admin-layout .admin-content:has(.ops-records){background:transparent}
+:root[data-theme] .admin-layout .ops-toolbar{background:transparent;border:0;border-bottom:1px solid var(--admin-border);border-radius:0;box-shadow:none;padding:0 0 18px;margin-bottom:22px}
+:root[data-theme] .admin-layout .ops-records>.ops-panel{background:transparent;border:0;border-radius:0;box-shadow:none;padding:0}
+:root[data-theme] .admin-layout .ops-records>.ops-panel:last-child{padding:0 0 0 24px;border-left:1px solid var(--admin-border)}
+:root[data-theme] .admin-layout .ops-records .ops-list{padding:0}
+:root[data-theme] .admin-layout .ops-records .ops-list-group h3{background:transparent;border-radius:0;padding:12px 0;border-bottom:1px solid var(--admin-border)}
+:root[data-theme] .admin-layout .ops-records .ops-list button{background:transparent;border:0;border-bottom:1px solid var(--admin-border);border-radius:0;padding:14px 10px;box-shadow:none}
+:root[data-theme] .admin-layout .ops-records .ops-list button:is(:hover,[aria-pressed=true]){background:transparent;border-color:var(--admin-border);box-shadow:inset 2px 0 #8e9bad}
+:root[data-theme=dark] .admin-layout .ops-records .ops-list button:is(:hover,[aria-pressed=true]){color:#fff;box-shadow:inset 2px 0 #d6deeb}
+@media(max-width:1000px){:root[data-theme] .admin-layout .ops-records>.ops-panel:last-child{padding:24px 0 0;border-left:0;border-top:1px solid var(--admin-border)}}
