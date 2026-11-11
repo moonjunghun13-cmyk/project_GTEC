@@ -56,3 +56,14 @@
 .board-table table{font-size:.68rem}.operations-board .reference-panel{padding:.75rem}
 }
 
+
+/* Compact local search keeps each dashboard preview independently searchable. */
+.operations-board .board-search{display:flex;align-items:center;gap:.4rem;width:100%;min-width:0;margin:0 0 .35rem;padding:.3rem .5rem;border:1px solid #d4d9e1;border-radius:7px;background:#f6f7f9;color:#505b6c}
+.operations-board .board-search svg{width:14px;height:14px;flex:none}
+.operations-board .board-search input{min-width:0;width:100%;height:24px;padding:0;border:0;border-radius:0;background:transparent;color:inherit;box-shadow:none;font-size:.74rem}
+.operations-board .board-search input::placeholder{color:#687487;opacity:1}
+.operations-board .board-search:focus-within{outline:2px solid #8797ad;outline-offset:1px}
+.operations-board .board-search-empty{text-align:center;padding:.8rem;color:#627084}
+:root[data-theme="dark"] .operations-board .board-search{background:#202630;border-color:#465264;color:#f1f5fc}
+:root[data-theme="dark"] .operations-board .board-search input::placeholder{color:#b6c2d4}
+:root[data-theme="dark"] .operations-board .board-search-empty{color:#c5cedd}

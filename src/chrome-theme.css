@@ -208,3 +208,6 @@
   :root .site-header .shop-nav:has(a:nth-child(12)){column-gap:clamp(2px,.35vw,8px)}
   :root .site-header .shop-nav:has(a:nth-child(12)) a{padding-inline:clamp(1px,.2vw,4px)}
 }
+
+.site-header .dashboard-entry{display:inline-flex;align-items:center;justify-content:center;padding:.4rem .8rem;border:1px solid #8793a6;border-radius:99px;background:linear-gradient(135deg,#e4e9f1,#a8b2c2);color:#121821;font-weight:750;white-space:nowrap}
+.site-header .dashboard-entry:hover{background:#f1f5fc;color:#121821;box-shadow:0 0 15px #d4dff42b}

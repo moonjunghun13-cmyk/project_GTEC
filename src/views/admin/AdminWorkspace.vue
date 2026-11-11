@@ -21,6 +21,23 @@ function openDashboardCard(event, path) {
   if (event.target.closest('a,button,input,select,textarea')) return
   router.push(path)
 }
+const dashboardSearch = reactive({products:'',orders:'',members:'',reviews:''})
+const dashboardRows = computed(() => {
+  if (!data.value) return {products:[],orders:[],members:[],reviews:[]}
+  const matches = (term, fields) => !term || fields.some(value => String(value ?? '').toLocaleLowerCase().includes(term))
+  return Object.fromEntries(Object.keys(dashboardSearch).map(section => {
+    const term = dashboardSearch[section].trim().toLocaleLowerCase()
+    const source = section === 'orders' ? [...data.value.orders].sort((a,b) => b.date.localeCompare(a.date)) : data.value[section]
+    const filtered = source.filter(row => {
+      const fields = section === 'products' ? [row.productId,row.name,row.brand,row.category]
+        : section === 'orders' ? [row.orderId,row.delivery?.recipient,row.status,...row.items.map(item => item.name)]
+        : section === 'members' ? [row.userId,row.username,row.name,row.email,row.role,row.status]
+        : [row.reviewId,productName(row.productId),row.author,row.body,row.sentiment]
+      return matches(term,fields)
+    })
+    return [section,filtered.slice(0,4)]
+  }))
+})
 const data = ref(null)
 const loading = ref(true)
 const busy = ref(false)
@@ -258,20 +275,24 @@ function remove() {
         </article>
         <article class="reference-panel board-products">
           <header><h2><AdminIcon name="products"/>상품 관리</h2><div><RouterLink to="/admin/products">전체보기 ›</RouterLink><RouterLink class="board-add" to="/admin/products?create=1">+ 상품 등록</RouterLink></div></header>
+          <label class="board-search"><AdminIcon name="search"/><input v-model="dashboardSearch.products" type="search" aria-label="대시보드 상품 검색" placeholder="상품명 · 카테고리 · ID"></label>
           <div class="board-table"><table><thead><tr><th>상품명</th><th>카테고리</th><th>재고</th><th>가격</th><th>상태</th><th>관리</th></tr></thead><tbody>
-            <tr v-for="row in data.products.slice(0,4)" :key="row.productId"><th scope="row"><RouterLink :to="{path:'/admin/products',query:{q:row.productId}}"><img v-if="row.image" :src="row.image" alt="">{{ row.name }}</RouterLink></th><td>{{ row.category }}</td><td>{{ row.stock }}개</td><td>{{ money(row.price) }}</td><td><span class="board-status" :data-status="row.stock === 0 ? '품절' : '판매중'">{{ row.selling === false ? '중지' : row.stock === 0 ? '품절' : '판매중' }}</span></td><td><RouterLink :to="{path:'/admin/products',query:{q:row.productId}}" :aria-label="row.name+' 수정'">수정</RouterLink></td></tr>
-          </tbody></table></div>
+            <tr v-for="row in dashboardRows.products" :key="row.productId"><th scope="row"><RouterLink :to="{path:'/admin/products',query:{q:row.productId}}"><img v-if="row.image" :src="row.image" alt="">{{ row.name }}</RouterLink></th><td>{{ row.category }}</td><td>{{ row.stock }}개</td><td>{{ money(row.price) }}</td><td><span class="board-status" :data-status="row.stock === 0 ? '품절' : '판매중'">{{ row.selling === false ? '중지' : row.stock === 0 ? '품절' : '판매중' }}</span></td><td><RouterLink :to="{path:'/admin/products',query:{q:row.productId}}" :aria-label="row.name+' 수정'">수정</RouterLink></td></tr>
+          <tr v-if="!dashboardRows.products.length"><td class="board-search-empty" colspan="6">{{ dashboardSearch.products.trim() ? '검색 결과가 없습니다.' : '등록된 상품이 없습니다.' }}</td></tr></tbody></table></div>
         </article>
         <article class="reference-panel board-orders">
           <header><h2><AdminIcon name="orders"/>주문 관리</h2><RouterLink to="/admin/orders">전체보기 ›</RouterLink></header>
-          <div class="board-table"><table><thead><tr><th>주문번호</th><th>주문자</th><th>주문금액</th><th>상태</th><th>관리</th></tr></thead><tbody><tr v-for="row in [...data.orders].sort((a,b) => b.date.localeCompare(a.date)).slice(0,4)" :key="row.orderId"><th scope="row"><RouterLink :to="{path:'/admin/orders',query:{q:row.orderId}}" :title="row.orderId">{{ row.orderId.slice(-12) }}</RouterLink></th><td>{{ row.delivery.recipient }}</td><td>{{ money(row.total) }}</td><td><span class="board-status" :data-status="row.status">{{ row.status }}</span></td><td><RouterLink :to="{path:'/admin/orders',query:{q:row.orderId}}">상세</RouterLink></td></tr></tbody></table></div>
+          <label class="board-search"><AdminIcon name="search"/><input v-model="dashboardSearch.orders" type="search" aria-label="대시보드 주문 검색" placeholder="주문번호 · 주문자 · 상품명"></label>
+          <div class="board-table"><table><thead><tr><th>주문번호</th><th>주문자</th><th>주문금액</th><th>상태</th><th>관리</th></tr></thead><tbody><tr v-for="row in dashboardRows.orders" :key="row.orderId"><th scope="row"><RouterLink :to="{path:'/admin/orders',query:{q:row.orderId}}" :title="row.orderId">{{ row.orderId.slice(-12) }}</RouterLink></th><td>{{ row.delivery.recipient }}</td><td>{{ money(row.total) }}</td><td><span class="board-status" :data-status="row.status">{{ row.status }}</span></td><td><RouterLink :to="{path:'/admin/orders',query:{q:row.orderId}}">상세</RouterLink></td></tr><tr v-if="!dashboardRows.orders.length"><td class="board-search-empty" colspan="5">{{ dashboardSearch.orders.trim() ? '검색 결과가 없습니다.' : '등록된 주문이 없습니다.' }}</td></tr></tbody></table></div>
           <p class="board-help">운송장과 배송 상태는 주문 관리에서 변경할 수 있습니다.</p>
         </article>
         <article class="reference-panel board-members"><header><h2><AdminIcon name="members"/>회원 관리</h2><RouterLink to="/admin/members">전체보기 ›</RouterLink></header>
-          <div class="board-table"><table><thead><tr><th>회원 ID</th><th>이름</th><th>권한</th><th>상태</th><th>관리</th></tr></thead><tbody><tr v-for="row in data.members.slice(0,4)" :key="row.userId"><th scope="row">{{ row.username || row.userId }}</th><td>{{ row.name }}</td><td>{{ row.role }}</td><td><span class="board-status" :data-status="row.status || '정상'">{{ row.status || '정상' }}</span></td><td><RouterLink :to="{path:'/admin/members',query:{q:row.userId}}">상세</RouterLink></td></tr></tbody></table></div>
+          <label class="board-search"><AdminIcon name="search"/><input v-model="dashboardSearch.members" type="search" aria-label="대시보드 회원 검색" placeholder="이름 · 이메일 · 회원 ID"></label>
+          <div class="board-table"><table><thead><tr><th>회원 ID</th><th>이름</th><th>권한</th><th>상태</th><th>관리</th></tr></thead><tbody><tr v-for="row in dashboardRows.members" :key="row.userId"><th scope="row">{{ row.username || row.userId }}</th><td>{{ row.name }}</td><td>{{ row.role }}</td><td><span class="board-status" :data-status="row.status || '정상'">{{ row.status || '정상' }}</span></td><td><RouterLink :to="{path:'/admin/members',query:{q:row.userId}}">상세</RouterLink></td></tr><tr v-if="!dashboardRows.members.length"><td class="board-search-empty" colspan="5">{{ dashboardSearch.members.trim() ? '검색 결과가 없습니다.' : '등록된 회원이 없습니다.' }}</td></tr></tbody></table></div>
         </article>
         <article class="reference-panel board-reviews"><header><h2><AdminIcon name="reviews"/>리뷰 관리</h2><RouterLink to="/admin/reviews">전체보기 ›</RouterLink></header>
-          <div class="board-table"><table><thead><tr><th>상품명</th><th>별점</th><th>감정분석</th><th>관리</th></tr></thead><tbody><tr v-for="row in data.reviews.slice(0,4)" :key="row.reviewId"><th scope="row">{{ productName(row.productId) }}</th><td class="board-stars"><span aria-hidden="true">★</span> {{ row.rating.toFixed(1) }}</td><td><span class="board-status" :data-status="row.sentiment">{{ row.sentiment }}</span></td><td><RouterLink :to="{path:'/admin/reviews',query:{q:row.reviewId}}">상세</RouterLink></td></tr></tbody></table></div>
+          <label class="board-search"><AdminIcon name="search"/><input v-model="dashboardSearch.reviews" type="search" aria-label="대시보드 리뷰 검색" placeholder="상품명 · 작성자 · 리뷰 내용"></label>
+          <div class="board-table"><table><thead><tr><th>상품명</th><th>별점</th><th>감정분석</th><th>관리</th></tr></thead><tbody><tr v-for="row in dashboardRows.reviews" :key="row.reviewId"><th scope="row">{{ productName(row.productId) }}</th><td class="board-stars"><span aria-hidden="true">★</span> {{ row.rating.toFixed(1) }}</td><td><span class="board-status" :data-status="row.sentiment">{{ row.sentiment }}</span></td><td><RouterLink :to="{path:'/admin/reviews',query:{q:row.reviewId}}">상세</RouterLink></td></tr><tr v-if="!dashboardRows.reviews.length"><td class="board-search-empty" colspan="4">{{ dashboardSearch.reviews.trim() ? '검색 결과가 없습니다.' : '등록된 리뷰가 없습니다.' }}</td></tr></tbody></table></div>
         </article>
         <article class="reference-panel board-notices"><header><h2><AdminIcon name="notices"/>공지사항</h2><RouterLink to="/admin/notices">전체보기 ›</RouterLink></header>
           <ul><li v-for="row in data.notices.slice(0,5)" :key="row.noticeId"><RouterLink :to="{path:'/admin/notices',query:{q:row.noticeId}}"><strong>{{ row.title }}</strong><span>{{ row.body }}</span></RouterLink></li></ul><p v-if="!data.notices.length" class="muted">등록된 공지가 없습니다.</p>
