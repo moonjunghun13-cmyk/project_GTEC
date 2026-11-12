@@ -68,9 +68,6 @@ function buy() {
     return router.push('/checkout')
   })
 }
-function writeReview() {
-  store.requireUser(() => router.push({path:'/orders',query:{review:product.value.productId}}))
-}
 </script>
 <template>
   <section v-if="product" class="wrap section product-detail-page">
@@ -114,7 +111,7 @@ function writeReview() {
         <ul><li v-for="check in product.details.checks" :key="check"><span aria-hidden="true">✓</span> {{ check }}</li></ul>
       </div>
     </section>
-    <div id="product-reviews" class="section-head"><h2>구매 리뷰</h2><button class="button" :disabled="store.role === 'ADMIN'" @click="writeReview">리뷰 작성</button></div>
+    <div id="product-reviews" class="section-head"><h2>구매 리뷰</h2></div>
     <StatePanel v-if="busy || error || !reviews.length" :busy="busy" :error="error" empty="아직 등록된 리뷰가 없습니다." @retry="load"/>
     <article v-for="review in busy || error ? [] : reviews" :key="review.reviewId" class="review"><strong>{{ review.author }} · {{ review.rating }}/5</strong><p>{{ review.body }}</p><span class="badge">AI 감정분석 (Mock) · {{ review.sentiment }}</span></article>
   </section>

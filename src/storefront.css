@@ -98,7 +98,17 @@
 
 .detail-quantity { display:flex; align-items:center; flex-wrap:wrap; gap:.4rem; margin-bottom:1rem; }
 .detail-quantity label { margin-right:.3rem; font-weight:650; }
-.detail-quantity input { width:4rem; text-align:center; }
+.detail-quantity input {
+  width:4rem;
+  padding-inline:0;
+  text-align:center;
+  appearance:textfield;
+}
+.detail-quantity input::-webkit-inner-spin-button,
+.detail-quantity input::-webkit-outer-spin-button {
+  margin:0;
+  -webkit-appearance:none;
+}
 .detail-quantity button { min-width:2.5rem; padding:.4rem; }
 .detail-quantity strong { margin-left:.45rem; }
 
