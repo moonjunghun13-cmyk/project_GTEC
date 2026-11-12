@@ -90,38 +90,53 @@ const results = computed(() => {
 .catalog-light-atmosphere {
   position:absolute;
   inset:0 0 auto;
-  height:min(850px,100%);
+  height:min(670px,100%);
   z-index:-1;
   overflow:hidden;
   pointer-events:none;
   background:
-    radial-gradient(ellipse at 0 12%,#dce6f4 0%,transparent 52%),
-    radial-gradient(ellipse at 100% 0%,#e0e5f1 0%,transparent 50%),
-    linear-gradient(180deg,#eff3f9,transparent 88%);
+    radial-gradient(ellipse at 93% 4%,#e0e5ed,transparent 51%),
+    radial-gradient(ellipse at 61% 10%,#f0edf6,transparent 47%),
+    linear-gradient(180deg,#edf0f4 0%,#f8f9fb 48%,transparent 94%);
+  mask-image:linear-gradient(#000 20%,transparent 96%);
 }
-.catalog-light-atmosphere::before {
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    repeating-linear-gradient(0deg,#8ea3bf38 0 1px,transparent 1px 36px),
-    repeating-linear-gradient(90deg,#8ea3bf38 0 1px,transparent 1px 36px),
-    repeating-linear-gradient(132deg,transparent 0 86px,#91a5c84d 87px,transparent 88px 174px);
-  mask-image:linear-gradient(180deg,#000 0%,#0008 48%,transparent 93%);
-}
+.catalog-light-atmosphere::before,
 .catalog-light-atmosphere::after {
   content:"";
   position:absolute;
-  inset:0;
-  background:linear-gradient(112deg,transparent 38%,#fff9 47%,#d4e0f4a6 50%,#fff8 53%,transparent 62%);
-  mask-image:linear-gradient(180deg,#000 0%,transparent 84%);
-  animation:catalog-light-sweep 10s ease-in-out infinite alternate;
+  width:clamp(740px,92vw,1580px);
+  height:clamp(260px,33vw,490px);
+  border-radius:50%;
+  mask-image:radial-gradient(ellipse closest-side,#0000 86%,#000 86.5% 98.5%,#0000 100%);
 }
-@keyframes catalog-light-sweep {
-  from { transform:translateX(-32%); opacity:.42; }
-  to { transform:translateX(32%); opacity:.78; }
+.catalog-light-atmosphere::before {
+  top:-65px;
+  right:36%;
+  transform:rotate(19deg);
+  background:linear-gradient(162deg,#fbfcff 35%,#d3dbe5 54%,#a9b6c6 59%,#fff 62%,#ccd6e3 64%,#f3f4f8 75%);
+  opacity:.48;
+}
+.catalog-light-atmosphere::after {
+  top:-88px;
+  right:-15%;
+  transform:rotate(-17deg);
+  background:
+    radial-gradient(ellipse closest-side,transparent 86%,#72809670 87%,#e0e8f57a 89%,transparent 91%,#fff9 95%,#8394ae63 98%,#fff8 99%),
+    radial-gradient(ellipse at 66% 77%,#fff 0%,#fff0 31%),
+    linear-gradient(155deg,#dde4ec 25%,#fff 38%,#b5c2d1 46%,#f6faff 53%,#9ba9bd 59%,#e8eff8 64%,#d5cbe7 69%,#f4f7fb 77%);
+  background-size:100% 100%,170% 130%,100% 100%;
+  animation:catalog-chrome-reflection 12s ease-in-out infinite alternate;
+  opacity:.88;
+}
+@keyframes catalog-chrome-reflection {
+  from { background-position:0 0,0 50%,0 0; }
+  to { background-position:0 0,100% 50%,0 0; }
+}
+@media(max-width:650px) {
+  .catalog-light-atmosphere::after { right:-95%; top:-58px; opacity:.68; }
+  .catalog-light-atmosphere::before { right:18%; top:-24px; opacity:.36; }
 }
 @media(prefers-reduced-motion:reduce) {
-  .catalog-light-atmosphere::after { animation:none; opacity:.5; }
+  .catalog-light-atmosphere::after { animation:none; background-position:0 0,50% 50%,0 0; }
 }
 </style>
