@@ -50,3 +50,8 @@
 .gt-social-consent{font-size:12px;line-height:1.8;align-items:flex-start;gap:10px}.gt-social-consent input{flex:none;margin-top:5px}.gt-social-terms{font-size:11px;color:#bcbdc0;margin:13px 0 22px}.gt-social-terms p{line-height:1.8;margin:13px 0}.gt-social-confirm .gt-auth-actions{margin-top:24px}.gt-social-confirm .gt-auth-actions .button{font-size:12px;padding:10px}
 @media(max-width:570px){.gt-social-confirm{padding:40px 22px 26px}.gt-social-confirm h2{font-size:24px}.gt-signup-social .gt-social-options{grid-template-columns:1fr}.gt-signup-social .gt-social-button{justify-content:flex-start;padding:10px 13px}.gt-signup-social .gt-social-arrow{display:block}.gt-social-divider{margin:20px 0 15px}}
 .gt-social-heading{text-align:center;color:#aeafb2;font-size:12px;margin:0 0 15px;font-weight:500}
+
+.gt-auth .gt-term details, .gt-auth .gt-social-terms { color:var(--ui-text); }
+.gt-auth .gt-term-copy { margin-top:.55rem; font-size:.82rem; line-height:1.65; }
+.gt-auth .gt-term-copy p { margin:.4rem 0 0; color:var(--ui-muted); }
+.gt-auth .gt-term-copy + .gt-term-copy { margin-top:1rem; }

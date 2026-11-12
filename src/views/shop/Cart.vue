@@ -52,7 +52,7 @@ function checkout() {
             <img v-if="item.image" :src="item.image" alt="" loading="lazy"><span v-else class="cart-image-empty">이미지 없음</span>
             <span><small>{{ item.category }} · {{ item.brand }}</small><strong>{{ item.name }}</strong><small>개당 {{ money(item.price) }}</small></span>
           </RouterLink>
-          <div class="cart-line-quantity"><button :disabled="item.quantity <= 1 || !item.stock" :aria-label="item.name+' 수량 줄이기'" @click="store.quantity(item.productId,item.quantity-1)">−</button><input type="number" min="1" :max="item.stock" :value="item.quantity" :disabled="!item.stock" :aria-label="item.name+' 수량'" @change="quantity(item,$event)"><button :disabled="item.quantity >= item.stock" :aria-label="item.name+' 수량 늘리기'" @click="store.quantity(item.productId,item.quantity+1)">+</button></div>
+          <div class="cart-line-quantity"><button :disabled="item.quantity <= 1 || !item.stock" :aria-label="item.name+' 수량 줄이기'" @click="store.quantity(item.productId,item.quantity-1)">−</button><input type="number" inputmode="numeric" min="1" :max="item.stock" :value="item.quantity" :disabled="!item.stock" :aria-label="item.name+' 수량'" @change="quantity(item,$event)"><button :disabled="item.quantity >= item.stock" :aria-label="item.name+' 수량 늘리기'" @click="store.quantity(item.productId,item.quantity+1)">+</button></div>
           <strong class="cart-line-total">{{ money(item.price*item.quantity) }}</strong>
           <button class="cart-line-delete" :aria-label="item.name+' 삭제'" @click="store.quantity(item.productId,0)">삭제</button>
           <p v-if="!item.stock || item.quantity > item.stock" class="error cart-stock-error">재고가 부족합니다. 수량을 조정하거나 선택을 해제해 주세요.</p>

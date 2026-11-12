@@ -23,10 +23,36 @@ const checkedId = ref('')
 const form = reactive({username:'',password:'',name:'',email:'',phone:''})
 const stages = ['약관 동의','정보 입력','이메일 인증','가입 완료']
 const terms = [
-  ['(필수) 이용약관 동의','테스트 상품과 모의 주문을 체험할 수 있습니다.'],
-  ['(필수) 개인정보 수집 및 이용 동의','입력값은 테스트 가입에만 사용됩니다. 실제 개인정보 대신 테스트 정보를 입력해 주세요.'],
-  ['(필수) 만 14세 이상입니다.','가입 가능 연령을 확인하는 데모 항목입니다.'],
-  ['(선택) 마케팅 정보 수신 동의','이 선택은 데모 화면에서만 사용됩니다.'],
+  [
+    "(필수) 이용약관 동의",
+    [
+      "서비스 범위 · GT전자 데모에서 상품 검색, 장바구니, 모의 주문, 구매 리뷰 등 쇼핑 기능을 체험할 수 있습니다.",
+      "모의 주문 · 화면의 가격, 재고, 배송 상태는 체험용입니다. 주문을 완료해도 실제 결제나 상품 발송은 이루어지지 않습니다.",
+      "이용 시 유의사항 · 실제 비밀번호나 결제 정보를 입력하지 말고, 리뷰에는 본인이나 다른 사람의 개인정보를 적지 마세요."
+    ]
+  ],
+  [
+    "(필수) 개인정보 수집 및 이용 동의",
+    [
+      "입력 항목과 목적 · 아이디, 이름, 이메일, 비밀번호는 테스트 계정 생성과 로그인 확인에 사용합니다. 휴대폰 번호는 입력 형식만 확인하며 계정에 저장하지 않습니다.",
+      "보관 및 전송 · 가입 정보는 현재 페이지의 Mock 데이터에 임시로 유지되며, 새로고침하면 초기화됩니다. 인증 메일이나 문자 메시지를 보내지 않습니다.",
+      "간편 가입 · 선택한 로그인 서비스의 테스트 이름과 이메일을 사용합니다. 실제 소셜 계정과 연결되지 않습니다.",
+      "동의 선택 · 필수 항목에 동의하지 않으면 테스트 계정 가입을 진행할 수 없습니다."
+    ]
+  ],
+  [
+    "(필수) 만 14세 이상입니다.",
+    [
+      "가입자는 본인이 만 14세 이상임을 확인합니다. 이 화면에서는 생년월일이나 신분증을 입력하지 않습니다."
+    ]
+  ],
+  [
+    "(선택) 마케팅 정보 수신 동의",
+    [
+      "상품 소식, 할인 및 이벤트 안내의 수신 여부를 선택하는 항목입니다. 선택하지 않아도 가입과 쇼핑 체험이 가능합니다.",
+      "현재 데모에서는 이 선택을 별도로 저장하거나 광고 이메일과 문자를 발송하지 않습니다."
+    ]
+  ]
 ]
 const consent = reactive([false,false,false,false])
 const agreed = computed(() => consent.slice(0,3).every(Boolean))
@@ -120,7 +146,7 @@ function home() {
       <div class="gt-social-profile"><span aria-hidden="true">{{ socialSelection.label.slice(0,1) }}</span><div><strong>{{ socialSelection.name }}</strong><small>{{ socialSelection.email }}</small></div></div>
       <template v-if="!socialSelection.registered">
         <label class="check gt-social-consent"><input v-model="socialConsent" type="checkbox"> (필수) 이용약관·개인정보 이용 및 만 14세 이상에 동의합니다.</label>
-        <details class="gt-social-terms"><summary>필수 약관 내용 보기</summary><p v-for="[label,description] in terms.slice(0,3)" :key="label"><strong>{{ label }}</strong><br>{{ description }}</p></details>
+        <details class="gt-social-terms"><summary>필수 약관 내용 보기</summary><section v-for="[label,paragraphs] in terms.slice(0,3)" :key="label" class="gt-term-copy"><strong>{{ label }}</strong><p v-for="paragraph in paragraphs" :key="paragraph">{{ paragraph }}</p></section></details>
       </template>
       <p class="gt-social-mock-note">Mock 체험입니다. 실제 소셜 계정 연결이나 정보 전송은 하지 않습니다.</p>
       <p v-if="error" class="error" role="alert">{{ error }}</p>
@@ -155,9 +181,9 @@ function home() {
       </div>
       <form v-if="step === 0" class="stack" @submit.prevent="go(1)">
         <label class="check gt-term"><input type="checkbox" :checked="allAgreed" @change="consent.fill($event.target.checked)"> 모든 약관에 동의합니다.</label>
-        <div v-for="([label,description],index) in terms" :key="label" class="gt-term">
+        <div v-for="([label,paragraphs],index) in terms" :key="label" class="gt-term">
           <label class="check"><input v-model="consent[index]" type="checkbox"> {{ label }}</label>
-          <details><summary>내용 보기</summary><p>{{ description }}</p></details>
+          <details><summary>내용 보기</summary><div class="gt-term-copy"><p v-for="paragraph in paragraphs" :key="paragraph">{{ paragraph }}</p></div></details>
         </div>
         <div class="gt-auth-actions"><button type="button" class="button outline" @click="switchMode('login')">이전</button><button class="button" :disabled="!agreed">다음</button></div>
       </form>
