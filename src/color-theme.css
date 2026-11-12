@@ -10,16 +10,16 @@
 :root[data-theme] .theme-toggle:focus-visible{outline:2px solid #a6b6cc;outline-offset:3px}
 :root[data-theme=dark] :is(.home-section,.member-dashboard){color:var(--ui-text);--member-line:var(--ui-border)}
 :root[data-theme=dark] :is(.home-section p,.home-section .section-head>a,.feature-grid strong,.card-meta,.eyebrow,.member-identity small,.member-section-head>a,.member-section-head>button,.member-identity p,.member-section-head>div>p,.member-overview-heading p){color:var(--ui-muted)}
-:root[data-theme=dark] :is(.product-card,.filters,.form-panel,.state,.review,.line,.cart-item,.cart-summary,.support-entry,.support-form,.support-signin,.support-answer,.member-profile,.member-empty){background:var(--ui-surface);color:var(--ui-text);border-color:var(--ui-border)}
+:root[data-theme=dark] :is(.product-card,.filters,.form-panel,.state,.review,.line,.cart-item,.cart-summary,.support-entry,.member-profile,.member-empty){background:var(--ui-surface);color:var(--ui-text);border-color:var(--ui-border)}
 :root[data-theme=dark] .home-section .product-card{background:transparent}
 :root[data-theme=dark] :is(input,select,textarea){background:var(--ui-surface);color:var(--ui-text);border-color:var(--ui-border)}
 :root[data-theme=dark] input::placeholder,:root[data-theme=dark] textarea::placeholder{color:#9da9ba}
 :root[data-theme=dark] :is(.button,.card-add-button,.cart-rail-toggle){background:var(--ui-raised);color:var(--ui-text);border-color:#4b586b;box-shadow:none}
 :root[data-theme=dark] .button.gold{background:#d2dae7;color:#151b24;border-color:#d2dae7}
 :root[data-theme=dark] .button:hover:not(:disabled){background:#354152;border-color:#9baac0;color:#fff}
-:root[data-theme=dark] :is(.filters,.support-tabs,.support-field,.support-form-heading,.support-form-footer,.member-edit,.member-section-head,.member-order,.member-activity .member-section-head){border-color:var(--ui-border)}
-:root[data-theme=dark] :is(.support-field label,.support-form-heading h2,.support-entry summary,.member-section-head h2,.member-profile h2,.member-profile label,.member-order strong){color:var(--ui-text)}
-:root[data-theme=dark] :is(.support-form-heading span,.support-field small,.support-form-footer p,.support-entry p,.member-profile p,.member-empty p,.member-order small){color:var(--ui-muted)}
+:root[data-theme=dark] :is(.filters,.support-tabs,.member-edit,.member-section-head,.member-order,.member-activity .member-section-head){border-color:var(--ui-border)}
+:root[data-theme=dark] :is(.support-entry summary,.member-section-head h2,.member-profile h2,.member-profile label,.member-order strong){color:var(--ui-text)}
+:root[data-theme=dark] :is(.support-entry p,.member-profile p,.member-empty p,.member-order small){color:var(--ui-muted)}
 :root[data-theme=dark] :is(.cart-rail,.cart-rail footer,.cart-rail-items,.cart-added-dialog){background:var(--ui-surface);color:var(--ui-text);border-color:var(--ui-border)}
 :root[data-theme=dark] :is(.cart-rail article,.cart-rail-item-controls>div){border-color:var(--ui-border)}
 :root[data-theme=dark] :is(.cart-rail-notice,.cart-rail-latest,.cart-select-all){background:var(--ui-raised);color:var(--ui-muted)}
@@ -31,10 +31,10 @@
 :root[data-theme=dark] .product-detail-page :is(.product-specifications dl,.product-specifications dl>div,.product-color-showcase figure){border-color:var(--ui-border)}
 :root[data-theme=dark] .product-detail-page :is(.product-specifications dt,.product-color-showcase figcaption,.product-compatibility li){background:var(--ui-raised);color:var(--ui-muted);border-color:var(--ui-border)}
 :root[data-theme=dark] .product-detail-page .product-specifications dl{background:var(--ui-surface)}
-:root[data-theme=dark] .product-detail-page #product-reviews{color:var(--ui-text);border-color:var(--ui-border)}
+:root[data-theme=dark] .product-detail-page .product-reviews-heading{color:var(--ui-text);border-color:var(--ui-border)}
 :root[data-theme=dark] :is(.product-gallery-toolbar,.product-gallery-toolbar button){color:var(--ui-muted)}
-:root[data-theme=dark] :is(.account-nav a,.product-section-nav a,.support-tabs a){color:var(--ui-muted)}
-:root[data-theme=dark] :is(.account-nav a,.product-section-nav a,.support-tabs a):hover{color:#fff}
+:root[data-theme=dark] :is(.account-nav a,.support-tabs a){color:var(--ui-muted)}
+:root[data-theme=dark] :is(.account-nav a,.support-tabs a):hover{color:#fff}
 /* Preserve the original white backing and RGB/PCB colors of all merchandise photos. */
 :root[data-theme=dark] :is(.product-art,.feature-photo,.product-gallery-thumbnails button,.detail-gallery-comparison){background:#fff}
 :root[data-theme=dark] .admin-layout{--admin-border:var(--ui-border);--admin-muted:var(--ui-muted);background:var(--ui-bg);color:var(--ui-text)}

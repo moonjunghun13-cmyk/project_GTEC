@@ -19,6 +19,25 @@ const error = ref('')
 const notice = ref('')
 const added = ref(null)
 const selected = ref(1)
+const tabs = [
+  {id:'product-description',label:'상품 설명'},
+  {id:'product-specifications',label:'상세 스펙'},
+  {id:'product-reviews',label:'구매 리뷰'},
+]
+const activeTab = ref(tabs[0].id)
+function handleTabKey(event, index) {
+  const last = tabs.length - 1
+  const destination = {
+    ArrowLeft:index === 0 ? last : index - 1,
+    ArrowRight:index === last ? 0 : index + 1,
+    Home:0,
+    End:last,
+  }[event.key]
+  if (destination === undefined) return
+  event.preventDefault()
+  activeTab.value = tabs[destination].id
+  event.currentTarget.parentElement.children[destination].focus()
+}
 const gallery = computed(() => {
   const images = product.value?.gallery ?? []
   const slides = images.length === 2 ? [...images,{color:'검정·흰색 비교',comparison:images}] : images
@@ -55,7 +74,7 @@ async function load() {
   } catch (e) { if (current === request) error.value = e.message }
   finally { if (current === request) busy.value = false }
 }
-watch(() => route.params.id, () => {notice.value = ''; added.value = null; selected.value = 1; load()},{immediate:true})
+watch(() => route.params.id, () => {notice.value = ''; added.value = null; selected.value = 1; activeTab.value = tabs[0].id; load()},{immediate:true})
 watch(() => [store.role,product.value?.productId], ([role,productId]) => {
   if (role === 'USER' && productId) store.recordView(productId)
 },{immediate:true})
@@ -91,10 +110,21 @@ function buy() {
         <button class="button" :disabled="store.role === 'ADMIN'" @click="store.requireUser(() => store.favorite(product.productId))">{{ store.favorites.includes(product.productId) ? '♥ 찜 해제' : '♡ 찜하기' }}</button>
       </div><p role="status">{{ notice }}</p></div>
     </div>
-    <nav class="product-section-nav" aria-label="상품 상세 안내">
-      <a href="#product-description">상품 설명</a><a href="#product-specifications">상세 스펙</a><a href="#product-reviews">구매 리뷰</a>
-    </nav>
-    <section id="product-description" class="product-story" aria-labelledby="product-story-title">
+    <div class="product-section-nav" role="tablist" aria-label="상품 상세 안내">
+      <button
+        v-for="(tab,index) in tabs"
+        :id="tab.id + '-tab'"
+        :key="tab.id"
+        type="button"
+        role="tab"
+        :aria-controls="tab.id"
+        :aria-selected="activeTab === tab.id"
+        :tabindex="activeTab === tab.id ? 0 : -1"
+        @click="activeTab = tab.id"
+        @keydown="handleTabKey($event,index)"
+      >{{ tab.label }}</button>
+    </div>
+    <section v-show="activeTab === 'product-description'" id="product-description" class="product-story" role="tabpanel" aria-labelledby="product-description-tab" tabindex="0">
       <ProductStoryBanner :product="product"/>
       <ProductEditorial :product="product"/>
       <div v-if="product.gallery?.length" class="product-color-showcase">
@@ -102,7 +132,7 @@ function buy() {
         <div><figure v-for="item in product.gallery" :key="item.image"><img :src="item.image" :alt="product.name + ' · ' + item.color" loading="lazy"><figcaption>{{ item.color }}</figcaption></figure></div>
       </div>
     </section>
-    <section id="product-specifications" class="product-specifications" aria-labelledby="product-spec-title">
+    <section v-show="activeTab === 'product-specifications'" id="product-specifications" class="product-specifications" role="tabpanel" aria-labelledby="product-specifications-tab" tabindex="0">
       <h2 id="product-spec-title">상세 스펙</h2>
       <dl><div v-for="[label,value] in product.details?.specifications || []" :key="label"><dt>{{ label }}</dt><dd>{{ value }}</dd></div></dl>
       <p class="muted">현재 상품 설명과 규격은 화면 구성을 위한 Mock 정보입니다.</p>
@@ -111,9 +141,11 @@ function buy() {
         <ul><li v-for="check in product.details.checks" :key="check"><span aria-hidden="true">✓</span> {{ check }}</li></ul>
       </div>
     </section>
-    <div id="product-reviews" class="section-head"><h2>구매 리뷰</h2></div>
-    <StatePanel v-if="busy || error || !reviews.length" :busy="busy" :error="error" empty="아직 등록된 리뷰가 없습니다." @retry="load"/>
-    <article v-for="review in busy || error ? [] : reviews" :key="review.reviewId" class="review"><strong>{{ review.author }} · {{ review.rating }}/5</strong><p>{{ review.body }}</p><span class="badge">AI 감정분석 (Mock) · {{ review.sentiment }}</span></article>
+    <section v-show="activeTab === 'product-reviews'" id="product-reviews" role="tabpanel" aria-labelledby="product-reviews-tab" tabindex="0">
+      <div class="section-head product-reviews-heading"><h2>구매 리뷰</h2></div>
+      <StatePanel v-if="busy || error || !reviews.length" :busy="busy" :error="error" empty="아직 등록된 리뷰가 없습니다." @retry="load"/>
+      <article v-for="review in busy || error ? [] : reviews" :key="review.reviewId" class="review"><strong>{{ review.author }} · {{ review.rating }}/5</strong><p>{{ review.body }}</p><span class="badge">AI 감정분석 (Mock) · {{ review.sentiment }}</span></article>
+    </section>
   </section>
   <StatePanel v-else empty="상품을 찾을 수 없습니다."/>
   <CartAddedDialog v-if="added" :product="added.product" :quantity="added.quantity" @close="added = null"/>

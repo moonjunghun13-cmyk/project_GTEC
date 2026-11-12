@@ -21,12 +21,7 @@
 :root .store-footer{background:radial-gradient(ellipse at top left,#343942,#0e1015 45%);border-top:1px solid #555d6b}
 :root .store-footer-inner>div+div{border-color:#ffffff20}
 :root .store-footer a:hover{color:#fff}
-:root .customer-help{background:radial-gradient(ellipse at top right,#40465065,transparent 65%),#121419;border-color:#404752}
-:root .customer-help :is(small,strong){color:#d9dfe9}
-:root .customer-center .customer-help p{color:#b7beca}
 :root .support-tabs a[aria-current=page]{color:#313842;border-bottom-color:#7c8798}
-:root .support-page :is(.support-form-heading p,.support-field label>span,.support-submit span){color:#7b8493}
-:root .support-page :is(.support-form-footer,.support-answer){background:#f5f6f8}
 :root .support-page :is(input,textarea){background:#fafbfc;border-color:#dce0e6}
 :root .cart-rail{border-color:#ccd1da;box-shadow:0 15px 50px #141c2a1f}
 :root .cart-rail>header{background:linear-gradient(125deg,#111318,#2a2f39);border-color:#424a58}
@@ -155,20 +150,17 @@
 :root .product-detail-page .product-compatibility :is(.eyebrow,li span){color:#748294}
 :root .product-detail-page .product-compatibility p:not(.eyebrow){color:#687586}
 :root .product-detail-page .product-compatibility li{background:#fff;border-color:#dce3eb;color:#455160}
-:root .product-detail-page #product-reviews{margin-bottom:0;padding:22px 0;border-bottom:1px solid #dce2e9;color:#20262e}
-:root .product-detail-page #product-reviews .button{background:#20242a;color:#fff;border-color:#20242a}
+:root .product-detail-page .product-reviews-heading{margin-bottom:0;padding:0 0 14px;border-bottom:1px solid #dce2e9;color:#20262e}
 :root .product-detail-page .review{margin-top:12px;padding:24px;background:#fff;border:1px solid #dfe4eb;border-radius:14px;color:#252d38}
 :root .product-detail-page .review p{color:#687586}
 :root .product-detail-page .review .badge{background:#eef2f6;color:#566577;border-color:#d9e1ea}
 @media(max-width:520px){:root .product-detail-page .product-specifications dl>div{grid-template-columns:90px minmax(0,1fr)}:root .product-detail-page .product-specifications :is(dt,dd){padding:12px 10px;font-size:13px}}
 
 /* Neutral hover feedback across shop and admin surfaces. */
-:root :is(.section-head,.account-nav,.product-section-nav,.customer-center) a:hover{color:#3e4b5b}
-:root .customer-center .customer-help:hover{color:#fff}
+:root :is(.section-head,.account-nav,.customer-center) a:hover{color:#3e4b5b}
 :root .categories a:hover,:root .home-section .categories a:hover{background:#eef1f5;color:#27303b;border-color:#a6b1bf}
 :root .product-card:hover,:root .feature-grid a:hover .feature-photo,:root .arrivals-photo:hover,:root .purpose-grid>a:hover{border-color:#a9b3c0}
 :root .cart-rail footer .gold:hover{background:#d3d9e2;color:#1d2530}
-:root .support-submit:hover:not(:disabled){background:#343a43}
 :root .product-gallery-thumbnails button[aria-pressed=true]{border-color:#8996a7}
 :root .admin-layout :is(.ops-list button:hover:not([aria-pressed=true]),.dashboard-kpis>a:hover,.dashboard-queue>a:hover,.dashboard-action-strip a:hover){background:#edf1f5}
 :root .admin-layout .reference-shortcuts>div>a:hover{background:#eef2f6;border-color:#a7b4c4}
