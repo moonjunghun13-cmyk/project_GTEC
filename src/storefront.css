@@ -321,14 +321,22 @@
 .product-detail-chapters h3{font-size:1.2rem;margin:0 0 .65rem}
 .product-detail-chapters p{margin:0;max-width:880px;color:#5d5e61;line-height:1.9;font-size:.94rem}
 .product-detail-chapters small{display:inline-block;background:#ecedf0;color:#5c5d60;font-size:.76rem;margin-top:.85rem;padding:.3rem .6rem;border-radius:4px}
-.product-use-cases,.product-compatibility{display:grid;grid-template-columns:1fr 1.4fr;gap:1.5rem;padding:clamp(1.2rem,3vw,2rem);background:#f5f6f9;border:1px solid #e0e1e4;border-radius:10px;margin:2rem 0}
+.product-use-cases{display:grid;grid-template-columns:1fr 1.4fr;gap:1.5rem;padding:clamp(1.2rem,3vw,2rem);background:#f5f6f9;border:1px solid #e0e1e4;border-radius:10px;margin:2rem 0}
 .product-use-cases h3,.product-compatibility h3{font-size:1.3rem;margin:.4rem 0}
 .product-use-cases ul,.product-compatibility ul{display:grid;gap:.85rem;padding:0 0 0 1.2rem;margin:0;color:#555659;font-size:.9rem;line-height:1.7}
-.product-compatibility{background:#1a1b1e;color:#f7f8fb;border-color:#38393c}
-.product-compatibility .eyebrow{color:#babbbe}
-.product-compatibility>div>p:last-child{font-size:.85rem;line-height:1.8;color:#c7c8cb;margin:.65rem 0 0}
-.product-compatibility ul{list-style:none;padding:0;color:#e4e5e8}
-.product-compatibility li span{color:#babbbe;margin-right:.45rem}
+.product-compatibility {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);
+  align-items:start;
+  gap:1.5rem;
+  margin:1.5rem 0 0;
+}
+.product-compatibility :is(.eyebrow, p:last-child) { color:var(--ui-muted); }
+.product-compatibility > div > p:last-child { font-size:.85rem; line-height:1.8; margin:.65rem 0 0; }
+.product-compatibility ul { list-style:none; padding:0; color:var(--ui-text); }
+.product-compatibility li { display:flex; align-items:baseline; gap:.55rem; }
+.product-compatibility li span { flex:none; color:var(--ui-muted); }
+
 @media(max-width:650px){.product-detail-chapters article{grid-template-columns:35px minmax(0,1fr);gap:.7rem}.product-use-cases,.product-compatibility{grid-template-columns:1fr;gap:1rem}}
 
 .cart-workspace{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:1.5rem;align-items:start;margin-bottom:1.5rem}

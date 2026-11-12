@@ -25,11 +25,11 @@
 :root[data-theme=dark] :is(.cart-rail-notice,.cart-rail-latest,.cart-select-all){background:var(--ui-raised);color:var(--ui-muted)}
 :root[data-theme=dark] .cart-summary :is(p,dt){color:var(--ui-muted)}
 :root[data-theme=dark] :is(.cart-summary strong,.cart-item strong,.cart-rail footer strong){color:var(--ui-text)}
-:root[data-theme=dark] .product-detail-page :is(.product-highlights article,.product-story-chapter,.product-specifications,.product-compatibility,.product-color-showcase,.review){background:var(--ui-surface);border-color:var(--ui-border);color:var(--ui-text)}
+:root[data-theme=dark] .product-detail-page :is(.product-highlights article,.product-story-chapter,.product-specifications,.product-color-showcase,.review){background:var(--ui-surface);border-color:var(--ui-border);color:var(--ui-text)}
 :root[data-theme=dark] .product-detail-page :is(.product-highlights h3,.product-story-chapter h3,.product-specifications h2,.product-specifications dd,.product-compatibility h3,.review strong){color:var(--ui-text)}
 :root[data-theme=dark] .product-detail-page :is(.product-highlights p,.product-story-chapter p,.product-compatibility p,.review p){color:var(--ui-muted)}
 :root[data-theme=dark] .product-detail-page :is(.product-specifications dl,.product-specifications dl>div,.product-color-showcase figure){border-color:var(--ui-border)}
-:root[data-theme=dark] .product-detail-page :is(.product-specifications dt,.product-color-showcase figcaption,.product-compatibility li){background:var(--ui-raised);color:var(--ui-muted);border-color:var(--ui-border)}
+:root[data-theme=dark] .product-detail-page :is(.product-specifications dt,.product-color-showcase figcaption){background:var(--ui-raised);color:var(--ui-muted);border-color:var(--ui-border)}
 :root[data-theme=dark] .product-detail-page .product-specifications dl{background:var(--ui-surface)}
 :root[data-theme=dark] .product-detail-page .product-reviews-heading{color:var(--ui-text);border-color:var(--ui-border)}
 :root[data-theme=dark] :is(.product-gallery-toolbar,.product-gallery-toolbar button){color:var(--ui-muted)}
@@ -201,4 +201,4 @@
 :root[data-theme=dark] .product-detail-page :is(.editorial-highlights article,.editorial-chapters article,.editorial-overview,.editorial-usage) { background:#20262f; border:1px solid #404b5c; }
 :root[data-theme=dark] .product-detail-page :is(.editorial-highlights p,.editorial-chapter-body>p,.editorial-overview-body,.highlight-top>span,.editorial-number) { color:#c1cbd8; }
 :root[data-theme=dark] .product-detail-page :is(.highlight-top svg,.editorial-chapter-heading small,.review .badge) { background:#303a48; color:#dce6f3; border-color:#536174; }
-:root[data-theme=dark] .product-detail-page :is(.editorial-chapter-heading small span,.product-specifications>.muted,.product-compatibility p:not(.eyebrow),.product-compatibility :is(.eyebrow,li span)) { color:#b9c7da; }
+:root[data-theme=dark] .product-detail-page :is(.editorial-chapter-heading small span,.product-specifications>.muted) { color:#b9c7da; }

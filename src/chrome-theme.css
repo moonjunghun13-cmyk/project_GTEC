@@ -146,10 +146,6 @@
 :root .product-detail-page .product-specifications dt{background:#eef1f5;color:#4d5969}
 :root .product-detail-page .product-specifications dd{color:#20262e}
 :root .product-detail-page .product-specifications>.muted{color:#7a8491}
-:root .product-detail-page .product-compatibility{background:#f4f6f8;border:1px solid #e0e5eb;color:#27303b}
-:root .product-detail-page .product-compatibility :is(.eyebrow,li span){color:#748294}
-:root .product-detail-page .product-compatibility p:not(.eyebrow){color:#687586}
-:root .product-detail-page .product-compatibility li{background:#fff;border-color:#dce3eb;color:#455160}
 :root .product-detail-page .product-reviews-heading{margin-bottom:0;padding:0 0 14px;border-bottom:1px solid #dce2e9;color:#20262e}
 :root .product-detail-page .review{margin-top:12px;padding:24px;background:#fff;border:1px solid #dfe4eb;border-radius:14px;color:#252d38}
 :root .product-detail-page .review p{color:#687586}
