@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: mall
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/gtec
+    username: postgres
+    password: 1004
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+    sql-show: true
+
+server:
+  port: 8090
