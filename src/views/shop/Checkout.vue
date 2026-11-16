@@ -7,6 +7,7 @@ import { openTossTestWindow, tossTestConfigured } from '../../services/tossCheck
 import { money } from '../../utils'
 import CheckoutSteps from '../../components/CheckoutSteps.vue'
 import CheckoutPaymentDialog from '../../components/CheckoutPaymentDialog.vue'
+import PaymentBrand from '../../components/PaymentBrand.vue'
 import CheckoutAddressDialog from '../../components/CheckoutAddressDialog.vue'
 import StatePanel from '../../components/StatePanel.vue'
 
@@ -194,7 +195,7 @@ async function pay(outcome) {
             <div class="checkout-method-options">
               <label v-for="method in group.methods" :key="method" class="checkout-method">
                 <input v-model="paymentMethod" type="radio" name="payment-method" :value="method">
-                <span>{{ method }}</span>
+                <span class="checkout-method-label"><PaymentBrand :method="method"/>{{ method }}</span>
               </label>
             </div>
           </div>
@@ -214,7 +215,7 @@ async function pay(outcome) {
         <p v-if="paymentNotice" class="checkout-note" role="status">{{ paymentNotice }}</p>
         <p v-if="tossError" class="error" role="alert">{{ tossError }}</p>
         <button type="submit" class="button" :disabled="busy || unavailable || tossOpen">{{ busy ? '처리 중…' : '모의 결제하기' }}</button>
-        <button type="button" class="button toss-test-button" :disabled="!tossTestConfigured || busy || unavailable || tossOpen" :aria-describedby="tossTestConfigured ? undefined : 'toss-test-status'" @click="startTossPayment">{{ tossOpen ? '토스 결제창 열림…' : '토스페이먼츠 테스트 결제' }}</button>
+        <button type="button" class="button toss-test-button" :disabled="!tossTestConfigured || busy || unavailable || tossOpen" :aria-describedby="tossTestConfigured ? undefined : 'toss-test-status'" @click="startTossPayment"><PaymentBrand method="토스페이먼츠"/>{{ tossOpen ? '토스 결제창 열림…' : '토스페이먼츠 테스트 결제' }}</button>
         <p v-if="!tossTestConfigured" id="toss-test-status" class="checkout-note toss-test-status">테스트 키를 설정하면 토스페이먼츠 결제창을 열 수 있어요.</p>
       </aside>
     </form>
@@ -253,9 +254,9 @@ async function pay(outcome) {
 .checkout-method-options { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
 .checkout-method { position:relative; display:grid; }
 .checkout-method input { position:absolute; inset:0; width:100%; height:100%; margin:0; opacity:0; cursor:pointer; }
-.checkout-method span { display:grid; place-items:center; min-height:44px; padding:6px; text-align:center; border:1px solid var(--ui-border); border-radius:8px; background:var(--ui-surface); }
-.checkout-method input:checked + span { border-color:#92a2b8; background:var(--ui-raised); font-weight:750; box-shadow:inset 0 0 0 1px #92a2b8; }
-.checkout-method input:focus-visible + span { outline:2px solid #92a2b8; outline-offset:2px; }
+.checkout-method-label { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:4px 8px; min-height:48px; padding:6px; text-align:center; border:1px solid var(--ui-border); border-radius:8px; background:var(--ui-surface); }
+.checkout-method input:checked + .checkout-method-label { border-color:#92a2b8; background:var(--ui-raised); font-weight:750; box-shadow:inset 0 0 0 1px #92a2b8; }
+.checkout-method input:focus-visible + .checkout-method-label { outline:2px solid #92a2b8; outline-offset:2px; }
 .checkout-payment,.checkout-receipt { padding:22px; border:1px solid var(--ui-border); border-radius:12px; background:var(--ui-raised); }
 .checkout-payment dl,.checkout-receipt dl { display:grid; gap:10px; margin:0; }
 .checkout-payment dl > div,.checkout-receipt dl > div { display:flex; justify-content:space-between; gap:12px; }
@@ -265,7 +266,7 @@ async function pay(outcome) {
 .checkout-total dd { font-size:1.35rem; }
 .checkout-note { color:var(--ui-muted); font-size:.8rem; line-height:1.55; margin:14px 0; }
 .checkout-payment .button { width:100%; min-height:46px; background:#dce5f0; border-color:#aab8cc; color:#182231; }
-.checkout-payment .toss-test-button { margin-top:8px; background:var(--ui-surface); color:var(--ui-text); }
+.checkout-payment .toss-test-button { display:flex; justify-content:center; align-items:center; gap:8px; margin-top:8px; background:var(--ui-surface); color:var(--ui-text); }
 .toss-test-status { margin:8px 0 0; }
 .checkout-payment .button:hover:not(:disabled) { background:#edf3fb; color:#182231; }
 .checkout-receipt { max-width:560px; }
