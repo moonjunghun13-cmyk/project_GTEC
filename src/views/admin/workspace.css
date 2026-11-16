@@ -94,12 +94,8 @@
 .ops-list button strong,.ops-panel h2{overflow-wrap:anywhere}
 
 @media(max-width:900px){
-  .admin-main{margin-left:0}
   .admin-layout:has(.dashboard-title) .admin-main{min-height:0}
-  .admin-sidebar{position:static;width:auto;padding:.5rem .85rem;overflow:visible}
   .admin-brand{display:flex;align-items:center;gap:.45rem;padding:.15rem .15rem .45rem}
-  .admin-sidebar nav{display:flex;gap:.3rem;overflow-x:auto;padding:0 2px .3rem;scrollbar-width:thin}
-  .admin-sidebar nav a{flex:none;white-space:nowrap;padding:.55rem .7rem}
   .admin-header{min-height:48px;padding:.6rem 1rem}
   .dashboard-grid{grid-template-rows:auto}
   .dashboard-trend .admin-chart{flex:none;height:clamp(170px,29vw,240px)}

@@ -14,7 +14,7 @@
 .reference-kpis svg{width:30px;height:30px;color:#646568;flex:none}
 .reference-kpis>article>div,.reference-kpis>a>div{display:grid;gap:.35rem;min-width:0}
 .reference-kpis span{font-size:.85rem;font-weight:700}
-.reference-kpis strong{font-size:clamp(1.35rem,2.1vw,2rem);white-space:nowrap;letter-spacing:-.04em}
+.reference-kpis strong{font-size:clamp(1.35rem,2.1vw,2rem);overflow-wrap:anywhere;letter-spacing:-.04em}
 .reference-kpis small{font-size:.73rem;color:#656669}
 .reference-kpis .reference-kpi-gold{color:white;border-color:#757679;background:linear-gradient(150deg,#151619 25%,#292a2d 65%,#97989b 95%,#48494c);box-shadow:0 3px 8px #292a2d0a}
 .reference-kpi-gold svg,.reference-kpi-gold small{color:#cfd0d3}
@@ -60,11 +60,7 @@
 .reference-shortcuts>div>a:hover{background:#ebecef;border-color:#a8a9ac}
 .reference-shortcuts>div svg{width:22px;height:22px;color:#7b7c7f}
 @media(min-width:1250px) and (min-height:730px){
- .admin-layout:has(.reference-dashboard) .admin-main{display:flex;flex-direction:column;height:100dvh;min-height:0}
- .admin-layout:has(.reference-dashboard) .admin-header{flex:none}
- .admin-layout:has(.reference-dashboard) .admin-content{display:flex;flex-direction:column;flex:1;min-height:0;width:100%;max-width:none}
  .reference-heading{flex:none}
- .reference-dashboard{grid-template-rows:auto minmax(215px,1.2fr) minmax(190px,1fr)}
  .reference-trend .admin-chart{position:relative}
  .reference-trend canvas{position:absolute;inset:0}
 }
