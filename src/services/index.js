@@ -1,6 +1,7 @@
 import { socialProfiles } from '../mocks/socialAuth'
 import { seed, categories } from '../mocks/catalog'
 import { adminSeed } from '../mocks/admin'
+import { productReviewExamples } from '../mocks/productReviews'
 import { withProductDetails } from '../mocks/productDetails'
 import { purposes, purposeTags } from '../mocks/purposes'
 import { faqs } from '../mocks/support'
@@ -8,7 +9,7 @@ import { checkoutAddresses } from '../mocks/checkoutAddresses'
 
 const mode = import.meta.env.VITE_DATA_MODE || 'mock'
 const demo = adminSeed(seed.products)
-const state = structuredClone({...seed,...demo,reviews:[...seed.reviews,...demo.reviews].map(row => ({...row,sentimentSource:'mock'}))})
+const state = structuredClone({...seed,...demo,reviews:[...seed.reviews,...demo.reviews,...productReviewExamples(seed.products)].map(row => ({...row,sentimentSource:'mock'}))})
 for (const user of state.users) user.createdAt = new Date().toISOString()
 for (const order of state.orders) {
   for (const item of order.items) {

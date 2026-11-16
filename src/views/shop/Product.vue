@@ -123,7 +123,7 @@ function buy() {
         :tabindex="activeTab === tab.id ? 0 : -1"
         @click="activeTab = tab.id"
         @keydown="handleTabKey($event,index)"
-      >{{ tab.label }}</button>
+      >{{ tab.label }}<span v-if="tab.id === 'product-reviews' && !busy && !error" class="review-tab-count">{{ reviews.length }}</span></button>
     </div>
     <section v-show="activeTab === 'product-description'" id="product-description" class="product-story" role="tabpanel" aria-labelledby="product-description-tab" tabindex="0">
       <ProductStoryBanner :product="product"/>
@@ -143,7 +143,7 @@ function buy() {
       </div>
     </section>
     <section v-show="activeTab === 'product-reviews'" id="product-reviews" role="tabpanel" aria-labelledby="product-reviews-tab" tabindex="0">
-      <div class="section-head product-reviews-heading"><h2>구매 리뷰</h2></div>
+      <div class="section-head product-reviews-heading"><h2>구매 리뷰</h2><small v-if="!busy && !error && reviews.length && reviews.every(review => review.sentimentSource === 'mock')" class="review-demo-note">예시 리뷰</small></div>
       <StatePanel v-if="busy || error || !reviews.length" :busy="busy" :error="error" empty="아직 등록된 리뷰가 없습니다." @retry="load"/>
       <article v-for="review in busy || error ? [] : reviews" :key="review.reviewId" class="review">
         <div class="review-heading">
@@ -163,6 +163,8 @@ function buy() {
 </template>
 
 <style scoped>
+.review-demo-note { color:var(--ui-muted); }
+.review-tab-count { margin-inline-start:6px; font-size:.8em; font-variant-numeric:tabular-nums; }
 .review-heading { display:flex; flex-wrap:wrap; align-items:center; gap:4px 10px; }
 .review-score { display:inline-flex; gap:2px; color:var(--ui-text); font-size:1.15rem; line-height:1.2; }
 .review-score-value { color:var(--ui-muted); font-size:.85rem; font-variant-numeric:tabular-nums; }
