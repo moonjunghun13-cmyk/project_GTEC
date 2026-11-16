@@ -74,13 +74,18 @@ const stockCounts = computed(() => [
   data.value.products.filter(row => row.stock === 0).length,
 ])
 const adminFaq = [
-  ['환불은 어떻게 하나요?','취소·반품·환불 메뉴에서 요청을 확인하고 승인한 뒤 Mock 환불 완료 처리를 진행합니다.'],
+  ['환불은 어떻게 하나요?','배송 관리의 취소·반품·환불 탭에서 요청을 확인하고 승인한 뒤 Mock 환불 완료 처리를 진행합니다.'],
   ['배송 처리는 어디서 하나요?','주문·배송에서 주문을 선택하고 배송 준비, 운송장 입력, 발송 순서로 진행합니다.'],
   ['상품 이미지 변경은 어떻게 하나요?','상품 관리에서 상품을 선택하고 대표 이미지 파일을 추가한 뒤 저장해 주세요.'],
   ['재고는 어디서 수정하나요?','상품 관리에서 상품을 선택하고 재고 수량을 변경한 뒤 저장합니다.'],
 ]
 const form = reactive({})
-const page = computed(() => route.meta.section || 'dashboard')
+const shippingPath = '/admin/shipping'
+const isShipping = computed(() => route.path === shippingPath || route.path === shippingPath + '/')
+const page = computed(() => {
+  if (isShipping.value && route.query.tab === 'refunds') return 'refunds'
+  return route.meta.section || 'dashboard'
+})
 const actor = () => store.user?.userId
 const pending = row => ['취소 요청','반품 요청'].includes(row.request)
 const lowStock = computed(() => data.value.products.filter(row => row.stock < 10 && row.selling !== false))
@@ -153,7 +158,7 @@ const sales = computed(() => {
 })
 const sourceRows = computed(() => {
   if (!data.value) return []
-  if (page.value === 'refunds') return data.value.orders.filter(row => row.request || row.refundedAt)
+  if (page.value === 'refunds') return data.value.orders.filter(row => row.request || row.refundedAt || ['환불 대기','환불 완료'].includes(row.status))
   return data.value[page.value] ?? []
 })
 const rows = computed(() => {
@@ -256,13 +261,18 @@ function remove() {
       <time :datetime="today()">{{ rangeStart }} ~ {{ today() }}</time>
     </div>
   </header>
-  <header v-else class="ops-page-title"><div><p class="eyebrow">GT OPERATIONS · MOCK</p><h1>{{ route.meta.title }}</h1></div></header>  <StatePanel v-if="loading || loadError" :busy="loading" :error="loadError" @retry="load"/>
+  <header v-else class="ops-page-title"><div><p class="eyebrow">GT OPERATIONS · MOCK</p><h1>{{ route.meta.title }}</h1></div></header>
+  <nav v-if="isShipping" class="shipping-management-tabs" aria-label="배송 관리 메뉴">
+    <RouterLink :to="shippingPath" :aria-current="page === 'orders' ? 'page' : undefined"><AdminIcon name="shipping"/>배송 목록</RouterLink>
+    <RouterLink :to="{path:shippingPath,query:{tab:'refunds'}}" :aria-current="page === 'refunds' ? 'page' : undefined"><AdminIcon name="refunds"/>취소 · 반품 · 환불</RouterLink>
+  </nav>
+  <StatePanel v-if="loading || loadError" :busy="loading" :error="loadError" @retry="load"/>
   <template v-else-if="data">
     <section v-if="page === 'dashboard'" class="ops-dashboard reference-dashboard" aria-label="운영 현황">
       <div class="reference-kpis">
         <article class="reference-kpi-gold dashboard-link-card" role="link" tabindex="0" aria-label="고객분석으로 이동" @click="openDashboardCard($event,'/admin/customers')" @keydown.enter="openDashboardCard($event,'/admin/customers')"><AdminIcon name="coin"/><div><span>총 순매출액</span><strong>{{ money(rangeRevenue) }}</strong><small>{{ rangeLabel }} · 환불 반영</small></div></article>
         <RouterLink to="/admin/orders"><AdminIcon name="orders"/><div><span>신규 주문</span><strong>{{ rangeOrders.length }}건</strong><small>{{ rangeLabel }} 주문</small></div></RouterLink>
-        <RouterLink to="/admin/orders"><AdminIcon name="truck"/><div><span>배송 대기</span><strong>{{ data.orders.filter(row => ['결제 완료','배송 준비'].includes(row.status) && !pending(row)).length }}건</strong><small>현재 처리 대기</small></div></RouterLink>
+        <RouterLink to="/admin/shipping"><AdminIcon name="truck"/><div><span>배송 대기</span><strong>{{ data.orders.filter(row => ['결제 완료','배송 준비'].includes(row.status) && !pending(row)).length }}건</strong><small>현재 처리 대기</small></div></RouterLink>
         <RouterLink to="/admin/members"><AdminIcon name="members"/><div><span>신규 가입 회원</span><strong>{{ data.members.filter(row => row.role === 'USER' && row.createdAt && day(row.createdAt) >= rangeStart).length }}명</strong><small>{{ rangeLabel }} 가입</small></div></RouterLink>
       </div>
       <div class="operations-board">
@@ -284,7 +294,7 @@ function remove() {
           <header><h2><AdminIcon name="orders"/>주문 관리</h2><RouterLink to="/admin/orders">전체보기 ›</RouterLink></header>
           <label class="board-search"><AdminIcon name="search"/><input v-model="dashboardSearch.orders" type="search" aria-label="대시보드 주문 검색" placeholder="주문번호 · 주문자 · 상품명"></label>
           <div class="board-table"><table><thead><tr><th>주문번호</th><th>주문자</th><th>주문금액</th><th>상태</th><th>관리</th></tr></thead><tbody><tr v-for="row in dashboardRows.orders" :key="row.orderId"><th scope="row"><RouterLink :to="{path:'/admin/orders',query:{q:row.orderId}}" :title="row.orderId">{{ row.orderId.slice(-12) }}</RouterLink></th><td>{{ row.delivery.recipient }}</td><td>{{ money(row.total) }}</td><td><span class="board-status" :data-status="row.status">{{ row.status }}</span></td><td><RouterLink :to="{path:'/admin/orders',query:{q:row.orderId}}">상세</RouterLink></td></tr><tr v-if="!dashboardRows.orders.length"><td class="board-search-empty" colspan="5">{{ dashboardSearch.orders.trim() ? '검색 결과가 없습니다.' : '등록된 주문이 없습니다.' }}</td></tr></tbody></table></div>
-          <p class="board-help">운송장과 배송 상태는 주문 관리에서 변경할 수 있습니다.</p>
+          <p class="board-help">운송장과 배송 상태는 배송 관리에서 변경할 수 있습니다.</p>
         </article>
         <article class="reference-panel board-members"><header><h2><AdminIcon name="members"/>회원 관리</h2><RouterLink to="/admin/members">전체보기 ›</RouterLink></header>
           <label class="board-search"><AdminIcon name="search"/><input v-model="dashboardSearch.members" type="search" aria-label="대시보드 회원 검색" placeholder="이름 · 이메일 · 회원 ID"></label>

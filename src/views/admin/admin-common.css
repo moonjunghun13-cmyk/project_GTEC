@@ -36,3 +36,28 @@
 @media(max-width:1000px){.ops-records{grid-template-columns:1fr}.ops-records .ops-list{max-height:340px;min-height:0}}
 @media(max-width:640px){.admin-content{padding:12px}.ops-toolbar{padding:12px;flex-wrap:wrap}.ops-toolbar>label{flex:1 1 130px}.ops-records>.ops-panel:last-child{padding:14px}.ops-records .ops-list{max-height:280px}}
 
+
+.shipping-management-tabs {
+  display:flex;
+  flex-wrap:wrap;
+  gap:.3rem 1.25rem;
+  margin:0 0 1.25rem;
+  border-bottom:1px solid var(--admin-border);
+}
+.shipping-management-tabs a {
+  display:inline-flex;
+  align-items:center;
+  gap:.45rem;
+  min-height:44px;
+  padding:.45rem .2rem;
+  border-bottom:2px solid transparent;
+  color:var(--admin-muted);
+  font-size:.86rem;
+}
+.shipping-management-tabs a:hover,
+.shipping-management-tabs a[aria-current=page] { color:var(--ui-text); }
+.shipping-management-tabs a[aria-current=page] {
+  border-bottom-color:currentColor;
+  font-weight:700;
+}
+.shipping-management-tabs svg { width:17px; height:17px; }

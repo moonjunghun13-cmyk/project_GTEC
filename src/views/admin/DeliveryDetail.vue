@@ -101,7 +101,7 @@ async function save() {
           </form>
           <p v-if="error" class="error" role="alert">{{ error }}</p><p v-if="notice" class="delivery-success" role="status">{{ notice }}</p>
         </article>
-        <article class="delivery-panel"><h2><AdminIcon name="arrow"/>관련 처리 바로가기</h2><div class="actions"><RouterLink class="button" :to="{path:'/admin/orders',query:{q:order.orderId}}">주문 상세</RouterLink><RouterLink class="button" :to="{path:'/admin/refunds',query:{q:order.orderId}}">취소 · 반품 · 환불</RouterLink></div></article>
+        <article class="delivery-panel"><h2><AdminIcon name="arrow"/>관련 처리 바로가기</h2><div class="actions"><RouterLink class="button" :to="{path:'/admin/orders',query:{q:order.orderId}}">주문 상세</RouterLink><RouterLink class="button" :to="{path:'/admin/shipping',query:{tab:'refunds',q:order.orderId}}">취소 · 반품 · 환불</RouterLink></div></article>
       </div>
     </div>
     <p class="delivery-note">배송 상태와 운송장 번호는 Mock 데이터로 관리됩니다.</p>
