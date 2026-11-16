@@ -8,11 +8,12 @@ const router = useRouter()
 const route = useRoute()
 function checkout() {
   store.cartOpen = false
-  store.requireUser(() => { store.checkoutIds = null; return router.push('/checkout') })
+  store.checkoutIds = null
+  return router.push('/checkout')
 }
 </script>
 <template>
-  <template v-if="route.meta.role !== 'ADMIN' && store.role !== 'ADMIN' && route.path !== '/cart'">
+  <template v-if="route.meta.role !== 'ADMIN' && store.role !== 'ADMIN' && route.path !== '/cart' && !route.meta.checkout">
     <aside v-if="store.cartOpen && route.path !== '/'" class="cart-rail" aria-label="담은 상품 바로 확인">
       <header><div class="cart-rail-heading"><CartIcon/><h2>장바구니 <span>{{ store.cartCount }}</span></h2></div><button aria-label="장바구니 패널 닫기" @click="store.cartOpen = false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></header>
       <p class="cart-rail-notice" role="status">{{ store.cartNotice }}</p>

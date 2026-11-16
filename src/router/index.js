@@ -16,7 +16,9 @@ export function makeRouter(pinia) {
     {path:'/products/:id',component:Product},
     {path:'/cart',component:Cart},
     {path:'/support',component:() => import('../views/shop/Support.vue')},
-    ...[['checkout','주문 · 모의 결제'],['orders','주문 내역'],['account','마이페이지'],['favorites','찜한 상품']].map(([path,title]) =>
+    {path:'/checkout',name:'checkout',component:() => import('../views/shop/Checkout.vue'),meta:{checkout:true}},
+    {path:'/checkout/complete',name:'checkout-complete',component:() => import('../views/shop/Checkout.vue'),meta:{checkout:true}},
+    ...[['orders','주문 내역'],['account','마이페이지'],['favorites','찜한 상품']].map(([path,title]) =>
       ({path:'/'+path, name:path, component:Account, meta:{role:'USER',title}})),
     {path:'/admin',component:AdminLayout,meta:{role:'ADMIN'},children:[{path:'sales',redirect:'/admin/customers'},
       {path:'refunds',redirect:to => ({path:'/admin/shipping',query:{...to.query,tab:'refunds'}})},{path:'shipping/:orderId',component:() => import('../views/admin/DeliveryDetail.vue'),meta:{title:'배송 상세'}},...adminMenu.map(([path,title]) =>
@@ -25,6 +27,7 @@ export function makeRouter(pinia) {
   ]})
   router.beforeEach(to => {
     const store = useShop(pinia)
+    if (to.meta.checkout && store.role === 'ADMIN') return '/cart'
     if (!to.meta.role || store.role === to.meta.role) return true
     if (store.role === 'GUEST') {
       if (to.meta.role === 'USER') store.requireUser(() => router.push(to.fullPath))

@@ -18,9 +18,6 @@ const loadError = ref('')
 const busy = ref(false)
 const error = ref('')
 const notice = ref('')
-const address = ref('')
-const phone = ref('')
-const recipient = ref(store.user?.name ?? '')
 const name = ref(store.user?.name ?? '')
 const email = ref(store.user?.email ?? '')
 const reviewTarget = ref('')
@@ -55,15 +52,6 @@ async function submit(operation) {
   catch (e) { error.value = e.message }
   finally { busy.value = false }
 }
-function checkout() {
-  submit(async () => {
-    const items = store.checkoutItems.map(({productId,quantity}) => ({productId,quantity}))
-    await shop.order(store.user.userId,items,{recipient:recipient.value.trim(),address:address.value.trim(),phone:phone.value.trim()})
-    store.completeCheckout(items)
-    await router.push({name:'orders',query:{placed:'1'}})
-    await store.load()
-  })
-}
 function requestOrder(orderId) {
   submit(async () => {
     await shop.requestOrder(store.user.userId,orderId)
@@ -87,25 +75,13 @@ function saveReview(item) {
 <template>
   <section class="wrap section">
     <p class="eyebrow">GT MEMBERS</p><h1>{{ route.meta.title }}</h1>
-    <CheckoutSteps v-if="route.name === 'checkout' || (route.name === 'orders' && route.query.placed)" :step="route.name === 'checkout' ? 2 : 3"/><nav v-if="route.name !== 'account'" class="actions account-nav"><RouterLink to="/account">회원정보</RouterLink><RouterLink to="/orders">주문 내역</RouterLink><RouterLink to="/favorites">찜한 상품</RouterLink></nav>
+    <CheckoutSteps v-if="route.name === 'orders' && route.query.placed" :step="3"/><nav v-if="route.name !== 'account'" class="actions account-nav"><RouterLink to="/account">회원정보</RouterLink><RouterLink to="/orders">주문 내역</RouterLink><RouterLink to="/favorites">찜한 상품</RouterLink></nav>
     <template v-if="route.name === 'account'">
       <MemberDashboard/>
     </template>
     <template v-else-if="route.name === 'favorites'">
       <div v-if="favorites.length" class="product-grid"><ProductCard v-for="product in favorites" :key="product.productId" :product="product"/></div>
       <StatePanel v-else empty="찜한 상품이 없습니다."/>
-    </template>
-    <template v-else-if="route.name === 'checkout'">
-      <StatePanel v-if="!store.checkoutItems.length" empty="장바구니가 비어 있습니다."/>
-      <template v-else>
-        <div v-for="item in store.checkoutItems" :key="item.productId" class="line"><span>{{ item.name }} × {{ item.quantity }}</span><strong>{{ money(item.price * item.quantity) }}</strong></div>
-        <form class="stack form-panel" @submit.prevent="checkout">
-          <label>받는 사람<input v-model="recipient" required autocomplete="name"></label>
-          <label>연락처 (테스트 번호)<input v-model="phone" type="tel" required pattern="[0-9]{10,11}"></label><label>배송지 (테스트 주소)<input v-model="address" required></label>
-          <p class="muted">결제 수단 · Mock 결제</p>
-          <button class="button gold" :disabled="busy">{{ busy ? '처리 중…' : money(store.checkoutTotal) + ' 모의 결제' }}</button>
-        </form>
-      </template>
     </template>
     <template v-else>
       <p v-if="route.query.placed" role="status">모의 결제를 완료했습니다.</p>

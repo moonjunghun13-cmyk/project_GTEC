@@ -48,7 +48,7 @@ function signOut() {
 
 <template>
   <template v-if="route.meta.role !== 'ADMIN'">
-    <header class="site-header" :class="{'intro-header':route.path === '/', 'home-header-solid':route.path === '/' && homeHeaderSolid}">
+    <header class="site-header" :class="{'checkout-header':route.meta.checkout, 'intro-header':route.path === '/', 'home-header-solid':route.path === '/' && homeHeaderSolid}">
       <div class="wrap header-row">
         <RouterLink class="brand" to="/" aria-label="GT전자 홈" @click="scrollHome"><img src="/gt-logo-chrome.png" alt=""></RouterLink>
         <nav class="shop-nav" aria-label="쇼핑 카테고리">

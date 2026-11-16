@@ -1,6 +1,7 @@
 :root{background:#fff}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 .site-header{background:#050506;color:#d2d2d5;border:0;position:sticky;top:0;z-index:5}
+.site-header.checkout-header { position:relative; }
 .site-header .header-row{width:96%;min-height:clamp(72px,7.2vw,150px);gap:clamp(.7rem,1.5vw,2rem);display:grid;grid-template-columns:auto minmax(0,1fr) minmax(90px,12vw) auto}
 .site-header .brand img{width:clamp(70px,7vw,156px);height:auto;display:block}
 .site-header .shop-nav{border:0;gap:clamp(.7rem,1.3vw,2.1rem);padding:.55rem .25rem;font-size:clamp(.78rem,1.16vw,1.65rem);font-weight:650;scrollbar-width:thin;scrollbar-color:#58585d transparent}

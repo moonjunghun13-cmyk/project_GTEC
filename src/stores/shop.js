@@ -9,7 +9,7 @@ function guestCart() {
   } catch { return [] }
 }
 export const useShop = defineStore('shop', {
-  state: () => ({user:null, products:[], categories:[], purposes:[], cart:guestCart(), cartOpen:false, checkoutIds:null, cartNotice:'', lastAdded:'', favorites:[], recentlyViewed:[], busy:true, error:'', authMode:'', afterLogin:null, afterLoginRole:'USER'}),
+  state: () => ({user:null, products:[], categories:[], purposes:[], cart:guestCart(), cartOpen:false, checkoutIds:null, lastCheckout:null, cartNotice:'', lastAdded:'', favorites:[], recentlyViewed:[], busy:true, error:'', authMode:'', afterLogin:null, afterLoginRole:'USER'}),
   getters: {
     role: state => state.user?.role ?? 'GUEST',
     cartItems: state => state.cart.flatMap(line => {
@@ -107,6 +107,6 @@ export const useShop = defineStore('shop', {
       this.favorites = this.favorites.includes(productId)
         ? this.favorites.filter(id => id !== productId) : [...this.favorites,productId]
     },
-    signOut() { this.checkoutIds = null; this.cartOpen = false; this.cartNotice = ''; this.lastAdded = ''; this.user = null; this.cart = guestCart(); this.favorites = []; this.recentlyViewed = []; this.closeAuth() },
+    signOut() { this.lastCheckout = null; this.checkoutIds = null; this.cartOpen = false; this.cartNotice = ''; this.lastAdded = ''; this.user = null; this.cart = guestCart(); this.favorites = []; this.recentlyViewed = []; this.closeAuth() },
   },
 })
