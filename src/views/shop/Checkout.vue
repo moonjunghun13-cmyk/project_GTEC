@@ -15,12 +15,9 @@ const addressOpen = ref(false)
 const savedDelivery = computed(() => store.deliveryAddresses[store.user?.userId] ?? null)
 const paymentGroups = [
   {label:'간편결제', methods:['네이버페이','카카오페이','삼성페이']},
-  {label:'일반결제', methods:['카드','계좌이체','휴대폰 결제']},
+  {label:'일반결제', methods:['카드','휴대폰 결제']},
 ]
 const paymentMethod = ref('카드')
-const cashReceipt = ref(false)
-const cashReceiptType = ref('소득공제')
-const cashReceiptNumber = ref('')
 function saveDelivery(delivery) {
   store.deliveryAddresses[store.user.userId] = delivery
   addressOpen.value = false
@@ -48,16 +45,6 @@ async function pay() {
     address:[saved.address,saved.detail].filter(Boolean).join(' '),
     memo:saved.memo,
   }
-  const receiptRequested = paymentMethod.value === '계좌이체' && cashReceipt.value
-  if (receiptRequested) {
-    const length = cashReceiptNumber.value.replace(/[- ]/g,'').match(/^\d+$/)?.[0].length
-    const valid = cashReceiptType.value === '지출증빙' ? length === 10 : length === 10 || length === 11
-    if (!valid) {
-      error.value = '현금영수증 발급 번호를 확인해 주세요.'
-      return
-    }
-  }
-
   const items = store.checkoutItems.map(({productId,quantity}) => ({productId,quantity}))
   busy.value = true
   try {
@@ -66,7 +53,6 @@ async function pay() {
       orderId:order.orderId,
       total:order.total,
       paymentMethod:paymentMethod.value,
-      cashReceipt:receiptRequested ? cashReceiptType.value : '',
     }
     store.completeCheckout(items)
     await router.replace({name:'checkout-complete'})
@@ -96,7 +82,6 @@ async function pay() {
           <div><dt>주문번호</dt><dd>{{ store.lastCheckout.orderId }}</dd></div>
           <div><dt>결제 금액</dt><dd>{{ money(store.lastCheckout.total) }}</dd></div>
           <div v-if="store.lastCheckout.paymentMethod"><dt>결제 수단</dt><dd>{{ store.lastCheckout.paymentMethod }}</dd></div>
-          <div v-if="store.lastCheckout.cashReceipt"><dt>현금영수증</dt><dd>모의 신청 · {{ store.lastCheckout.cashReceipt }}</dd></div>
         </dl>
       </section>
       <StatePanel v-else empty="이 화면에서 확인할 최근 주문이 없습니다."/>
@@ -143,35 +128,13 @@ async function pay() {
             <p>{{ group.label }}</p>
             <div class="checkout-method-options">
               <label v-for="method in group.methods" :key="method" class="checkout-method">
-                <input v-model="paymentMethod" type="radio" name="payment-method" :value="method" @change="cashReceipt = false; cashReceiptNumber = ''">
+                <input v-model="paymentMethod" type="radio" name="payment-method" :value="method">
                 <span>{{ method }}</span>
               </label>
             </div>
           </div>
         </fieldset>
 
-        <fieldset v-if="paymentMethod === '계좌이체'" class="checkout-cash-receipt" :disabled="busy">
-          <legend>현금영수증</legend>
-          <div class="checkout-cash-options">
-            <label><input v-model="cashReceipt" type="radio" name="cash-receipt" :value="false"> 미신청</label>
-            <label><input v-model="cashReceipt" type="radio" name="cash-receipt" :value="true"> 신청</label>
-          </div>
-          <div v-if="cashReceipt" class="checkout-cash-fields">
-            <label>발급 용도
-              <select v-model="cashReceiptType">
-                <option>소득공제</option>
-                <option>지출증빙</option>
-              </select>
-            </label>
-            <label>{{ cashReceiptType === '소득공제' ? '테스트 휴대폰 번호' : '테스트 사업자등록번호' }}
-              <input v-model="cashReceiptNumber" inputmode="numeric" maxlength="20" required>
-            </label>
-          </div>
-        </fieldset>
-        <section v-else class="checkout-cash-receipt">
-          <h2>현금영수증</h2>
-          <p class="muted">계좌이체를 선택하면 신청할 수 있습니다.</p>
-        </section>
       </div>
 
       <aside class="checkout-payment" aria-labelledby="checkout-total-title">
@@ -214,20 +177,16 @@ async function pay() {
 .checkout-delivery p { margin:0; overflow-wrap:anywhere; }
 .checkout-delivery .checkout-address-add { justify-self:start; gap:8px; }
 .checkout-address-add span { font-size:1.15rem; }
-.checkout-methods,.checkout-cash-receipt { min-width:0; margin:0; padding:0; border:0; }
-.checkout-methods legend,.checkout-cash-receipt legend { padding:0; margin-bottom:12px; font-size:1.2rem; font-weight:750; }
+.checkout-methods { min-width:0; margin:0; padding:0; border:0; }
+.checkout-methods legend { padding:0; margin-bottom:12px; font-size:1.2rem; font-weight:750; }
 .checkout-method-group + .checkout-method-group { margin-top:12px; }
-.checkout-method-group p,.checkout-cash-receipt p { margin:0 0 8px; font-size:.84rem; color:var(--ui-muted); }
+.checkout-method-group p { margin:0 0 8px; font-size:.84rem; color:var(--ui-muted); }
 .checkout-method-options { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
 .checkout-method { position:relative; display:grid; }
 .checkout-method input { position:absolute; inset:0; width:100%; height:100%; margin:0; opacity:0; cursor:pointer; }
 .checkout-method span { display:grid; place-items:center; min-height:44px; padding:6px; text-align:center; border:1px solid var(--ui-border); border-radius:8px; background:var(--ui-surface); }
 .checkout-method input:checked + span { border-color:#92a2b8; background:var(--ui-raised); font-weight:750; box-shadow:inset 0 0 0 1px #92a2b8; }
 .checkout-method input:focus-visible + span { outline:2px solid #92a2b8; outline-offset:2px; }
-.checkout-cash-options { display:flex; flex-wrap:wrap; gap:12px 20px; }
-.checkout-cash-options label { display:flex; align-items:center; gap:6px; min-height:32px; }
-.checkout-cash-fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:10px; }
-.checkout-cash-fields :is(input,select) { display:block; width:100%; min-width:0; margin-top:5px; }
 .checkout-payment,.checkout-receipt { padding:22px; border:1px solid var(--ui-border); border-radius:12px; background:var(--ui-raised); }
 .checkout-payment dl,.checkout-receipt dl { display:grid; gap:10px; margin:0; }
 .checkout-payment dl > div,.checkout-receipt dl > div { display:flex; justify-content:space-between; gap:12px; }
@@ -244,7 +203,6 @@ async function pay() {
   .checkout-layout { grid-template-columns:minmax(0,1fr); }
 }
 @media (max-width:410px) {
-  .checkout-cash-fields { grid-template-columns:minmax(0,1fr); }
   .checkout-items img { width:44px; height:44px; }
 }
 </style>
