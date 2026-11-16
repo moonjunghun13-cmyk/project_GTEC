@@ -9,7 +9,7 @@ function guestCart() {
   } catch { return [] }
 }
 export const useShop = defineStore('shop', {
-  state: () => ({user:null, products:[], categories:[], purposes:[], cart:guestCart(), cartOpen:false, checkoutIds:null, lastCheckout:null, cartNotice:'', lastAdded:'', favorites:[], recentlyViewed:[], busy:true, error:'', authMode:'', afterLogin:null, afterLoginRole:'USER'}),
+  state: () => ({user:null, products:[], categories:[], purposes:[], cart:guestCart(), cartOpen:false, checkoutIds:null, lastCheckout:null, deliveryAddresses:{}, cartNotice:'', lastAdded:'', favorites:[], recentlyViewed:[], busy:true, error:'', authMode:'', afterLogin:null, afterLoginRole:'USER'}),
   getters: {
     role: state => state.user?.role ?? 'GUEST',
     cartItems: state => state.cart.flatMap(line => {

@@ -4,6 +4,7 @@ import { adminSeed } from '../mocks/admin'
 import { withProductDetails } from '../mocks/productDetails'
 import { purposes, purposeTags } from '../mocks/purposes'
 import { faqs } from '../mocks/support'
+import { checkoutAddresses } from '../mocks/checkoutAddresses'
 
 const mode = import.meta.env.VITE_DATA_MODE || 'mock'
 const demo = adminSeed(seed.products)
@@ -30,6 +31,13 @@ function find(rows, key, value) {
 }
 const available = row => !row.deleted && row.selling !== false
 export const shop = {
+  searchAddresses: query => mock(() => {
+    const normalize = value => value.replace(/\s+/g,'').toLowerCase()
+    const term = normalize(query)
+    if (!term) return []
+    return checkoutAddresses.filter(address =>
+      [address.road,address.lot,address.postcode].some(value => normalize(value).includes(term)))
+  }),
   support: () => mock(() => ({faqs,notices:state.notices})),
   inquiries: userId => mock(() => state.inquiries.filter(row => row.userId === userId)),
   inquiry: (userId, {title,body}) => mock(() => {
