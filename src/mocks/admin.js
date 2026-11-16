@@ -22,8 +22,8 @@ export function adminSeed(products) {
   })
   const reviews = history.slice(0,12).map((row,index) => ({
     reviewId:'DEMO-R' + index,userId:'U1',author:'김지우',productId:row.items[0].productId,
-    rating:index % 6 === 0 ? 2 : index % 4 === 0 ? 3 : 5,
-    sentiment:index % 6 === 0 ? '부정' : index % 4 === 0 ? '중립' : '긍정',
+    rating:index % 6 === 0 ? 2 : index % 4 === 0 ? 4 : 5,
+    sentiment:index % 6 === 0 ? '부정' : '긍정',
     body:index % 6 === 0 ? '테스트 리뷰 · 포장 상태가 아쉬워요.' : index % 4 === 0 ? '테스트 리뷰 · 무난하게 사용 중입니다.' : '테스트 리뷰 · 제품과 배송이 만족스러워요.',
   }))
   return {

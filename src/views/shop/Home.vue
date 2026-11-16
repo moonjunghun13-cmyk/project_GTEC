@@ -1,4 +1,5 @@
 <script setup>
+import { featuredProductIds } from '../../mocks/catalog'
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useShop } from '../../stores/shop'
 import { shop } from '../../services'
@@ -13,8 +14,7 @@ const recommended = ref([])
 const badges = {interest:'관심 추천',personal:'맞춤 추천',category:'관심 카테고리 기반',popular:'인기 추천'}
 const busy = ref(false)
 const error = ref('')
-const featuredIds = ['P7','GT-7-4','P10','P9']
-const featured = computed(() => featuredIds.map(id => store.products.find(product => product.productId === id)).filter(Boolean))
+const featured = computed(() => featuredProductIds.map(id => store.products.find(product => product.productId === id)).filter(Boolean))
 let request = 0
 async function load() {
   const current = ++request

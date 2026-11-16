@@ -116,6 +116,7 @@
 .sentiment-overview .eyebrow{margin-bottom:.3rem}
 .sentiment-sample{border:1px solid #d6d7da;border-radius:999px;padding:.35rem .65rem;color:#47484b;background:#f9fafd;font-size:.78rem}
 .sentiment-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.65rem}
+.sentiment-metrics-binary{grid-template-columns:repeat(2,minmax(0,1fr))}
 .sentiment-tone-0{--sentiment-ink:#24573d;--sentiment-fill:#eaf5ed;--sentiment-bar:#468562}
 .sentiment-tone-1{--sentiment-ink:#555659;--sentiment-fill:#edeef1;--sentiment-bar:#8a8b8e}
 .sentiment-tone-2{--sentiment-ink:#843e34;--sentiment-fill:#faefec;--sentiment-bar:#be7567}

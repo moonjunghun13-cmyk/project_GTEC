@@ -19,14 +19,13 @@ const labels = {
   NEGATIVE:'부정',
   긍정:'긍정',
   부정:'부정',
-  중립:'중립',
 }
 export function readReviewSentiment(review) {
   const source = review.sentimentSource === 'mock' ? 'mock' : 'model'
   const analyzedAt = Date.parse(review.sentiment_analyzed_at)
   const updatedAt = Date.parse(review.updated_at)
   const label = Object.hasOwn(labels,review.sentiment) ? labels[review.sentiment] : null
-  if (!label || (label === '중립' && source !== 'mock') || updatedAt > analyzedAt) {
+  if (!label || updatedAt > analyzedAt) {
     return { label:'분석 대기', score:null, source }
   }
 

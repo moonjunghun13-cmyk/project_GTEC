@@ -1,3 +1,5 @@
+import { featuredProductIds } from './catalog'
+
 const examples = {
   '모니터': [
     '게임할 때 화면 전환이 부드럽고 문서의 작은 글씨도 또렷하게 보여요.',
@@ -49,20 +51,56 @@ const examples = {
   ],
 }
 
-const reviewers = ['서유진','정하준','최민서','한지후','이수빈','박현우']
+const reviewers = ['서유진','정하준','최민서','한지후','이수빈','박현우','이지안','김태윤']
 
-export function productReviewExamples(products) {
-  return products.flatMap(({productId,category}, index) => {
+const positiveExamples = [
+  '받자마자 설치해서 며칠 써봤는데 제 환경에서 안정적으로 동작해요.',
+  '전에 쓰던 제품보다 체감이 좋아요. 이번 교체는 만족스럽습니다.',
+  '받은 제품에 흠집이 없고 구성품도 모두 들어 있었어요.',
+  '일주일째 매일 사용 중인데 불편한 점 없이 잘 쓰고 있어요.',
+  '배송 전에 걱정했는데 완충 포장이 꼼꼼해서 깨끗하게 도착했어요.',
+]
+
+const negativeExamples = [
+  '제품은 작동하지만 설명서가 짧아서 처음 설치할 때 헤맸어요.',
+  '박스 모서리가 찌그러져 도착했어요. 포장이 좀 더 튼튼했으면 좋겠어요.',
+  '기대만큼 만족스럽지는 않았어요. 다음에는 다른 제품도 비교해 볼 것 같아요.',
+]
+
+export function productReviewExamples(products, orders) {
+  const completedProducts = new Set(orders
+    .filter(order => order.status === '배송 완료' && !order.request)
+    .flatMap(order => order.items.map(item => item.productId)))
+
+  return products.flatMap(({productId,category,popularity}, index) => {
     const comments = examples[category]
     if (!comments) return []
 
-    return comments.map((body, tone) => ({
-      reviewId:'DEMO-PRODUCT-' + productId + '-' + tone,
+    const bestseller = featuredProductIds.includes(productId) || popularity >= 80
+    const [praise, complaint] = comments
+    const variety = index % 3
+    const samples = []
+    if (bestseller) {
+      const positiveOffset = index % positiveExamples.length
+      const negativeOffset = index % negativeExamples.length
+      const positives = [praise, ...positiveExamples.slice(positiveOffset), ...positiveExamples.slice(0,positiveOffset)]
+      const negatives = [complaint, negativeExamples[negativeOffset]]
+      samples.push(...positives.slice(0,4 + variety).map(body => [body,'긍정']))
+      samples.push(...negatives.slice(0,1 + index % 2).map(body => [body,'부정']))
+    } else if (completedProducts.has(productId) || popularity >= 45) {
+      samples.push([praise,'긍정'],[complaint,'부정'])
+      if (index % 2) samples.push([positiveExamples[index % positiveExamples.length],'긍정'])
+    } else if (variety) {
+      samples.push(variety === 1 ? [praise,'긍정'] : [complaint,'부정'])
+    }
+
+    return samples.map(([body,sentiment], position) => ({
+      reviewId:'DEMO-PRODUCT-' + productId + '-' + position,
       productId,
-      author:reviewers[(index + tone * 3) % reviewers.length],
+      author:reviewers[(index + position) % reviewers.length],
       body,
-      rating:tone === 0 ? 4 + index % 2 : 2 + index % 2,
-      sentiment:tone === 0 ? '긍정' : '부정',
+      rating:sentiment === '긍정' ? 4 + (index + position) % 2 : 2 + (index + position) % 2,
+      sentiment,
     }))
   })
 }

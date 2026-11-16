@@ -97,17 +97,20 @@ const paidToday = computed(() => data.value.orders.filter(row => day(row.date) =
 const sum = rows => rows.reduce((total,row) => total + row.total,0)
 const revenueToday = computed(() => sum(paidToday.value) - sum(data.value.orders.filter(row => row.refundedAt && day(row.refundedAt) === today())))
 const visibleReviews = computed(() => data.value.reviews.filter(row => !row.hidden))
-const sentiments = ['긍정','중립','부정']
-const sentimentCounts = computed(() => sentiments.map(label => visibleReviews.value.filter(row => row.sentiment === label).length))
+const sentiments = [{ label:'긍정', tone:'sentiment-tone-0' }, { label:'부정', tone:'sentiment-tone-2' }]
+const sentimentCounts = computed(() => sentiments.map(({label}) => visibleReviews.value.filter(row => row.sentiment === label).length))
+const analyzedReviewCount = computed(() => sentimentCounts.value.reduce((total,count) => total + count,0))
 const groupedSentiment = computed(() => {
   const groups = new Map()
   for (const row of visibleReviews.value) {
-    const counts = groups.get(row.productId) ?? [0,0,0]
-    const index = sentiments.indexOf(row.sentiment)
-    if (index >= 0) counts[index]++
+    const index = sentiments.findIndex(({label}) => label === row.sentiment)
+    if (index < 0) continue
+    const counts = groups.get(row.productId) ?? [0,0]
+    counts[index]++
     groups.set(row.productId,counts)
   }
-  return [...groups].map(([id,counts]) => ({id,name:productName(id),counts}))
+  return [...groups].map(([id,counts]) => ({id,name:productName(id),counts,total:counts[0]+counts[1]}))
+    .sort((a,b) => b.total - a.total || a.name.localeCompare(b.name,'ko'))
 })
 const trend = computed(() => {
   const grouped = {}
@@ -321,17 +324,17 @@ function remove() {
       <div class="sentiment-overview">
         <header>
           <div><p class="eyebrow">REVIEW INSIGHTS</p><h2>고객 반응 요약</h2></div>
-          <span class="sentiment-sample">공개 리뷰 {{ visibleReviews.length }}건 · Mock</span>
+          <span class="sentiment-sample">분석된 공개 리뷰 {{ analyzedReviewCount }}건 · Mock</span>
         </header>
-        <div class="sentiment-metrics">
-          <article v-for="(label,index) in sentiments" :key="label" :class="'sentiment-tone-'+index">
+        <div class="sentiment-metrics sentiment-metrics-binary">
+          <article v-for="({label,tone},index) in sentiments" :key="label" :class="tone">
             <h3>{{ label }}</h3>
-            <strong>{{ visibleReviews.length ? Math.round(sentimentCounts[index] / visibleReviews.length * 100) : 0 }}%</strong>
+            <strong>{{ analyzedReviewCount ? Math.round(sentimentCounts[index] / analyzedReviewCount * 100) : 0 }}%</strong>
             <span>{{ sentimentCounts[index] }}건</span>
           </article>
         </div>
-        <div v-if="visibleReviews.length" class="sentiment-distribution" aria-hidden="true">
-          <span v-for="(count,index) in sentimentCounts" :key="index" :class="'sentiment-tone-'+index" :style="{flexGrow:count}"></span>
+        <div v-if="analyzedReviewCount" class="sentiment-distribution" aria-hidden="true">
+          <span v-for="(count,index) in sentimentCounts" :key="index" :class="sentiments[index].tone" :style="{flexGrow:count}"></span>
         </div>
         <p v-else class="sentiment-empty">분석할 공개 리뷰가 없습니다.</p>
       </div>
@@ -340,11 +343,12 @@ function remove() {
         <header><div><h2 id="sentiment-products-title">상품별 고객 반응</h2><p>공개 리뷰가 있는 상품 {{ groupedSentiment.length }}개</p></div><RouterLink to="/admin/reviews">리뷰 관리 →</RouterLink></header>
         <div v-if="groupedSentiment.length" class="sentiment-table" tabindex="0" role="region" aria-labelledby="sentiment-products-title">
           <table>
-            <thead><tr><th scope="col">상품</th><th v-for="label in sentiments" :key="label" scope="col">{{ label }}</th></tr></thead>
+            <thead><tr><th scope="col">상품</th><th scope="col">리뷰 수</th><th v-for="{label} in sentiments" :key="label" scope="col">{{ label }}</th></tr></thead>
             <tbody>
               <tr v-for="row in groupedSentiment" :key="row.id">
                 <th scope="row">{{ row.name }}</th>
-                <td v-for="(count,index) in row.counts" :key="index"><span :class="['sentiment-count','sentiment-tone-'+index]">{{ count }}건</span></td>
+                <td>{{ row.total }}건</td>
+                <td v-for="(count,index) in row.counts" :key="index"><span :class="['sentiment-count',sentiments[index].tone]">{{ count }}건</span></td>
               </tr>
             </tbody>
           </table>

@@ -1,6 +1,7 @@
 import { monitorProducts } from './monitorCatalog.js'
 import { ssdProducts, hddProducts } from './storageCatalog.js'
 const baseCategories = ['CPU', '메인보드', '메모리', '그래픽카드', 'SSD', '파워', '케이스', '키보드', '마우스', '스피커']
+export const featuredProductIds = ['P7','GT-7-4','P10','P9']
 export const categories = ['모니터',...baseCategories.flatMap(category => category === 'SSD' ? ['SSD','HDD'] : [category])]
 const rows = [
   ['AMD','Ryzen 7 9800X3D',689000,'8코어 16스레드 · AM5'],
