@@ -22,7 +22,7 @@ const quantity = computed(() => store.checkoutItems.reduce((sum,item) => sum + i
 const unavailable = computed(() => store.checkoutItems.some(item => item.quantity > item.stock))
 
 async function pay() {
-  if (busy.value || unavailable.value || !store.checkoutItems.length) return
+  if (store.role !== 'USER' || busy.value || unavailable.value || !store.checkoutItems.length) return
   error.value = ''
   const delivery = {
     recipient:recipient.value.trim(),
@@ -38,9 +38,7 @@ async function pay() {
   const items = store.checkoutItems.map(({productId,quantity}) => ({productId,quantity}))
   busy.value = true
   try {
-    const order = store.user
-      ? await shop.order(store.user.userId,items,delivery)
-      : await shop.guestOrder(items,delivery)
+    const order = await shop.order(store.user.userId,items,delivery)
     store.lastCheckout = {orderId:order.orderId,total:order.total}
     store.completeCheckout(items)
     await router.replace({name:'checkout-complete'})

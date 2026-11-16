@@ -26,10 +26,13 @@ function quantity(item,event) {
   event.target.value = store.cart.find(row => row.productId === item.productId)?.quantity ?? 0
 }
 function checkout() {
-  if (!chosen.value.length || unavailable.value || store.role === 'ADMIN') return
-  store.checkoutIds = chosen.value.map(item => item.productId)
-  store.cartOpen = false
-  return router.push('/checkout')
+  if (!chosen.value.length || unavailable.value) return
+  const ids = chosen.value.map(item => item.productId)
+  store.requireUser(() => {
+    store.checkoutIds = ids
+    store.cartOpen = false
+    return router.push('/checkout')
+  })
 }
 </script>
 <template>

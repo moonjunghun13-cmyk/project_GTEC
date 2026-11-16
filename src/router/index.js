@@ -16,8 +16,8 @@ export function makeRouter(pinia) {
     {path:'/products/:id',component:Product},
     {path:'/cart',component:Cart},
     {path:'/support',component:() => import('../views/shop/Support.vue')},
-    {path:'/checkout',name:'checkout',component:() => import('../views/shop/Checkout.vue'),meta:{checkout:true}},
-    {path:'/checkout/complete',name:'checkout-complete',component:() => import('../views/shop/Checkout.vue'),meta:{checkout:true}},
+    {path:'/checkout',name:'checkout',component:() => import('../views/shop/Checkout.vue'),meta:{role:'USER',checkout:true}},
+    {path:'/checkout/complete',name:'checkout-complete',component:() => import('../views/shop/Checkout.vue'),meta:{role:'USER',checkout:true}},
     ...[['orders','주문 내역'],['account','마이페이지'],['favorites','찜한 상품']].map(([path,title]) =>
       ({path:'/'+path, name:path, component:Account, meta:{role:'USER',title}})),
     {path:'/admin',component:AdminLayout,meta:{role:'ADMIN'},children:[{path:'sales',redirect:'/admin/customers'},

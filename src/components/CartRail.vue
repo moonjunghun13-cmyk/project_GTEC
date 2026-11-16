@@ -8,8 +8,10 @@ const router = useRouter()
 const route = useRoute()
 function checkout() {
   store.cartOpen = false
-  store.checkoutIds = null
-  return router.push('/checkout')
+  return store.requireUser(() => {
+    store.checkoutIds = null
+    return router.push('/checkout')
+  })
 }
 </script>
 <template>

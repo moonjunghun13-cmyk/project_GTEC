@@ -29,20 +29,6 @@ function find(rows, key, value) {
   return row
 }
 const available = row => !row.deleted && row.selling !== false
-function createOrder(userId,cart,delivery) {
-  if (!delivery.recipient || !delivery.address) throw new Error('배송 정보를 입력해 주세요.')
-  if (!cart.length) throw new Error('장바구니가 비어 있습니다.')
-  const items = cart.map(({productId,quantity}) => {
-    const row = find(state.products,'productId',productId)
-    if (!Number.isInteger(quantity) || quantity < 1 || row.stock < quantity || !available(row)) throw new Error(row.name + '의 재고를 확인해 주세요.')
-    return {productId,quantity,price:row.price,name:row.name,category:row.category,image:row.image}
-  })
-  const order = {orderId:id(),userId,items,delivery,status:'결제 완료',date:new Date().toISOString(),
-    total:items.reduce((sum,row) => sum + row.price * row.quantity,0)}
-  for (const row of items) find(state.products,'productId',row.productId).stock -= row.quantity
-  state.orders.unshift(order)
-  return order
-}
 export const shop = {
   support: () => mock(() => ({faqs,notices:state.notices})),
   inquiries: userId => mock(() => state.inquiries.filter(row => row.userId === userId)),
@@ -100,10 +86,20 @@ export const shop = {
   order: (userId, cart, delivery) => mock(() => {
     const buyer = find(state.users,'userId',userId)
     if (buyer.role !== 'USER' || ['정지','비활성'].includes(buyer.status)) throw new Error('주문할 수 없는 계정입니다.')
-    return createOrder(userId,cart,delivery)
+    if (!delivery.recipient || !delivery.address) throw new Error('배송 정보를 입력해 주세요.')
+    if (!cart.length) throw new Error('장바구니가 비어 있습니다.')
+    const items = cart.map(({productId,quantity}) => {
+      const row = find(state.products,'productId',productId)
+      if (!Number.isInteger(quantity) || quantity < 1 || row.stock < quantity || !available(row)) throw new Error(row.name + '의 재고를 확인해 주세요.')
+      return {productId,quantity,price:row.price,name:row.name,category:row.category,image:row.image}
+    })
+    const order = {orderId:id(),userId,items,delivery,status:'결제 완료',date:new Date().toISOString(),
+      total:items.reduce((sum,row) => sum + row.price * row.quantity,0)}
+    for (const row of items) find(state.products,'productId',row.productId).stock -= row.quantity
+    state.orders.unshift(order)
+    return order
   }),
-  guestOrder: (cart,delivery) => mock(() => createOrder(null,cart,delivery)),
-  orders: (userId) => mock(() => userId ? state.orders.filter(row => row.userId === userId) : []),
+  orders: (userId) => mock(() => state.orders.filter(row => row.userId === userId)),
   // Temporary member overview model; no backend response contract is implied.
   memberSummary: userId => mock(() => ({
     orders:state.orders.filter(row => row.userId === userId),

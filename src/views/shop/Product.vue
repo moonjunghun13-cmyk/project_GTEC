@@ -79,12 +79,13 @@ watch(() => [store.role,product.value?.productId], ([role,productId]) => {
   if (role === 'USER' && productId) store.recordView(productId)
 },{immediate:true})
 function buy() {
-  if (store.role === 'ADMIN' || !product.value.stock) return
   const productId = product.value.productId
-  store.quantity(productId,selected.value)
-  store.checkoutIds = [productId]
-  store.cartOpen = false
-  return router.push('/checkout')
+  const quantity = selected.value
+  store.requireUser(() => {
+    store.quantity(productId,quantity)
+    store.checkoutIds = [productId]
+    return router.push('/checkout')
+  })
 }
 </script>
 <template>
