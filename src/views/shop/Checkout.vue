@@ -45,7 +45,7 @@ function openPayment() {
   pendingPayment.value = {method:paymentMethod.value,total:store.checkoutTotal}
 }
 async function startTossPayment() {
-  if (store.role !== 'USER' || busy.value || tossOpen.value || unavailable.value || !store.checkoutItems.length) return
+  if (!tossTestConfigured || store.role !== 'USER' || busy.value || tossOpen.value || unavailable.value || !store.checkoutItems.length) return
   tossError.value = ''
   paymentNotice.value = ''
   if (!savedDelivery.value) {
@@ -214,7 +214,8 @@ async function pay(outcome) {
         <p v-if="paymentNotice" class="checkout-note" role="status">{{ paymentNotice }}</p>
         <p v-if="tossError" class="error" role="alert">{{ tossError }}</p>
         <button type="submit" class="button" :disabled="busy || unavailable || tossOpen">{{ busy ? '처리 중…' : '모의 결제하기' }}</button>
-        <button v-if="tossTestConfigured" type="button" class="button toss-test-button" :disabled="busy || unavailable || tossOpen" @click="startTossPayment">{{ tossOpen ? '토스 결제창 열림…' : '토스 테스트 결제' }}</button>
+        <button type="button" class="button toss-test-button" :disabled="!tossTestConfigured || busy || unavailable || tossOpen" :aria-describedby="tossTestConfigured ? undefined : 'toss-test-status'" @click="startTossPayment">{{ tossOpen ? '토스 결제창 열림…' : '토스페이먼츠 테스트 결제' }}</button>
+        <p v-if="!tossTestConfigured" id="toss-test-status" class="checkout-note toss-test-status">테스트 키를 설정하면 토스페이먼츠 결제창을 열 수 있어요.</p>
       </aside>
     </form>
     <CheckoutPaymentDialog v-if="pendingPayment" :method="pendingPayment.method" :total="pendingPayment.total" :busy="busy" :error="error" @approve="pay" @close="cancelPayment"/>
@@ -265,6 +266,7 @@ async function pay(outcome) {
 .checkout-note { color:var(--ui-muted); font-size:.8rem; line-height:1.55; margin:14px 0; }
 .checkout-payment .button { width:100%; min-height:46px; background:#dce5f0; border-color:#aab8cc; color:#182231; }
 .checkout-payment .toss-test-button { margin-top:8px; background:var(--ui-surface); color:var(--ui-text); }
+.toss-test-status { margin:8px 0 0; }
 .checkout-payment .button:hover:not(:disabled) { background:#edf3fb; color:#182231; }
 .checkout-receipt { max-width:560px; }
 .checkout-links { margin-top:18px; }

@@ -113,7 +113,7 @@ Storage mock models now expose `lifestyle: [{label,image}]` separately from orig
 
 ## 토스페이먼츠 결제창형 테스트
 
-- 프론트엔드 `.env.local`에 `VITE_TOSS_WIDGET_CLIENT_KEY=test_gck_...`를 설정하고 Vite를 다시 시작합니다. 회원 주문서에서 배송지를 저장한 뒤 **토스 테스트 결제**를 누릅니다. 키를 설정하지 않은 환경은 기존 Mock 결제 버튼으로 테스트합니다.
+- 프론트엔드 `.env.local`에 `VITE_TOSS_WIDGET_CLIENT_KEY=test_gck_...`를 설정하고 Vite를 다시 시작합니다. 회원 주문서에서 배송지를 저장한 뒤 **결제 요약 → 토스페이먼츠 테스트 결제**를 누릅니다. 키를 설정하지 않으면 토스페이먼츠 버튼이 비활성화되며 기존 Mock 결제를 사용할 수 있습니다.
 - 테스트 상점에서 결제수단과 약관 UI 키를 따로 설정한 경우 `VITE_TOSS_PAYMENT_VARIANT`, `VITE_TOSS_AGREEMENT_VARIANT`를 지정합니다. 기본값은 `DEFAULT`, `AGREEMENT`입니다. 토스 결제창에 표시하는 결제수단은 해당 variant 설정에서 관리합니다. 결제창에서 계좌이체 항목도 숨기려면 variant에서 제외합니다.
 - SDK는 결제창을 열 때 로드합니다. 성공·실패 콜백은 `/checkout/toss/success`, `/checkout/toss/fail`입니다. 콜백에서 브라우저의 테스트 요청 번호와 금액을 확인해 인증 결과를 표시합니다. 서버에서 주문과 금액을 검증하고 결제를 승인하는 단계가 완료될 때까지 주문을 확정하지 않습니다.
 - `VITE_*`에는 공개 테스트 클라이언트 키만 사용합니다. 승인용 시크릿 키는 서버의 환경 변수에서 관리합니다. [토스페이먼츠 결제창형 가이드](https://docs.tosspayments.com/guides/v2/payment-widget/integration-window)

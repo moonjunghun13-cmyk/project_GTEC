@@ -144,9 +144,25 @@ function buy() {
     <section v-show="activeTab === 'product-reviews'" id="product-reviews" role="tabpanel" aria-labelledby="product-reviews-tab" tabindex="0">
       <div class="section-head product-reviews-heading"><h2>구매 리뷰</h2></div>
       <StatePanel v-if="busy || error || !reviews.length" :busy="busy" :error="error" empty="아직 등록된 리뷰가 없습니다." @retry="load"/>
-      <article v-for="review in busy || error ? [] : reviews" :key="review.reviewId" class="review"><strong>{{ review.author }} · {{ review.rating }}/5</strong><p>{{ review.body }}</p><span class="badge">AI 감정분석 (Mock) · {{ review.sentiment }}</span></article>
+      <article v-for="review in busy || error ? [] : reviews" :key="review.reviewId" class="review">
+        <div class="review-heading">
+          <strong>{{ review.author }}</strong>
+          <span class="review-score" aria-hidden="true">
+            <span v-for="star in 5" :key="star">{{ star <= review.rating ? '★' : '☆' }}</span>
+          </span>
+          <span class="review-score-value">{{ review.rating }}/5점</span>
+        </div>
+        <p>{{ review.body }}</p>
+        <span class="badge">AI 감정분석 (Mock) · {{ review.sentiment }}</span>
+      </article>
     </section>
   </section>
   <StatePanel v-else empty="상품을 찾을 수 없습니다."/>
   <CartAddedDialog v-if="added" :product="added.product" :quantity="added.quantity" @close="added = null"/>
 </template>
+
+<style scoped>
+.review-heading { display:flex; flex-wrap:wrap; align-items:center; gap:4px 10px; }
+.review-score { display:inline-flex; gap:2px; color:var(--ui-text); font-size:1.15rem; line-height:1.2; }
+.review-score-value { color:var(--ui-muted); font-size:.85rem; font-variant-numeric:tabular-nums; }
+</style>
