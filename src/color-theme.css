@@ -139,12 +139,13 @@
 /* Home cards glow around their rounded artwork, never around a square text box. */
 :root[data-theme=dark] .home-section .product-card:is(:hover,:focus-within){box-shadow:none;border-color:transparent}
 :root[data-theme=dark] .home-section .product-card::after{content:none}
-:root[data-theme=dark] .home-section :is(.product-card .product-art,.featured-buy-card .feature-photo){transition:border-color .25s ease,box-shadow .25s ease}
+:root[data-theme] .home-section :is(.product-card .product-art,.featured-buy-card .feature-photo){transition:border-color .25s ease,box-shadow .25s ease}
 :root[data-theme=dark] .home-section :is(.product-card,.featured-buy-card):is(:hover,:focus-within) :is(.product-art,.feature-photo){border-color:#e0e8f4;box-shadow:0 0 0 1px #e5edf78c,0 0 30px #d2ddeb66,0 12px 32px #0005}
-:root[data-theme=dark] .home-section .featured-buy-card{transition:transform .25s ease}
-:root[data-theme=dark] .home-section .featured-buy-card:is(:hover,:focus-within){transform:translateY(-4px)}
+:root[data-theme] .home-section .featured-buy-card,:root[data-theme=light] .home-section .product-card{transition:transform .25s ease}
+:root[data-theme] .home-section .featured-buy-card:is(:hover,:focus-within),:root[data-theme=light] .home-section .product-card:is(:hover,:focus-within){transform:translateY(-4px)}
+:root[data-theme=light] .home-section :is(.product-card,.featured-buy-card):is(:hover,:focus-within) :is(.product-art,.feature-photo){border-color:#9aa7bd;box-shadow:0 0 0 1px #bbc8dcc4,0 0 26px #95b4df66,0 12px 28px #52698530}
 :root[data-theme] .home-section .card-body>p{font-size:clamp(.8rem,.95vw,1rem);line-height:1.6;margin-bottom:.75rem;overflow-wrap:anywhere}
-@media(prefers-reduced-motion:reduce){:root[data-theme=dark] .home-section :is(.product-art,.feature-photo,.featured-buy-card){transition:none}:root[data-theme=dark] .home-section .featured-buy-card:is(:hover,:focus-within){transform:none}}
+@media(prefers-reduced-motion:reduce){:root[data-theme] .home-section :is(.product-art,.feature-photo,.product-card,.featured-buy-card){transition:none}:root[data-theme] .home-section :is(.product-card,.featured-buy-card):is(:hover,:focus-within){transform:none}}
 
 /* Mini-cart foregrounds are explicit for every dark surface and light control. */
 :root[data-theme=dark] .cart-rail-items>article>a{color:#f1f4f8}

@@ -67,7 +67,7 @@
 :root[data-theme="dark"] .operations-board .board-search input::placeholder{color:#b6c2d4}
 :root[data-theme="dark"] .operations-board .board-search-empty{color:#c5cedd}
 
-/* Match row height to the visible records; longer tables scroll within their own width. */
+/* Keep the dashboard controls compact and use scrollable previews for long lists. */
 .admin-layout:has(.reference-dashboard) .admin-content { padding:16px 22px 20px; }
 .reference-kpis>article,.reference-kpis>a { padding:.55rem .7rem; }
 .reference-kpis>article>div,.reference-kpis>a>div { gap:.15rem; }
@@ -78,12 +78,37 @@
 .board-table :is(th,td) { padding:.25rem; }
 .board-products img { width:18px; height:18px; }
 .board-help { margin:0; padding:.22rem .3rem; }
+.board-table { max-height:210px; overflow:auto; overscroll-behavior:contain; scrollbar-width:thin; }
+.board-table thead,.sentiment-table thead { position:sticky; top:0; z-index:1; }
+.board-table:focus-visible,.sentiment-table:focus-visible { outline:2px solid #8797ad; outline-offset:-2px; }
+
 @media(min-width:1120px) {
+  .admin-content:has(.reference-dashboard,.customer-analysis,.sentiment-report) {
+    display:flex;
+    flex-direction:column;
+  }
+  .admin-content:has(.reference-dashboard,.customer-analysis,.sentiment-report) > :is(.reference-heading,.ops-page-title) {
+    flex:none;
+  }
+  .reference-dashboard.ops-dashboard { display:flex; flex:1; gap:.7rem; }
+  .reference-kpis { flex:none; }
   .operations-board {
     grid-template-columns:minmax(0,1.2fr) minmax(0,1.2fr) minmax(185px,.85fr);
-    grid-template-areas:"trend trend faq" "products orders notices" "members reviews notices";
-    grid-template-rows:minmax(150px,auto) auto auto;
+    grid-template-areas:"trend trend trend" "products orders faq" "members reviews notices";
+    --trend-min-height:155px;
+    --preview-min-height:160px;
+    grid-template-rows:minmax(var(--trend-min-height),1.15fr) repeat(2,minmax(var(--preview-min-height),1fr));
+    min-height:calc(var(--trend-min-height) + 2 * var(--preview-min-height) + 2 * .65rem);
+    flex:1;
   }
+  .operations-board > :is(.board-products,.board-orders,.board-members,.board-reviews) {
+    display:flex;
+    flex-direction:column;
+  }
+  .operations-board :is(.board-faq,.board-notices) { overflow:auto; }
+  .operations-board :is(header,.board-search,.board-help) { flex:none; }
+  .board-table { flex:1; min-height:0; max-height:none; }
+  .board-faq details { padding-block:.5rem; }
 }
 @media(max-width:640px) {
   .admin-layout:has(.reference-dashboard) .admin-content { padding:12px; }

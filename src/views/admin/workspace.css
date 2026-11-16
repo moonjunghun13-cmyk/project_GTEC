@@ -199,3 +199,28 @@
 .sentiment-overview header,.sentiment-products header { margin-bottom:10px; }
 .sentiment-metrics article { padding:10px 12px; }
 .sentiment-products :is(th,td) { padding-block:8px; }
+
+.sentiment-table {
+  overflow:auto;
+  scrollbar-width:thin;
+  overscroll-behavior:contain;
+}
+:root[data-theme="dark"] :is(.sentiment-overview,.sentiment-products) {
+  background:var(--ui-surface);
+  color:var(--ui-text);
+  border-color:var(--ui-border);
+}
+:root[data-theme="dark"] .sentiment-products thead { background:var(--ui-raised); color:var(--ui-text); }
+:root[data-theme="dark"] .sentiment-products :is(th,td) { border-color:var(--ui-border); }
+:root[data-theme="dark"] .sentiment-report :is(.sentiment-empty,.sentiment-products header p,.sentiment-products header a) { color:var(--ui-muted); }
+
+@media(min-width:1120px) {
+  .sentiment-report {
+    flex:1;
+    min-height:0;
+    grid-template-rows:auto minmax(165px,1fr);
+  }
+  .sentiment-products { display:flex; flex-direction:column; min-height:0; }
+  .sentiment-products header { flex:none; }
+  .sentiment-table { flex:1; min-height:0; }
+}
