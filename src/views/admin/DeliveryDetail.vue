@@ -64,11 +64,11 @@ async function save() {
 <template>
   <StatePanel v-if="loading || loadError" :busy="loading" :error="loadError" @retry="load"/>
   <section v-else-if="order" class="delivery-page">
-    <header class="delivery-title"><div><h1>배송 상세</h1><p>주문의 배송 정보와 수령인 정보를 확인하고 관리하세요.</p></div><div class="actions"><RouterLink class="button" to="/admin/shipping">← 목록으로</RouterLink><button class="button gold" :disabled="busy || locked" @click="save">배송 정보 저장</button></div></header>
+    <header class="delivery-title admin-page-heading"><div class="admin-page-label"><span class="admin-page-symbol"><AdminIcon name="truck"/></span><h1>배송 상세</h1></div><div class="actions"><RouterLink class="button" to="/admin/shipping">← 목록으로</RouterLink><button class="button gold" :disabled="busy || locked" @click="save">배송 정보 저장</button></div></header>
     <div class="delivery-summary">
       <div><AdminIcon name="orders"/><span>주문번호<strong>{{ order.orderId }}</strong></span></div>
       <div><AdminIcon name="truck"/><span>배송번호<strong>{{ order.shipmentId || '미배정' }}</strong></span></div>
-      <div><AdminIcon name="bolt"/><span>배송 상태<strong class="delivery-state">{{ order.status }}</strong></span></div>
+      <div><AdminIcon name="bolt"/><span>배송 상태<strong class="delivery-state ops-status" :data-status="order.status">{{ order.status }}</strong></span></div>
       <div><AdminIcon name="notices"/><span>주문일시<strong>{{ timestamp(order.date) }}</strong></span></div>
       <div><AdminIcon name="reviews"/><span>최종 수정<strong>{{ timestamp(order.shippingUpdatedAt || order.date) }}</strong></span></div>
     </div>
@@ -79,7 +79,7 @@ async function save() {
           <div class="delivery-totals"><span>상품금액 합계<strong>{{ money(total) }}</strong></span><span>배송비<strong>{{ money(order.shippingFee || 0) }}</strong></span><span>총 결제금액<strong>{{ money(order.total) }}</strong></span></div>
         </article>
         <article class="delivery-panel"><h2><AdminIcon name="truck"/>배송 진행 상태</h2>
-          <ol class="delivery-steps"><li v-for="(step,index) in steps" :key="step" :class="{complete:index <= currentStep,active:index === currentStep}"><span>{{ index < currentStep ? '✓' : index+1 }}</span>{{ step === '결제 완료' ? '주문 확인' : step }}</li></ol>
+          <ol class="delivery-steps"><li v-for="(step,index) in steps" :key="step" :class="{complete:index <= currentStep,active:index === currentStep}" :aria-current="index === currentStep ? 'step' : undefined"><span>{{ index < currentStep ? '✓' : index+1 }}</span>{{ step === '결제 완료' ? '주문 확인' : step }}</li></ol>
           <p v-if="locked" class="delivery-alert">{{ order.request || order.status }} · 배송 상태를 변경할 수 없습니다.</p>
           <ol class="delivery-history"><li><time>{{ timestamp(order.date) }}</time><strong>주문 생성 · 결제 완료</strong></li><li v-for="(entry,index) in order.shippingHistory || []" :key="index"><time>{{ timestamp(entry.date) }}</time><strong>{{ entry.status }} · {{ entry.message }}</strong></li></ol>
         </article>
