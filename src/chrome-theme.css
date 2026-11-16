@@ -91,7 +91,11 @@
 :root .site-header .header-row{width:min(89%,2200px);margin-inline:auto;gap:clamp(12px,1.3vw,26px);min-height:clamp(90px,7.2vw,140px)}
 :root .site-header .brand{display:flex;align-items:center;justify-content:center;justify-self:start;margin:0;padding:10px 0;flex-shrink:0}
 :root .site-header .brand img{width:clamp(108px,8.4vw,176px);height:auto;max-width:none;object-fit:contain}
-:root .site-header .shop-nav{font-size:clamp(12px,1.05vw,20px);column-gap:clamp(3px,.5vw,12px)}
+:root .site-header .shop-nav{font-size:clamp(16px,1.28vw,23px);column-gap:clamp(4px,.45vw,10px)}
+@media(min-width:1251px){
+  :root .site-header .shop-nav{justify-content:space-between}
+  :root .site-header .shop-nav a{padding-inline:clamp(4px,.35vw,8px)}
+}
 @media(max-width:850px){:root .site-header .header-row{width:calc(100% - 32px);min-height:0;padding-top:8px}:root .site-header .brand{padding:4px 0}:root .site-header .brand img{width:92px}:root .site-header .shop-nav{font-size:12px}}
 @media(max-width:520px){:root .site-header .header-row{gap:8px 12px}:root .site-header .brand img{width:86px}}
 /* Reveal images together with their sections; image files, colors and thumbnail styling stay intact. */

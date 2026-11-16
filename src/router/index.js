@@ -17,6 +17,7 @@ export function makeRouter(pinia) {
     {path:'/cart',component:Cart},
     {path:'/support',component:() => import('../views/shop/Support.vue')},
     {path:'/checkout',name:'checkout',component:() => import('../views/shop/Checkout.vue'),meta:{role:'USER',checkout:true}},
+    {path:'/checkout/toss/:result(success|fail)',component:() => import('../views/shop/TossCheckoutResult.vue')},
     {path:'/checkout/complete',name:'checkout-complete',component:() => import('../views/shop/Checkout.vue'),meta:{role:'USER',checkout:true}},
     ...[['orders','주문 내역'],['account','마이페이지'],['favorites','찜한 상품']].map(([path,title]) =>
       ({path:'/'+path, name:path, component:Account, meta:{role:'USER',title}})),

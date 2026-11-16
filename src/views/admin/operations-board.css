@@ -66,3 +66,25 @@
 :root[data-theme="dark"] .operations-board .board-search{background:#202630;border-color:#465264;color:#f1f5fc}
 :root[data-theme="dark"] .operations-board .board-search input::placeholder{color:#b6c2d4}
 :root[data-theme="dark"] .operations-board .board-search-empty{color:#c5cedd}
+
+/* Match row height to the visible records; longer tables scroll within their own width. */
+.admin-layout:has(.reference-dashboard) .admin-content { padding:16px 22px 20px; }
+.reference-kpis>article,.reference-kpis>a { padding:.55rem .7rem; }
+.reference-kpis>article>div,.reference-kpis>a>div { gap:.15rem; }
+.operations-board .reference-panel { padding:.55rem .65rem; }
+.operations-board .reference-panel header { margin-bottom:.35rem; }
+.operations-board .board-search { padding:.15rem .4rem; }
+.operations-board .board-search input { height:23px; min-height:23px; }
+.board-table :is(th,td) { padding:.25rem; }
+.board-products img { width:18px; height:18px; }
+.board-help { margin:0; padding:.22rem .3rem; }
+@media(min-width:1120px) {
+  .operations-board {
+    grid-template-columns:minmax(0,1.2fr) minmax(0,1.2fr) minmax(185px,.85fr);
+    grid-template-areas:"trend trend faq" "products orders notices" "members reviews notices";
+    grid-template-rows:minmax(150px,auto) auto auto;
+  }
+}
+@media(max-width:640px) {
+  .admin-layout:has(.reference-dashboard) .admin-content { padding:12px; }
+}

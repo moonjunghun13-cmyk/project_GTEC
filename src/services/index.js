@@ -16,7 +16,7 @@ for (const order of state.orders) {
   }
 }
 const id = () => crypto.randomUUID()
-const publicUser = ({ password, ...user }) => user
+const publicUser = ({ password, ...user }) => ({...user,hasPassword:Boolean(password)})
 
 // Internal mock objects are temporary UI models, not backend response schemas.
 async function mock(operation) {
@@ -30,6 +30,11 @@ function find(rows, key, value) {
   return row
 }
 const available = row => !row.deleted && row.selling !== false
+export const checkoutPaymentGroups = [
+  {label:'간편결제', methods:['네이버페이','카카오페이','삼성페이']},
+  {label:'일반결제', methods:['카드','휴대폰 결제']},
+]
+
 export const shop = {
   searchAddresses: query => mock(() => {
     const normalize = value => value.replace(/\s+/g,'').toLowerCase()
@@ -86,23 +91,36 @@ export const shop = {
     state.users.push(user)
     return publicUser(user)
   }),
-  profile: (userId, {name,email}) => mock(() => {
+  profile: (userId, {name,email,username}) => mock(() => {
     if (!name || !email) throw new Error('회원정보를 확인해 주세요.')
     if (state.users.some(row => row.email === email && row.userId !== userId)) throw new Error('이미 등록된 이메일입니다.')
-    return publicUser(Object.assign(find(state.users,'userId',userId), {name,email}))
+    if (username && !/^[a-z0-9]{4,20}$/.test(username)) throw new Error('아이디는 영문과 숫자 4~20자로 입력해 주세요.')
+    if (username && state.users.some(row => row.username === username && row.userId !== userId)) throw new Error('이미 등록된 아이디입니다.')
+    return publicUser(Object.assign(find(state.users,'userId',userId), {name,email,username}))
   }),
-  order: (userId, cart, delivery) => mock(() => {
+  changePassword: (userId, current, next) => mock(() => {
+    const user = find(state.users,'userId',userId)
+    if (user.role !== 'USER') throw new Error('비밀번호를 변경할 수 없는 계정입니다.')
+    if (user.password && user.password !== current) throw new Error('현재 비밀번호가 일치하지 않습니다.')
+    if (typeof next !== 'string' || next.length < 8 || next.length > 20) throw new Error('새 비밀번호는 8~20자로 입력해 주세요.')
+    user.password = next
+    return publicUser(user)
+  }),
+  order: (userId, cart, delivery, payment) => mock(() => {
     const buyer = find(state.users,'userId',userId)
     if (buyer.role !== 'USER' || ['정지','비활성'].includes(buyer.status)) throw new Error('주문할 수 없는 계정입니다.')
     if (!delivery.recipient || !delivery.address) throw new Error('배송 정보를 입력해 주세요.')
     if (!cart.length) throw new Error('장바구니가 비어 있습니다.')
+    if (!checkoutPaymentGroups.some(group => group.methods.includes(payment.method))) throw new Error('결제 수단을 확인해 주세요.')
+    if (payment.outcome !== 'approve') throw new Error('모의 결제가 거절되었습니다. 다시 승인하거나 다른 결제수단을 선택해 주세요.')
     const items = cart.map(({productId,quantity}) => {
       const row = find(state.products,'productId',productId)
       if (!Number.isInteger(quantity) || quantity < 1 || row.stock < quantity || !available(row)) throw new Error(row.name + '의 재고를 확인해 주세요.')
       return {productId,quantity,price:row.price,name:row.name,category:row.category,image:row.image}
     })
-    const order = {orderId:id(),userId,items,delivery,status:'결제 완료',date:new Date().toISOString(),
-      total:items.reduce((sum,row) => sum + row.price * row.quantity,0)}
+    const total = items.reduce((sum,row) => sum + row.price * row.quantity,0)
+    if (total !== payment.total) throw new Error('결제 금액이 바뀌었습니다. 상품과 금액을 다시 확인해 주세요.')
+    const order = {orderId:id(),userId,items,delivery,total,paymentMethod:payment.method,status:'결제 완료',date:new Date().toISOString()}
     for (const row of items) find(state.products,'productId',row.productId).stock -= row.quantity
     state.orders.unshift(order)
     return order

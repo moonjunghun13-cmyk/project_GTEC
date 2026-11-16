@@ -78,3 +78,15 @@
 .admin-layout .delivery-page .delivery-steps .active span{background:linear-gradient(140deg,#536170,#27313c);color:#fff;border-color:#536170;box-shadow:0 0 0 5px #edf0f4}
 .admin-layout .delivery-page .delivery-note{color:#566371;border:1px solid #e1e6ed;background:#f1f4f7}
 .admin-layout .delivery-page .delivery-alert{color:#566371;background:#f1f4f7}
+
+.delivery-title { gap:8px 14px; margin-bottom:12px; }
+.delivery-summary { padding:9px 8px; margin-bottom:12px; }
+.delivery-summary strong { margin-top:3px; }
+.delivery-columns { gap:12px; }
+.delivery-panel { padding:12px 14px; }
+.delivery-page .delivery-panel h2 { padding-bottom:8px; margin-bottom:10px; }
+.delivery-table :is(th,td) { padding-block:6px; }
+.delivery-table img { width:40px; height:40px; }
+.delivery-fields :is(dt,dd) { padding-block:5px; }
+.delivery-page .delivery-form { gap:8px; }
+.delivery-history li { padding-block:6px; }

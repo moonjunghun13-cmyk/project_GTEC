@@ -5,17 +5,13 @@ import { useShop } from '../../stores/shop'
 import { money, dateLabel } from '../../utils'
 import StatePanel from '../../components/StatePanel.vue'
 import ProductCard from '../../components/ProductCard.vue'
+import MemberProfile from './MemberProfile.vue'
 import './member-dashboard.css'
 
 const store = useShop()
 const data = ref({orders:[],reviewCount:0,inquiryCount:0})
 const loading = ref(true)
 const loadError = ref('')
-const name = ref('')
-const email = ref('')
-const busy = ref(false)
-const error = ref('')
-const notice = ref('')
 const profileOpen = ref(false)
 const recommended = ref([])
 const recommending = ref(false)
@@ -46,8 +42,6 @@ async function load() {
   finally { if (current === request) loading.value = false }
 }
 watch(() => store.user?.userId, () => {
-  name.value = store.user?.name || ''
-  email.value = store.user?.email || ''
   if (store.user) load()
 },{immediate:true})
 const recent = computed(() => [...data.value.orders].sort((a,b) => new Date(b.date)-new Date(a.date)).slice(0,3))
@@ -55,27 +49,14 @@ const stages = ['결제 완료','배송 준비','배송 중','배송 완료']
 const preview = computed(() => store.products.filter(p => store.favorites.includes(p.productId)).slice(0,3))
 const provider = computed(() => ({kakao:'카카오',naver:'네이버',google:'구글'}[store.user?.socialProvider] || '이메일'))
 const image = item => store.products.find(p => p.productId === item.productId)?.image || item.image
-async function save() {
-  if (busy.value) return
-  busy.value = true; error.value = ''; notice.value = ''
-  const userId = store.user.userId
-  try {
-    const updated = await shop.profile(userId,{name:name.value.trim(),email:email.value.trim().toLowerCase()})
-    if (store.user?.userId === userId) { store.user = updated; notice.value = '회원정보를 저장했습니다.' }
-  } catch(e) { error.value = e.message }
-  finally { busy.value = false }
-}
 </script>
 <template>
   <div class="member-dashboard">
     <section class="member-welcome">
       <div class="member-identity"><div class="member-monogram" aria-hidden="true"><img src="/gt-logo-chrome.png" alt=""></div><div><p>YOUR NEXT LEVEL STARTS HERE</p><h2>{{ store.user?.name }}<span>님의 쇼핑 공간</span></h2><small>{{ provider }} 로그인 · GT MEMBER</small></div></div>
-      <button class="member-edit" @click="profileOpen = !profileOpen" :aria-expanded="profileOpen" aria-controls="member-profile">회원정보 수정 <span aria-hidden="true">↗</span></button>
+      <button class="member-edit" @click="profileOpen = !profileOpen" :aria-expanded="profileOpen" aria-controls="member-profile">회원정보 확인·수정 <span aria-hidden="true">↗</span></button>
     </section>
-    <section v-if="profileOpen" id="member-profile" class="member-profile">
-      <div class="member-section-head"><h2>회원정보 수정</h2><button @click="profileOpen=false" aria-label="회원정보 수정 닫기">닫기 ×</button></div>
-      <form class="member-profile-form" @submit.prevent="save"><label>이름<input v-model="name" required maxlength="50" autocomplete="name"></label><label>이메일<input v-model="email" type="email" required autocomplete="email"></label><button :disabled="busy">{{ busy ? '저장 중…' : '변경사항 저장' }}</button><p>현재 실행 중인 Mock 환경에 반영됩니다.</p><p v-if="error" class="error" role="alert">{{ error }}</p><p v-if="notice" role="status">{{ notice }}</p></form>
-    </section>
+    <MemberProfile v-if="profileOpen" @close="profileOpen = false"/>
     <StatePanel v-if="loading || loadError" :busy="loading" :error="loadError" @retry="load"/>
     <template v-else>
       <section class="member-overview" aria-label="나의 쇼핑 현황">

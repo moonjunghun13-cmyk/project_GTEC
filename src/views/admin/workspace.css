@@ -193,3 +193,9 @@
   .dashboard-action-strip{flex:none;margin-top:.65rem}
   .dashboard-action-strip a{padding:.5rem .7rem}
 }
+
+.sentiment-report { gap:12px; }
+.sentiment-overview,.sentiment-products { padding:12px 16px; }
+.sentiment-overview header,.sentiment-products header { margin-bottom:10px; }
+.sentiment-metrics article { padding:10px 12px; }
+.sentiment-products :is(th,td) { padding-block:8px; }

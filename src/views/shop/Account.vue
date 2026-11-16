@@ -90,6 +90,7 @@ function saveReview(item) {
         <article v-for="order in orders" :key="order.orderId" class="review">
           <strong>{{ dateLabel(order.date) }} · {{ order.status }} · {{ money(order.total) }}</strong>
           <p v-for="item in order.items" :key="item.productId">{{ item.name }} × {{ item.quantity }}</p>
+          <p v-if="order.paymentMethod">결제 수단 · {{ order.paymentMethod }}</p>
           <p v-if="order.tracking">운송장 {{ order.tracking }}</p>
           <p v-if="order.request">{{ order.request }}</p>
           <button v-if="!order.request && ['결제 완료','배송 준비','배송 완료'].includes(order.status)" class="button" :disabled="busy" @click="requestOrder(order.orderId)">{{ order.status === '배송 완료' ? '반품 요청' : '취소 요청' }}</button>
