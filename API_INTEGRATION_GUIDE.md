@@ -16,6 +16,43 @@ Node.js 24 환경에서 `npm ci` 후 `npm run dev`를 실행합니다. `npm run 
 
 비회원 장바구니는 탭의 sessionStorage에 임시 저장합니다. 나머지 데이터는 메모리에서만 유지되므로 새로고침 시 초기화됩니다.
 
+## API 설계 초안과 프론트엔드 대응
+
+출처는 첨부 문서 `API 리스트.docx`의 GTEC API 리스트입니다. 아래는 설계서의 **경로 예시와 메서드**입니다. 기능과 경로는 이후 추가·변경·축소될 수 있습니다. 현재 프론트엔드는 Mock 모드로 실행하며, 확정된 항목부터 서비스 계층에 연결합니다.
+
+| 프론트 기능 | REST API 초안 |
+| --- | --- |
+| 회원가입, 로그인 | `POST /api/members`, `POST /api/auth/login` |
+| 내 정보 조회·수정 | `GET /api/members/me`, `PATCH /api/members/me` |
+| 상품 목록·검색, 상세 | `GET /api/products`, `GET /api/products/{productId}` |
+| 관리자 상품 등록·수정·삭제 | `POST /api/admin/products`, `PATCH /api/admin/products/{productId}`, `DELETE /api/admin/products/{productId}` |
+| 관리자 상품 이미지 등록·삭제·순서 변경 | `POST /api/admin/products/{productId}/images`, `DELETE /api/admin/products/{productId}/images/{imageId}`, `PATCH /api/admin/products/{productId}/images/{imageId}` |
+| 장바구니 조회·추가 | `GET /api/cart`, `POST /api/cart/items` |
+| 장바구니 수량 변경·삭제 | `PATCH /api/cart/items/{cartItemId}`, `DELETE /api/cart/items/{cartItemId}` |
+| 찜 목록 조회·추가·삭제 | 설계서에 `GET / POST / DELETE`와 `/api/wishlist`, `/api/wishlist/{productId}`가 함께 기재되어 있습니다. 추가 요청의 경로와 본문은 확정이 필요합니다. |
+| 주문 생성·내 주문 목록·상세·취소 | `POST /api/orders`, `GET /api/orders`, `GET /api/orders/{orderId}`, `PATCH /api/orders/{orderId}/cancel` |
+| 관리자 주문 목록·상태 변경 | `GET /api/admin/orders`, `PATCH /api/admin/orders/{orderId}/status` |
+| 결제 요청·결과 조회 | `POST /api/orders/{orderId}/payment`, `GET /api/orders/{orderId}/payment` |
+| 배송 조회, 관리자 운송장·배송 상태 등록 및 수정 | `GET /api/orders/{orderId}/delivery`, `PUT /api/admin/orders/{orderId}/delivery`, `PATCH /api/admin/orders/{orderId}/delivery` |
+| 상품 리뷰 조회·작성, 리뷰 수정·삭제 | `GET /api/products/{productId}/reviews`, `POST /api/products/{productId}/reviews`, `PATCH /api/reviews/{reviewId}`, `DELETE /api/reviews/{reviewId}` |
+| 반품 신청·내역 조회, 관리자 반품 처리 | `POST /api/orders/{orderId}/returns`, `GET /api/orders/{orderId}/returns`, `PATCH /api/admin/returns/{returnId}` |
+| 공지사항 목록·상세 | `GET /api/notices`, `GET /api/notices/{noticeId}` |
+
+| 프론트 기능 | FastAPI 초안 |
+| --- | --- |
+| 리뷰 감정분석 실행·결과 조회 | `POST /ai/sentiment/analyze`, `GET /ai/sentiment/reviews/{reviewId}` |
+| 상품별 감정분석 요약 | `GET /ai/sentiment/products/{productId}/summary` |
+| 회원별 고객분석 실행·결과 조회 | `POST /ai/customers/{memberId}/analyze`, `GET /ai/customers/{memberId}/analysis` |
+| 회원별 추천 · 유사 상품 추천 | `GET /ai/recommendations/members/{memberId}`, `GET /ai/recommendations/products/{productId}` |
+
+연결 전에 확인할 사항입니다.
+
+- **인증과 회원** — 서버 주소, 토큰 또는 세션 방식, 로그인 유지·만료·로그아웃, 본인·관리자 권한과 오류 형식이 필요합니다. 소셜 인증과 가입 이메일 인증은 이번 표에 없습니다.
+- **장바구니와 결제** — Mock 장바구니는 `productId`를 쓰며, 서버 수량 변경·삭제에는 `cartItemId`가 필요합니다. 로그인 시 비회원 장바구니의 이전 규칙, 주문 생성 이후 결제 요청·결과 조회 순서, 실패 시 처리 기준을 확인합니다. 주문 화면은 회원 전용입니다.
+- **배송·반품·환불** — 프론트 관리자 화면의 배송 관리 탭에 배송과 취소·반품·환불이 모여 있습니다. 서비스 계층에서 주문·배송·반품 응답을 연결하며, 관리자 반품 목록의 조회 경로, `returnId` 취득 방법, 승인·거절·환불 상태값을 확인합니다.
+- **상품과 리뷰** — 검색·정렬·페이지 쿼리, 이미지 업로드 형식과 순서 필드, 구매 리뷰 작성 자격·수정·삭제 시 권한과 UX를 확정합니다. 현재 고객 화면에는 구매 리뷰 조회와 주문 내역에서 작성하는 흐름이 구현되어 있습니다.
+- **관리자와 AI** — 관리자 회원 관리, 리뷰 숨김, 공지 등록·수정·삭제, 관리자 문의 관리, 대시보드 집계의 전용 API는 초안에 없습니다. 회원별 고객분석 API는 현 관리자 고객분석 화면의 집계와 범위가 다릅니다. AI 요청을 프론트에서 직접 호출할지 REST 서버를 통해 호출할지도 확인합니다.
+
 ## 명세 확정 후 수정 위치
 
 | 위치 | 연동 작업 |
