@@ -3,6 +3,7 @@ import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useShop } from '../../stores/shop'
 import { shop } from '../../services'
+import { reviewSentimentLabel } from '../../services/reviewSentiment'
 import { money } from '../../utils'
 import CartAddedDialog from '../../components/CartAddedDialog.vue'
 import ProductGallery from '../../components/ProductGallery.vue'
@@ -153,7 +154,7 @@ function buy() {
           <span class="review-score-value">{{ review.rating }}/5점</span>
         </div>
         <p>{{ review.body }}</p>
-        <span class="badge">AI 감정분석 (Mock) · {{ review.sentiment }}</span>
+        <span class="badge">{{ reviewSentimentLabel(review) }}</span>
       </article>
     </section>
   </section>

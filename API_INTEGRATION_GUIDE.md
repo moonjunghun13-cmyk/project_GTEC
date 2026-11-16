@@ -40,8 +40,7 @@ Node.js 24 환경에서 `npm ci` 후 `npm run dev`를 실행합니다. `npm run 
 
 | 프론트 기능 | FastAPI 초안 |
 | --- | --- |
-| 리뷰 감정분석 실행·결과 조회 | `POST /ai/sentiment/analyze`, `GET /ai/sentiment/reviews/{reviewId}` |
-| 상품별 감정분석 요약 | `GET /ai/sentiment/products/{productId}/summary` |
+| 리뷰 감정분석 (첨부 FastAPI 기준) | `GET /api/ai/reviews/statistics`; 분석 요청 경로는 아래 감정분석 연동 항목 참고 |
 | 회원별 고객분석 실행·결과 조회 | `POST /ai/customers/{memberId}/analyze`, `GET /ai/customers/{memberId}/analysis` |
 | 회원별 추천 · 유사 상품 추천 | `GET /ai/recommendations/members/{memberId}`, `GET /ai/recommendations/products/{productId}` |
 
@@ -117,3 +116,10 @@ Storage mock models now expose `lifestyle: [{label,image}]` separately from orig
 - 테스트 상점에서 결제수단과 약관 UI 키를 따로 설정한 경우 `VITE_TOSS_PAYMENT_VARIANT`, `VITE_TOSS_AGREEMENT_VARIANT`를 지정합니다. 기본값은 `DEFAULT`, `AGREEMENT`입니다. 토스 결제창에 표시하는 결제수단은 해당 variant 설정에서 관리합니다. 결제창에서 계좌이체 항목도 숨기려면 variant에서 제외합니다.
 - SDK는 결제창을 열 때 로드합니다. 성공·실패 콜백은 `/checkout/toss/success`, `/checkout/toss/fail`입니다. 콜백에서 브라우저의 테스트 요청 번호와 금액을 확인해 인증 결과를 표시합니다. 서버에서 주문과 금액을 검증하고 결제를 승인하는 단계가 완료될 때까지 주문을 확정하지 않습니다.
 - `VITE_*`에는 공개 테스트 클라이언트 키만 사용합니다. 승인용 시크릿 키는 서버의 환경 변수에서 관리합니다. [토스페이먼츠 결제창형 가이드](https://docs.tosspayments.com/guides/v2/payment-widget/integration-window)
+
+## 리뷰 감정분석 연동
+
+- 프론트 빌드 환경에서 `VITE_SENTIMENT_API_BASE_URL`에 AI 서비스의 기본 URL을 설정합니다. 같은 도메인에서 `/api/ai/reviews/statistics`를 전달하는 구성이면 `/`를 설정합니다. 별도 도메인을 사용하면 API 서버 또는 연결 계층에서 프론트 도메인의 요청을 허용해야 합니다.
+- 관리자 **리뷰 감정분석** 화면은 `GET /api/ai/reviews/statistics`의 `{ total, positive, negative }`를 사용합니다. 분석 대기는 양성·음성으로 집계되지 않은 리뷰 수입니다. 설정이 없으면 기존 Mock 보고서를 표시합니다.
+- 쇼핑몰의 리뷰 조회·작성 API에서 `sentiment`(`POSITIVE`, `NEGATIVE`, 또는 `null`), `sentiment_score`(0~1), `sentiment_analyzed_at`, `updated_at`을 전달하면 기존 리뷰 UI가 결과를 읽을 수 있습니다. 상품별 집계에는 상품과 연결된 리뷰 목록 또는 별도 집계 응답이 필요합니다.
+- 첨부 서버는 저장된 리뷰를 주기적으로 분석하고, `POST /api/ai/reviews/{review_id}/analyze`와 `POST /api/ai/reviews/analyze-all`도 제공합니다. 현재 Mock 관리자는 실제 서버 권한을 증명할 수 없으므로 프론트에서는 읽기 전용 통계만 요청합니다. 리뷰 쓰기와 조회는 기존 Mock 쇼핑몰 경로를 사용합니다.

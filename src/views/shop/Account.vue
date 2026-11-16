@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { shop } from '../../services'
+import { reviewSentimentLabel } from '../../services/reviewSentiment'
 import { useShop } from '../../stores/shop'
 import { money, dateLabel } from '../../utils'
 import CheckoutSteps from '../../components/CheckoutSteps.vue'
@@ -68,7 +69,7 @@ function saveReview(item) {
   submit(async () => {
     const row = await shop.review(store.user,item.productId,rating.value,body.value.trim())
     reviewTarget.value = ''
-    notice.value = '리뷰 등록 완료 · AI 감정분석 (Mock) ' + row.sentiment
+    notice.value = '리뷰 등록 완료 · ' + reviewSentimentLabel(row)
   })
 }
 </script>

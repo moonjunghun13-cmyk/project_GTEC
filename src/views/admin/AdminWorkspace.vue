@@ -8,6 +8,8 @@ import AdminIcon from '../../components/admin/AdminIcon.vue'
 import AdminChart from '../../components/admin/AdminChart.vue'
 import StatePanel from '../../components/StatePanel.vue'
 import CustomerAnalysis from './CustomerAnalysis.vue'
+import LiveSentimentReport from './LiveSentimentReport.vue'
+import { readReviewSentiment, sentimentApiConfigured } from '../../services/reviewSentiment'
 import './workspace.css'
 import './dashboard-reference.css'
 import './operations-board.css'
@@ -202,12 +204,13 @@ function chooseImage(event) {
 }
 const keyField = computed(() => ({products:'productId',orders:'orderId',refunds:'orderId',members:'userId',reviews:'reviewId',inquiries:'inquiryId',notices:'noticeId'})[page.value])
 const detail = computed(() => sourceRows.value.find(row => row[keyField.value] === selected.value))
+const detailSentimentScore = computed(() => page.value === 'reviews' && detail.value ? readReviewSentiment(detail.value).score : null)
 const titleFor = row => row.name ?? row.title ?? row.orderId ?? row.author
 function productName(id) { return data.value.products.find(row => row.productId === id)?.name ?? id }
 function summary(row) {
   if (page.value === 'products') return row.category+' · '+money(row.price)+' · 재고 '+row.stock+'개'+(row.selling === false ? ' · 판매중지' : row.stock === 0 ? ' · 품절' : '')
   if (page.value === 'members') return row.email+' · '+(row.status ?? '정상')
-  if (page.value === 'reviews') return productName(row.productId)+' · '+row.rating+'점 · '+(row.hidden ? '숨김' : row.sentiment)
+  if (page.value === 'reviews') return productName(row.productId)+' · '+row.rating+'점 · '+(row.hidden ? '숨김' : readReviewSentiment(row).label)
   if (page.value === 'inquiries') return row.author+' · '+(row.answer ? '답변 완료' : '미답변')
   if (row.orderId) return dateLabel(row.date)+' · '+row.status+' · '+money(row.total)+(row.request ? ' · '+row.request : '')
   return row.date ? dateLabel(row.date) : '공지'
@@ -261,12 +264,13 @@ function remove() {
       <time :datetime="today()">{{ rangeStart }} ~ {{ today() }}</time>
     </div>
   </header>
-  <header v-else class="ops-page-title"><div><p class="eyebrow">GT OPERATIONS · MOCK</p><h1>{{ route.meta.title }}</h1></div></header>
+  <header v-else class="ops-page-title"><div><p class="eyebrow">GT OPERATIONS{{ page === 'sentiment' && sentimentApiConfigured ? '' : ' · MOCK' }}</p><h1>{{ route.meta.title }}</h1></div></header>
   <nav v-if="isShipping" class="shipping-management-tabs" aria-label="배송 관리 메뉴">
     <RouterLink :to="shippingPath" :aria-current="page === 'orders' ? 'page' : undefined"><AdminIcon name="shipping"/>배송 목록</RouterLink>
     <RouterLink :to="{path:shippingPath,query:{tab:'refunds'}}" :aria-current="page === 'refunds' ? 'page' : undefined"><AdminIcon name="refunds"/>취소 · 반품 · 환불</RouterLink>
   </nav>
-  <StatePanel v-if="loading || loadError" :busy="loading" :error="loadError" @retry="load"/>
+  <LiveSentimentReport v-if="page === 'sentiment' && sentimentApiConfigured"/>
+  <StatePanel v-else-if="loading || loadError" :busy="loading" :error="loadError" @retry="load"/>
   <template v-else-if="data">
     <section v-if="page === 'dashboard'" class="ops-dashboard reference-dashboard" aria-label="운영 현황">
       <div class="reference-kpis">
@@ -302,7 +306,7 @@ function remove() {
         </article>
         <article class="reference-panel board-reviews"><header><h2><AdminIcon name="reviews"/>리뷰 관리</h2><RouterLink to="/admin/reviews">전체보기 ›</RouterLink></header>
           <label class="board-search"><AdminIcon name="search"/><input v-model="dashboardSearch.reviews" type="search" aria-label="대시보드 리뷰 검색" placeholder="상품명 · 작성자 · 리뷰 내용"></label>
-          <div class="board-table" tabindex="0" role="region" aria-label="리뷰 목록"><table><thead><tr><th>상품명</th><th>별점</th><th>감정분석</th><th>관리</th></tr></thead><tbody><tr v-for="row in dashboardRows.reviews" :key="row.reviewId"><th scope="row">{{ productName(row.productId) }}</th><td class="board-stars"><span aria-hidden="true">★</span> {{ row.rating.toFixed(1) }}</td><td><span class="board-status" :data-status="row.sentiment">{{ row.sentiment }}</span></td><td><RouterLink :to="{path:'/admin/reviews',query:{q:row.reviewId}}">상세</RouterLink></td></tr><tr v-if="!dashboardRows.reviews.length"><td class="board-search-empty" colspan="4">{{ dashboardSearch.reviews.trim() ? '검색 결과가 없습니다.' : '등록된 리뷰가 없습니다.' }}</td></tr></tbody></table></div>
+          <div class="board-table" tabindex="0" role="region" aria-label="리뷰 목록"><table><thead><tr><th>상품명</th><th>별점</th><th>감정분석</th><th>관리</th></tr></thead><tbody><tr v-for="row in dashboardRows.reviews" :key="row.reviewId"><th scope="row">{{ productName(row.productId) }}</th><td class="board-stars"><span aria-hidden="true">★</span> {{ row.rating.toFixed(1) }}</td><td><span class="board-status" :data-status="readReviewSentiment(row).label">{{ readReviewSentiment(row).label }}</span></td><td><RouterLink :to="{path:'/admin/reviews',query:{q:row.reviewId}}">상세</RouterLink></td></tr><tr v-if="!dashboardRows.reviews.length"><td class="board-search-empty" colspan="4">{{ dashboardSearch.reviews.trim() ? '검색 결과가 없습니다.' : '등록된 리뷰가 없습니다.' }}</td></tr></tbody></table></div>
         </article>
         <article class="reference-panel board-notices"><header><h2><AdminIcon name="notices"/>공지사항</h2><RouterLink to="/admin/notices">전체보기 ›</RouterLink></header>
           <ul><li v-for="row in data.notices.slice(0,5)" :key="row.noticeId"><RouterLink :to="{path:'/admin/notices',query:{q:row.noticeId}}"><strong>{{ row.title }}</strong><span>{{ row.body }}</span></RouterLink></li></ul><p v-if="!data.notices.length" class="muted">등록된 공지가 없습니다.</p>
@@ -411,7 +415,7 @@ function remove() {
               <label>계정 상태<select v-model="form.status"><option>정상</option><option>정지</option><option>비활성</option></select></label><button class="button gold" :disabled="busy">저장</button>
             </form>
           </template>
-          <template v-else-if="detail && page === 'reviews'"><p>{{ summary(detail) }}</p><p class="ops-body">{{ detail.body }}</p><button class="button" :disabled="busy" @click="mutate(() => admin.reviewVisibility(actor(),detail.reviewId,!detail.hidden))">{{ detail.hidden ? '다시 공개' : '리뷰 숨기기' }}</button></template>
+          <template v-else-if="detail && page === 'reviews'"><p>{{ summary(detail) }}</p><p v-if="detailSentimentScore !== null">분석 신뢰도 {{ (detailSentimentScore * 100).toFixed(1) }}%</p><p class="ops-body">{{ detail.body }}</p><button class="button" :disabled="busy" @click="mutate(() => admin.reviewVisibility(actor(),detail.reviewId,!detail.hidden))">{{ detail.hidden ? '다시 공개' : '리뷰 숨기기' }}</button></template>
           <template v-else-if="detail && page === 'inquiries'"><p class="ops-body">{{ detail.body }}</p><form class="stack" @submit.prevent="mutate(() => admin.answer(actor(),detail.inquiryId,form.answer))"><label>관리자 답변<textarea v-model="form.answer" rows="5" required></textarea></label><button class="button gold" :disabled="busy">답변 저장</button></form></template>
           <form v-else-if="page === 'notices' && selected" class="stack" @submit.prevent="mutate(() => admin.saveNotice(actor(),form),selected === 'new')"><label>제목<input v-model="form.title" required></label><label>내용<textarea v-model="form.body" rows="6" required></textarea></label><div class="actions"><button class="button gold" :disabled="busy">저장</button><button v-if="detail" class="button" type="button" :disabled="busy" @click="remove">공지 삭제</button></div></form>
           <p v-if="error" class="error" role="alert">{{ error }}</p><p v-if="notice" role="status">{{ notice }}</p>

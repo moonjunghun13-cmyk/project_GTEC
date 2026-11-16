@@ -8,7 +8,7 @@ import { checkoutAddresses } from '../mocks/checkoutAddresses'
 
 const mode = import.meta.env.VITE_DATA_MODE || 'mock'
 const demo = adminSeed(seed.products)
-const state = structuredClone({...seed,...demo,reviews:[...seed.reviews,...demo.reviews]})
+const state = structuredClone({...seed,...demo,reviews:[...seed.reviews,...demo.reviews].map(row => ({...row,sentimentSource:'mock'}))})
 for (const user of state.users) user.createdAt = new Date().toISOString()
 for (const order of state.orders) {
   for (const item of order.items) {
@@ -143,7 +143,7 @@ export const shop = {
     if (!state.orders.some(order => order.userId === user.userId && !['환불 대기','환불 완료'].includes(order.status) && order.items.some(item => item.productId === productId))) throw new Error('구매한 상품만 리뷰를 작성할 수 있습니다.')
     if (!body || body.length > 1000 || !Number.isInteger(rating) || rating < 1 || rating > 5) throw new Error('리뷰 내용을 확인해 주세요.')
     const sentiment = /불량|별로|실망|나쁘|느려/.test(body) ? '부정' : /좋|추천|만족|빠르/.test(body) ? '긍정' : rating >= 4 ? '긍정' : rating <= 2 ? '부정' : '중립'
-    const review = {reviewId:id(),userId:user.userId,author:user.name,productId,rating,body,sentiment}
+    const review = {reviewId:id(),userId:user.userId,author:user.name,productId,rating,body,sentiment,sentimentSource:'mock'}
     state.reviews.unshift(review)
     return review
   }),
