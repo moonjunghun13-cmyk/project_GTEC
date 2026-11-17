@@ -225,3 +225,9 @@
   .sentiment-products header { flex:none; }
   .sentiment-table { flex:1; min-height:0; }
 }
+
+.sentiment-product-controls,.sentiment-sort { display:flex; align-items:center; flex-wrap:wrap; gap:8px 12px; }
+.sentiment-product-controls label { color:var(--ui-muted); font-size:.8rem; }
+.sentiment-product-controls select { min-height:36px; padding:4px 8px; font-size:.82rem; }
+.sentiment-review-count { display:block; margin-top:3px; color:var(--ui-muted); font-variant-numeric:tabular-nums; }
+@media(max-width:520px) { .sentiment-products th:first-child { width:40%; } }

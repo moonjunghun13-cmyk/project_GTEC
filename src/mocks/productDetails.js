@@ -1,5 +1,6 @@
 import lifestyle from './lifestyle.json'
 import { productGuides } from './productGuides'
+import { demoPartCompatibility } from './partCompatibility'
 // Temporary editorial content for the mock catalog. Confirm manufacturer specifications before API integration.
 const categoryCopy = {
   '모니터':['화면을 넘어, 나만의 몰입으로.','화면 크기와 해상도, 주사율을 살펴보고 데스크 공간과 그래픽 출력 환경에 맞는 모니터를 선택하세요.',['화면 크기','해상도','주사율']],
@@ -20,7 +21,13 @@ export function withProductDetails(product) {
   const guide = productGuides[product.category] ?? {
     overview:description,sections:[],usage:['상품 규격에 맞는 시스템 구성'],checks:['사용 환경과 제품 호환성'],
   }
-  return {...product,lifestyle:product.lifestyle ?? lifestyle[product.productId] ?? [],details:{
+  const compatibility = demoPartCompatibility(product.productId)
+  const fitSpecs = [
+    ['소켓 (예시)',compatibility?.socket],
+    ['그래픽카드 길이 (예시)',compatibility?.gpuLengthMm && compatibility.gpuLengthMm+' mm'],
+    ['그래픽카드 장착 한도 (예시)',compatibility?.maxGpuLengthMm && compatibility.maxGpuLengthMm+' mm'],
+  ].filter(([,value]) => value)
+  return {...product,compatibility,lifestyle:product.lifestyle ?? lifestyle[product.productId] ?? [],details:{
     overview:product.brand + ' ' + product.name + '은(는) ' + product.spec + ' 구성의 ' + product.category + ' 상품입니다. ' + guide.overview,
     sections:guide.sections,
     usage:guide.usage,
@@ -28,7 +35,7 @@ export function withProductDetails(product) {
     headline:product.headline || headline,description:product.description || description,
     features,
     specifications:[
-      ['상품명',product.name],['브랜드',product.brand],['카테고리',product.category],
+      ['상품명',product.name],['브랜드',product.brand],['카테고리',product.category],...fitSpecs,
       ...(product.displaySpecifications ?? product.spec.split(' · ').map((value,index) => ['주요 사양 '+(index+1),value])),
     ],
   }}

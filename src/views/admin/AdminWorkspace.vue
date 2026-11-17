@@ -113,6 +113,8 @@ const sum = rows => rows.reduce((total,row) => total + row.total,0)
 const revenueToday = computed(() => sum(paidToday.value) - sum(data.value.orders.filter(row => row.refundedAt && day(row.refundedAt) === today())))
 const visibleReviews = computed(() => data.value.reviews.filter(row => !row.hidden))
 const sentiments = [{ label:'긍정', tone:'sentiment-tone-0' }, { label:'부정', tone:'sentiment-tone-2' }]
+const sentimentSort = ref('total')
+const percentFormat = new Intl.NumberFormat('ko-KR',{ style:'percent', maximumFractionDigits:1 })
 const sentimentCounts = computed(() => sentiments.map(({label}) => visibleReviews.value.filter(row => row.sentiment === label).length))
 const analyzedReviewCount = computed(() => sentimentCounts.value.reduce((total,count) => total + count,0))
 const groupedSentiment = computed(() => {
@@ -125,7 +127,11 @@ const groupedSentiment = computed(() => {
     groups.set(row.productId,counts)
   }
   return [...groups].map(([id,counts]) => ({id,name:productName(id),counts,total:counts[0]+counts[1]}))
-    .sort((a,b) => b.total - a.total || a.name.localeCompare(b.name,'ko'))
+    .sort((a,b) => {
+      const index = sentimentSort.value === 'positive' ? 0 : sentimentSort.value === 'negative' ? 1 : -1
+      const difference = index < 0 ? 0 : b.counts[index] * a.total - a.counts[index] * b.total
+      return difference || b.total - a.total || a.name.localeCompare(b.name,'ko')
+    })
 })
 const trend = computed(() => {
   const grouped = {}
@@ -372,7 +378,16 @@ function remove() {
       </div>
 
       <section class="sentiment-products" aria-labelledby="sentiment-products-title">
-        <header><div><h2 id="sentiment-products-title">상품별 고객 반응</h2><p>공개 리뷰가 있는 상품 {{ groupedSentiment.length }}개</p></div><RouterLink to="/admin/reviews">리뷰 관리 →</RouterLink></header>
+        <header><div><h2 id="sentiment-products-title">상품별 고객 반응</h2><p>공개 리뷰가 있는 상품 {{ groupedSentiment.length }}개</p></div>
+          <div class="sentiment-product-controls">
+            <div class="sentiment-sort"><label for="sentiment-sort">정렬</label><select id="sentiment-sort" v-model="sentimentSort">
+              <option value="total">리뷰 수 높은 순</option>
+              <option value="positive">긍정 비율 높은 순</option>
+              <option value="negative">부정 비율 높은 순</option>
+            </select></div>
+            <RouterLink to="/admin/reviews">리뷰 관리 →</RouterLink>
+          </div>
+        </header>
         <div v-if="groupedSentiment.length" class="sentiment-table" tabindex="0" role="region" aria-labelledby="sentiment-products-title">
           <table>
             <thead><tr><th scope="col">상품</th><th scope="col">리뷰 수</th><th v-for="{label} in sentiments" :key="label" scope="col">{{ label }}</th></tr></thead>
@@ -380,7 +395,7 @@ function remove() {
               <tr v-for="row in groupedSentiment" :key="row.id">
                 <th scope="row">{{ row.name }}</th>
                 <td>{{ row.total }}건</td>
-                <td v-for="(count,index) in row.counts" :key="index"><span :class="['sentiment-count',sentiments[index].tone]">{{ count }}건</span></td>
+                <td v-for="(count,index) in row.counts" :key="index"><span :class="['sentiment-count',sentiments[index].tone]">{{ percentFormat.format(count / row.total) }}</span><small class="sentiment-review-count">{{ count }}건</small></td>
               </tr>
             </tbody>
           </table>
