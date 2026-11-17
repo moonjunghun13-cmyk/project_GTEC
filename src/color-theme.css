@@ -191,3 +191,34 @@
 :root[data-theme=dark] .product-detail-page :is(.editorial-highlights p,.editorial-chapter-body>p,.editorial-overview-body,.highlight-top>span,.editorial-number) { color:#c1cbd8; }
 :root[data-theme=dark] .product-detail-page :is(.highlight-top svg,.editorial-chapter-heading small,.review .badge) { background:#303a48; color:#dce6f3; border-color:#536174; }
 :root[data-theme=dark] .product-detail-page :is(.editorial-chapter-heading small span,.product-specifications>.muted) { color:#b9c7da; }
+
+:root {
+  --cart-warning-text:#9c243b;
+  --cart-warning-surface:#fff1f3;
+  --cart-warning-border:#df9eaa;
+}
+:root[data-theme=dark] {
+  --cart-warning-text:#ffb3c0;
+  --cart-warning-surface:#33232c;
+  --cart-warning-border:#915366;
+}
+:root .cart-rail .cart-rail-notice.cart-rail-warning {
+  color:var(--cart-warning-text);
+  background:var(--cart-warning-surface);
+  font-weight:700;
+  font-size:.8rem;
+  line-height:1.6;
+}
+:root .cart-rail .cart-rail-items article.cart-line-incompatible,
+:root .cart-workspace article.selectable-cart-line.cart-line-incompatible {
+  background:var(--cart-warning-surface);
+  border-color:var(--cart-warning-border);
+}
+.cart-incompatibility-label {
+  display:block;
+  margin-top:4px;
+  color:var(--cart-warning-text);
+  font-size:.76rem;
+  font-weight:700;
+  line-height:1.4;
+}

@@ -6,7 +6,7 @@ const store = useShop()
 const compatibilityDialog = ref(null)
 const compatibilityGroups = computed(() => {
   const groups = new Map()
-  for (const warning of store.cartWarnings) {
+  for (const warning of store.cartReview?.warnings ?? []) {
     const products = [warning.part, warning.fit]
     if (warning.fit.productId === store.lastAdded) products.reverse()
     const id = products.map(product => product.productId).join(':')
@@ -16,14 +16,21 @@ const compatibilityGroups = computed(() => {
   return [...groups.values()]
 })
 
-watch(() => store.cartWarnings, warnings => {
+watch(() => store.cartReview, review => {
   const dialog = compatibilityDialog.value
-  if (warnings.length && !dialog.open) dialog.showModal()
-  if (!warnings.length && dialog.open) dialog.close()
+  if (review && !dialog.open) dialog.showModal()
+  if (!review && dialog.open) dialog.close()
 }, { flush: 'post' })
 
 function closeCompatibilityDialog() {
-  store.cartWarnings = []
+  compatibilityDialog.value.close()
+  store.cartReview = null
+}
+
+function proceed() {
+  const next = store.cartReview?.proceed
+  closeCompatibilityDialog()
+  return next?.()
 }
 </script>
 
@@ -38,7 +45,7 @@ function closeCompatibilityDialog() {
       </span>
       <div>
         <h2 id="compatibility-dialog-title">부품 호환성 확인</h2>
-        <p id="compatibility-dialog-summary">상품을 담았어요. 함께 담긴 부품의 호환성 경고 {{ store.cartWarnings.length }}건을 확인해 주세요.</p>
+        <p id="compatibility-dialog-summary">부품 호환성 경고 {{ store.cartReview?.warnings.length }}건이 있어요. 사유를 확인한 뒤 계속 진행할 수 있어요.</p>
       </div>
     </header>
     <ul class="cart-compatibility-list" aria-label="호환성 경고 목록" tabindex="0">
@@ -61,6 +68,7 @@ function closeCompatibilityDialog() {
     </ul>
     <footer class="cart-compatibility-actions">
       <button type="button" class="button" autofocus @click="closeCompatibilityDialog">닫기</button>
+      <button type="button" class="button gold" @click="proceed">{{ store.cartReview?.label }}</button>
     </footer>
   </dialog>
 </template>
@@ -69,7 +77,7 @@ function closeCompatibilityDialog() {
 .cart-compatibility-dialog {
   --compatibility-warning:#9c3044;
   width:min(800px,calc(100% - 40px));
-  max-height:min(720px,calc(100dvh - 40px));
+  height:min(600px,calc(100dvh - 40px));
   margin:auto;
   padding:0;
   overflow:hidden;
@@ -115,11 +123,11 @@ function closeCompatibilityDialog() {
 .cart-compatibility-reasons { display:grid; gap:6px; margin:14px 0 0; padding:0 0 0 20px; list-style:disc; }
 .cart-compatibility-reasons li { padding-left:3px; font-size:.95rem; line-height:1.75; word-break:keep-all; overflow-wrap:anywhere; }
 .cart-compatibility-reasons li::marker { color:var(--compatibility-warning); }
-.cart-compatibility-actions { display:flex; justify-content:flex-end; padding:14px 28px 18px; border-top:1px solid var(--ui-border); }
+.cart-compatibility-actions { display:flex; justify-content:flex-end; gap:10px; padding:14px 28px 18px; border-top:1px solid var(--ui-border); }
 .cart-compatibility-actions .button { min-width:100px; min-height:44px; }
 
 @media(max-width:540px) {
-  .cart-compatibility-dialog { width:calc(100% - 24px); max-height:calc(100dvh - 24px); }
+  .cart-compatibility-dialog { width:calc(100% - 24px); height:min(600px,calc(100dvh - 24px)); }
   .cart-compatibility-heading { gap:12px; padding-block:16px; }
   .cart-warning-icon { width:40px; height:40px; }
   .cart-compatibility-heading h2 { font-size:1.25rem; }

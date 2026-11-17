@@ -3,6 +3,7 @@ import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useShop } from '../../stores/shop'
 import { money } from '../../utils'
+import { cartCompatibilityWarnings } from '../../services/cartCompatibility'
 import CheckoutSteps from '../../components/CheckoutSteps.vue'
 import StatePanel from '../../components/StatePanel.vue'
 const store = useShop()
@@ -13,6 +14,15 @@ watch(() => store.cartItems.map(item => item.productId), (ids,previous = []) => 
 },{immediate:true})
 const chosen = computed(() => store.cartItems.filter(item => selected.value.includes(item.productId)))
 const allSelected = computed(() => !!store.cartItems.length && chosen.value.length === store.cartItems.length)
+const incompatibleProductIds = computed(() => {
+  if (allSelected.value) return store.incompatibleCartProductIds
+  const ids = new Set(store.incompatibleCartProductIds)
+  for (const { part, fit } of cartCompatibilityWarnings(chosen.value)) {
+    ids.add(part.productId)
+    ids.add(fit.productId)
+  }
+  return ids
+})
 const selectedQuantity = computed(() => chosen.value.reduce((sum,item) => sum + item.quantity,0))
 const selectedTotal = computed(() => chosen.value.reduce((sum,item) => sum + item.price * item.quantity,0))
 const unavailable = computed(() => chosen.value.some(item => item.stock < item.quantity || item.stock === 0))
@@ -28,11 +38,11 @@ function quantity(item,event) {
 function checkout() {
   if (!chosen.value.length || unavailable.value) return
   const ids = chosen.value.map(item => item.productId)
-  store.requireUser(() => {
+  return store.reviewCartCompatibility(chosen.value,'주문 계속하기',() => store.requireUser(() => {
     store.checkoutIds = ids
     store.cartOpen = false
     return router.push('/checkout')
-  })
+  }))
 }
 </script>
 <template>
@@ -46,11 +56,11 @@ function checkout() {
           <label class="check"><input type="checkbox" :checked="allSelected" :indeterminate="chosen.length > 0 && !allSelected" @change="selectAll"> 전체 선택 <span>{{ chosen.length }} / {{ store.cartItems.length }}</span></label>
           <button :disabled="!chosen.length" @click="removeSelected">선택 삭제</button>
         </div>
-        <article v-for="item in store.cartItems" :key="item.productId" class="line cart-line selectable-cart-line">
+        <article v-for="item in store.cartItems" :key="item.productId" class="line cart-line selectable-cart-line" :class="{'cart-line-incompatible':incompatibleProductIds.has(item.productId)}">
           <input v-model="selected" type="checkbox" :value="item.productId" :aria-label="item.name+' 주문 선택'">
           <RouterLink class="cart-product" :to="'/products/'+item.productId">
             <img v-if="item.image" :src="item.image" alt="" loading="lazy"><span v-else class="cart-image-empty">이미지 없음</span>
-            <span><small>{{ item.category }} · {{ item.brand }}</small><strong>{{ item.name }}</strong><small>개당 {{ money(item.price) }}</small></span>
+            <span><small>{{ item.category }} · {{ item.brand }}</small><strong>{{ item.name }}</strong><span v-if="incompatibleProductIds.has(item.productId)" class="cart-incompatibility-label">호환성 경고</span><small>개당 {{ money(item.price) }}</small></span>
           </RouterLink>
           <div class="cart-line-quantity"><button :disabled="item.quantity <= 1 || !item.stock" :aria-label="item.name+' 수량 줄이기'" @click="store.quantity(item.productId,item.quantity-1)">−</button><input type="number" inputmode="numeric" min="1" :max="item.stock" :value="item.quantity" :disabled="!item.stock" :aria-label="item.name+' 수량'" @change="quantity(item,$event)"><button :disabled="item.quantity >= item.stock" :aria-label="item.name+' 수량 늘리기'" @click="store.quantity(item.productId,item.quantity+1)">+</button></div>
           <strong class="cart-line-total">{{ money(item.price*item.quantity) }}</strong>

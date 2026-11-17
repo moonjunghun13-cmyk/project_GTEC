@@ -2,14 +2,20 @@
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { money } from '../utils'
+import { useShop } from '../stores/shop'
 defineProps({product:{type:Object,required:true},quantity:{type:Number,required:true}})
 const emit = defineEmits(['close'])
 const dialog = ref(null)
 const router = useRouter()
+const store = useShop()
 onMounted(() => dialog.value.showModal())
 function cart() {
+  dialog.value.close()
   emit('close')
-  router.push('/cart')
+  return store.reviewCartCompatibility(store.cartItems,'장바구니 보기',() => {
+    store.cartOpen = false
+    return router.push('/cart')
+  })
 }
 </script>
 <template>

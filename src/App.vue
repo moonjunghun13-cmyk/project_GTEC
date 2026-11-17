@@ -41,6 +41,15 @@ function scrollHome(event) {
     window.scrollTo({top:0,behavior:'instant'})
   }
 }
+function reviewCartLink(event, navigate) {
+  if (route.path === '/cart' || !store.cartWarnings.length || event.defaultPrevented ||
+      event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return navigate(event)
+  event.preventDefault()
+  return store.reviewCartCompatibility(store.cartItems,'장바구니 보기',() => {
+    store.cartOpen = false
+    return router.push('/cart')
+  })
+}
 function signOut() {
   store.signOut()
   if (route.meta.role) router.push('/')
@@ -60,7 +69,7 @@ function signOut() {
           <button aria-label="검색"><svg class="header-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
         </form>
         <nav aria-label="회원 메뉴"><ThemeToggle/>
-          <RouterLink to="/cart"><svg class="header-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h3l2.5 12h11L22 6H6"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg> 장바구니<span v-if="store.cartCount"> {{ store.cartCount }}</span></RouterLink>
+          <RouterLink to="/cart" custom v-slot="{ href, navigate }"><a :href="href" @click="reviewCartLink($event, navigate)"><svg class="header-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h3l2.5 12h11L22 6H6"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg> 장바구니<span v-if="store.cartCount"> {{ store.cartCount }}</span></a></RouterLink>
           <button v-if="store.role === 'GUEST'" @click="store.openAuth()"><svg class="header-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/></svg> 로그인</button>
           <template v-else>
             <RouterLink v-if="store.role === 'ADMIN'" class="dashboard-entry" to="/admin">대시보드</RouterLink>

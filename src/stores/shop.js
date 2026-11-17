@@ -10,13 +10,18 @@ function guestCart() {
   } catch { return [] }
 }
 export const useShop = defineStore('shop', {
-  state: () => ({user:null, products:[], categories:[], purposes:[], cart:guestCart(), cartOpen:false, cartWarnings:[], checkoutIds:null, lastCheckout:null, deliveryAddresses:{}, cartNotice:'', lastAdded:'', favorites:[], recentlyViewed:[], busy:true, error:'', authMode:'', afterLogin:null, afterLoginRole:'USER'}),
+  state: () => ({user:null, products:[], categories:[], purposes:[], cart:guestCart(), cartOpen:false, cartReview:null, checkoutIds:null, lastCheckout:null, deliveryAddresses:{}, cartNotice:'', lastAdded:'', favorites:[], recentlyViewed:[], busy:true, error:'', authMode:'', afterLogin:null, afterLoginRole:'USER'}),
   getters: {
     role: state => state.user?.role ?? 'GUEST',
     cartItems: state => state.cart.flatMap(line => {
       const product = state.products.find(row => row.productId === line.productId)
       return product ? [{...product,quantity:line.quantity}] : []
     }),
+    cartWarnings() { return cartCompatibilityWarnings(this.cartItems) },
+    incompatibleCartProductIds() {
+      return new Set(this.cartWarnings.flatMap(({ part, fit }) => [part.productId, fit.productId]))
+    },
+    lastAddedHasWarning() { return this.incompatibleCartProductIds.has(this.lastAdded) },
     checkoutItems() {
       return this.cartItems.filter(item => this.checkoutIds === null || this.checkoutIds.includes(item.productId))
     },
@@ -65,11 +70,12 @@ export const useShop = defineStore('shop', {
       this.cartNotice = after > before ? product.name + ' ' + (after - before) + '개를 담았습니다.' : '담을 수 있는 재고를 모두 담았습니다.'
       this.lastAdded = productId
       this.cartOpen = true
-      if (after <= before) return
-      this.cartWarnings = cartCompatibilityWarnings(this.cartItems).filter(
-        warning => warning.part.productId === productId || warning.fit.productId === productId,
-      )
-      return this.cartWarnings.length > 0
+      return after > before && this.lastAddedHasWarning
+    },
+    reviewCartCompatibility(items, label, proceed) {
+      const warnings = items === this.cartItems ? this.cartWarnings : cartCompatibilityWarnings(items)
+      if (!warnings.length) return proceed()
+      this.cartReview = { warnings, label, proceed }
     },
     openAuth(mode='login') { this.authMode = mode },
     closeAuth() { this.authMode = ''; this.afterLogin = null; this.afterLoginRole = 'USER' },
@@ -110,6 +116,6 @@ export const useShop = defineStore('shop', {
       this.favorites = this.favorites.includes(productId)
         ? this.favorites.filter(id => id !== productId) : [...this.favorites,productId]
     },
-    signOut() { this.lastCheckout = null; this.checkoutIds = null; this.cartOpen = false; this.cartWarnings = []; this.cartNotice = ''; this.lastAdded = ''; this.user = null; this.cart = guestCart(); this.favorites = []; this.recentlyViewed = []; this.closeAuth() },
+    signOut() { this.lastCheckout = null; this.checkoutIds = null; this.cartOpen = false; this.cartReview = null; this.cartNotice = ''; this.lastAdded = ''; this.user = null; this.cart = guestCart(); this.favorites = []; this.recentlyViewed = []; this.closeAuth() },
   },
 })
