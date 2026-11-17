@@ -214,6 +214,13 @@
   background:var(--cart-warning-surface);
   border-color:var(--cart-warning-border);
 }
+:root .cart-rail-items > article.cart-line-incompatible {
+  margin-inline:calc(-1 * var(--cart-rail-gutter));
+  padding-inline:var(--cart-rail-gutter);
+}
+:root .cart-rail-items > article.cart-line-incompatible .cart-rail-remove {
+  inset-inline-end:var(--cart-rail-gutter);
+}
 .cart-incompatibility-label {
   display:block;
   margin-top:4px;
