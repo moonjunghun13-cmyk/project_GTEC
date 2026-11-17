@@ -22,10 +22,22 @@ export function withProductDetails(product) {
     overview:description,sections:[],usage:['상품 규격에 맞는 시스템 구성'],checks:['사용 환경과 제품 호환성'],
   }
   const compatibility = demoPartCompatibility(product)
+  const connector = compatibility?.gpuPowerConnector
+  const cables = Object.entries(compatibility?.gpuCables ?? {})
+    .filter(([,count]) => count > 0)
+    .map(([pin,count]) => pin+'핀 × '+count)
   const fitSpecs = [
     ['소켓 (예시)',compatibility?.socket],
     ['메모리 규격 (예시)',compatibility?.memoryType],
     ['메인보드 폼팩터 (예시)',compatibility?.boardFormat],
+    ['저장장치 연결 규격 (예시)',compatibility?.storageInterfaces?.join(' · ')],
+    ['드라이브 베이 (예시)',compatibility?.driveBays?.join(' · ')],
+    ['파워 장착 규격 (예시)',compatibility?.supportedPowerFormats?.join(' · ')],
+    ['파워 폼팩터 (예시)',compatibility?.powerFormat],
+    ['그래픽카드 두께 (예시)',compatibility?.gpuSlotWidth && compatibility.gpuSlotWidth+' 슬롯'],
+    ['그래픽카드 슬롯 한도 (예시)',compatibility?.maxGpuSlotWidth && compatibility.maxGpuSlotWidth+' 슬롯'],
+    ['필요한 보조전원 (예시)',connector && connector.pin+'핀 × '+connector.count],
+    ['기본 제공 그래픽카드 케이블 (예시)',cables.join(' · ')],
     ['지원 메인보드 폼팩터 (예시)',compatibility?.supportedBoardFormats?.join(' · ')],
     ['권장 시스템 파워 (예시)',compatibility?.recommendedWatts && compatibility.recommendedWatts+' W'],
     ['정격 출력 (예시)',compatibility?.supplyWatts && compatibility.supplyWatts+' W'],

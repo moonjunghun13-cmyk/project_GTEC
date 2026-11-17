@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useShop } from '../../stores/shop'
 import { money } from '../../utils'
@@ -14,6 +14,29 @@ watch(() => store.cartItems.map(item => item.productId), (ids,previous = []) => 
 },{immediate:true})
 const chosen = computed(() => store.cartItems.filter(item => selected.value.includes(item.productId)))
 const compatibilityWarnings = computed(() => cartCompatibilityWarnings(store.cartItems))
+const compatibilityGroups = computed(() => {
+  const groups = new Map()
+  for (const warning of compatibilityWarnings.value) {
+    const id = warning.part.productId + ':' + warning.fit.productId
+    if (!groups.has(id)) groups.set(id,{ id, part:warning.part.name, fit:warning.fit.name, warnings:[] })
+    groups.get(id).warnings.push(warning)
+  }
+  return [...groups.values()]
+})
+const compatibilityDialog = ref(null)
+const compatibilityTrigger = ref(null)
+function openCompatibilityDialog() {
+  if (compatibilityWarnings.value.length && !compatibilityDialog.value?.open) compatibilityDialog.value?.show()
+}
+function closeCompatibilityDialog() {
+  compatibilityDialog.value?.close()
+  compatibilityTrigger.value?.focus()
+}
+onMounted(openCompatibilityDialog)
+watch(() => compatibilityWarnings.value.length, (count,previous) => {
+  if (!count) compatibilityDialog.value?.close()
+  else if (!previous) openCompatibilityDialog()
+}, {flush:'post'})
 const allSelected = computed(() => !!store.cartItems.length && chosen.value.length === store.cartItems.length)
 const selectedQuantity = computed(() => chosen.value.reduce((sum,item) => sum + item.quantity,0))
 const selectedTotal = computed(() => chosen.value.reduce((sum,item) => sum + item.price * item.quantity,0))
@@ -41,18 +64,22 @@ function checkout() {
   <section class="wrap section">
     <div class="cart-page-heading"><div class="cart-title-block"><h1>장바구니</h1><div><strong>Shopping cart</strong><p>담은 상품과 수량을 확인해 주세요.</p></div></div><CheckoutSteps :step="1"/></div>
     <p v-if="store.role === 'GUEST'" class="muted">비회원 장바구니는 현재 브라우저 탭에 임시 저장됩니다.</p>
-    <div class="cart-compatibility" aria-live="polite">
-      <section v-if="compatibilityWarnings.length" aria-labelledby="cart-compatibility-title">
-        <h2 id="cart-compatibility-title">부품 호환성을 확인해 주세요</h2>
-        <p>장바구니의 가상 사양을 기준으로 장착 규격이나 권장 전원 용량을 확인해야 하는 조합이에요.</p>
-        <ul>
-          <li v-for="warning in compatibilityWarnings" :key="warning.key">
-            <strong>{{ warning.part.name }} · {{ warning.fit.name }}</strong>
-            <p>{{ warning.reason }}</p>
-          </li>
-        </ul>
-      </section>
-    </div>
+    <button v-if="compatibilityWarnings.length" ref="compatibilityTrigger" type="button" class="button cart-compatibility-trigger" aria-haspopup="dialog" @click="openCompatibilityDialog">
+      부품 호환성 경고 {{ compatibilityWarnings.length }}건 보기
+    </button>
+    <dialog ref="compatibilityDialog" class="cart-compatibility-dialog" aria-labelledby="compatibility-dialog-title" aria-describedby="compatibility-dialog-summary" @keydown.esc.stop="closeCompatibilityDialog">
+      <header>
+        <h2 id="compatibility-dialog-title">부품 호환성 확인</h2>
+        <button type="button" class="button" autofocus @click="closeCompatibilityDialog">닫기</button>
+      </header>
+      <p id="compatibility-dialog-summary">가상 사양 기준으로 확인할 항목이 {{ compatibilityWarnings.length }}건 있어요. 상품은 그대로 담겨 있어요.</p>
+      <ul class="cart-compatibility-list">
+        <li v-for="group in compatibilityGroups" :key="group.id">
+          <strong>{{ group.part }} · {{ group.fit }}</strong>
+          <p v-for="warning in group.warnings" :key="warning.key">{{ warning.reason }}</p>
+        </li>
+      </ul>
+    </dialog>
     <StatePanel v-if="!store.cartItems.length" empty="장바구니에 담긴 상품이 없습니다."/>
     <div v-else class="cart-workspace">
       <div>
@@ -85,24 +112,28 @@ function checkout() {
 </template>
 
 <style scoped>
-.cart-compatibility section {
-  --warning-line:#d59aa3;
-  margin:0 0 16px;
-  padding:14px 16px;
-  border:1px solid var(--warning-line);
-  border-inline-start-width:4px;
-  border-radius:10px;
-  background:#fff2f4;
-  color:#742d3a;
+.cart-compatibility-trigger { margin:0 0 12px; }
+.cart-compatibility-dialog {
+  position:fixed;
+  inset:auto 20px 20px auto;
+  z-index:20;
+  width:min(420px,calc(100% - 28px));
+  max-height:min(520px,68dvh);
+  overflow:auto;
+  margin:0;
+  padding:16px;
+  border:1px solid var(--ui-border);
+  border-top:3px solid #b86473;
+  border-radius:12px;
+  background:var(--ui-surface);
+  color:var(--ui-text);
+  box-shadow:0 12px 40px #11182745;
 }
-:global(:root[data-theme=dark]) .cart-compatibility section {
-  --warning-line:#d38d9d;
-  background:#331e2a;
-  color:#f6ccd4;
-}
-.cart-compatibility h2 { font-size:1.05rem; margin:0 0 6px; }
-.cart-compatibility p { margin:4px 0 0; font-size:.86rem; }
-.cart-compatibility ul { margin:10px 0 0; padding-inline-start:1.15rem; }
-.cart-compatibility li + li { margin-top:8px; }
-.cart-compatibility strong { overflow-wrap:anywhere; }
+.cart-compatibility-dialog header { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+.cart-compatibility-dialog h2 { margin:0; font-size:1.06rem; }
+.cart-compatibility-dialog p { margin:4px 0 0; font-size:.83rem; color:var(--ui-muted); }
+.cart-compatibility-dialog header .button { padding:5px 10px; min-height:34px; }
+.cart-compatibility-list { margin:10px 0 0; padding:0; list-style:none; }
+.cart-compatibility-list li { padding:8px 0; border-top:1px solid var(--ui-border); overflow-wrap:anywhere; }
+@media(max-width:520px) { .cart-compatibility-dialog { inset:auto 14px 14px auto; } }
 </style>

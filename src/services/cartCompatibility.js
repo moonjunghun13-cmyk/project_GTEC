@@ -1,4 +1,5 @@
 // Compare the requirements each part declares against the matching parts in the cart.
+const storageCategories = ['SSD','HDD']
 const rules = [
   {
     partCategory:'CPU', fitCategory:'메인보드', partField:'socket', fitField:'socket',
@@ -25,11 +26,37 @@ const rules = [
     fits:(part, fit) => part <= fit,
     reason:(part, fit) => '파워 정격 ' + fit + 'W가 그래픽카드의 권장 시스템 파워 ' + part + 'W보다 낮아요.',
   },
+  {
+    partCategory:storageCategories, fitCategory:'메인보드', partField:'storageInterface', fitField:'storageInterfaces',
+    fits:(part, fit) => fit.includes(part),
+    reason:(part, fit) => '저장장치는 ' + part + ' 연결이 필요하고 메인보드는 ' + fit.join(' · ') + ' 연결을 지원해요.',
+  },
+  {
+    partCategory:storageCategories, fitCategory:'케이스', partField:'driveBaySize', fitField:'driveBays',
+    fits:(part, fit) => fit.includes(part),
+    reason:(part, fit) => '저장장치에 ' + part + ' 베이가 필요해요. 이 케이스의 베이는 ' + fit.join(' · ') + '예요.',
+  },
+  {
+    partCategory:'파워', fitCategory:'케이스', partField:'powerFormat', fitField:'supportedPowerFormats',
+    fits:(part, fit) => fit.includes(part),
+    reason:(part, fit) => '파워 규격은 ' + part + '이고 케이스가 지원하는 규격은 ' + fit.join(' · ') + '예요.',
+  },
+  {
+    partCategory:'그래픽카드', fitCategory:'케이스', partField:'gpuSlotWidth', fitField:'maxGpuSlotWidth',
+    fits:(part, fit) => part <= fit,
+    reason:(part, fit) => '그래픽카드 두께 ' + part + '슬롯이 케이스의 사용 가능 공간 ' + fit + '슬롯을 초과해요.',
+  },
+  {
+    partCategory:'그래픽카드', fitCategory:'파워', partField:'gpuPowerConnector', fitField:'gpuCables',
+    fits:(part, fit) => (fit[part.pin] ?? 0) >= part.count,
+    reason:(part, fit) => '그래픽카드는 ' + part.pin + '핀 보조전원 ' + part.count + '개가 필요하고 파워 기본 제공 케이블에는 ' + (fit[part.pin] ?? 0) + '개가 있어요.',
+  },
 ]
 
 export function cartCompatibilityWarnings(items) {
   return rules.flatMap(rule => {
-    const parts = items.filter(item => item.category === rule.partCategory)
+    const categories = Array.isArray(rule.partCategory) ? rule.partCategory : [rule.partCategory]
+    const parts = items.filter(item => categories.includes(item.category))
     const fits = items.filter(item => item.category === rule.fitCategory)
     // A missing spec or a viable alternative may belong to a separate build.
     const unmatched = (part, partField, candidates, fitField, match) => {
@@ -47,7 +74,7 @@ export function cartCompatibilityWarnings(items) {
         if (a == null || b == null || rule.fits(a,b)) return []
         const noPart = unmatched(fit,rule.fitField,parts,rule.partField,(x,y)=>rule.fits(y,x))
         if (!noFit && !noPart) return []
-        return [{ key:part.productId+'-'+fit.productId, part, fit, reason:rule.reason(a,b) }]
+        return [{ key:rule.partField+'-'+part.productId+'-'+fit.productId, part, fit, reason:rule.reason(a,b) }]
       })
     })
   })
