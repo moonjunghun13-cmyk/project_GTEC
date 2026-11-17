@@ -77,7 +77,7 @@ function checkout() {
         </span>
         <div>
           <h2 id="compatibility-dialog-title">부품 호환성 확인</h2>
-          <p id="compatibility-dialog-summary">가상 사양 기준으로 확인할 항목이 {{ compatibilityWarnings.length }}건 있어요.</p>
+          <p id="compatibility-dialog-summary">등록된 상품 사양에서 확인할 항목이 {{ compatibilityWarnings.length }}건 있어요.</p>
         </div>
       </header>
       <ul class="cart-compatibility-list" aria-label="호환성 경고 목록" tabindex="0">

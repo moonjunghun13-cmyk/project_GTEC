@@ -42,6 +42,11 @@ const rules = [
     reason:(part, fit) => '파워 규격은 ' + part + '이고 케이스가 지원하는 규격은 ' + fit.join(' · ') + '예요.',
   },
   {
+    partCategory:'파워', fitCategory:'케이스', partField:'powerSupplyLengthMm', fitField:'maxPsuLengthMm',
+    fits:(part, fit) => part <= fit,
+    reason:(part, fit) => '파워 길이 ' + part + 'mm가 케이스 장착 한도 ' + fit + 'mm를 초과해요.',
+  },
+  {
     partCategory:'그래픽카드', fitCategory:'케이스', partField:'gpuSlotWidth', fitField:'maxGpuSlotWidth',
     fits:(part, fit) => part <= fit,
     reason:(part, fit) => '그래픽카드 두께 ' + part + '슬롯이 케이스의 사용 가능 공간 ' + fit + '슬롯을 초과해요.',

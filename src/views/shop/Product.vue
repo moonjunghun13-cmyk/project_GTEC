@@ -41,7 +41,7 @@ function handleTabKey(event, index) {
 }
 const gallery = computed(() => {
   const images = product.value?.gallery ?? []
-  const slides = images.length === 2 ? [...images,{color:'검정·흰색 비교',comparison:images}] : images
+  const slides = images
   const image = product.value?.image
   const originals = image && image !== images[0]?.image ? [{color:'대표',image},...slides] : slides
   return [...originals,...(product.value?.lifestyle ?? []).filter(item => !originals.some(slide => slide.image === item.image)).map(item => ({color:item.label,image:item.image}))]
@@ -128,15 +128,12 @@ function buy() {
     <section v-show="activeTab === 'product-description'" id="product-description" class="product-story" role="tabpanel" aria-labelledby="product-description-tab" tabindex="0">
       <ProductStoryBanner :product="product"/>
       <ProductEditorial :product="product"/>
-      <div v-if="product.gallery?.length" class="product-color-showcase">
-        <div><p class="eyebrow">PRODUCT GALLERY</p><h3>제품 구성 살펴보기</h3></div>
-        <div><figure v-for="item in product.gallery" :key="item.image"><img :src="item.image" :alt="product.name + ' · ' + item.color" loading="lazy"><figcaption>{{ item.color }}</figcaption></figure></div>
-      </div>
+
     </section>
     <section v-show="activeTab === 'product-specifications'" id="product-specifications" class="product-specifications" role="tabpanel" aria-labelledby="product-specifications-tab" tabindex="0">
       <h2 id="product-spec-title">상세 스펙</h2>
       <dl><div v-for="[label,value] in product.details?.specifications || []" :key="label"><dt>{{ label }}</dt><dd>{{ value }}</dd></div></dl>
-      <p class="muted">현재 상품 설명과 규격은 화면 구성을 위한 Mock 정보입니다.</p>
+      <p v-if="product.specSource" class="muted"><a :href="product.specSource" target="_blank" rel="noopener noreferrer">제품 사양 출처 ↗</a></p>
       <div v-if="product.details" class="product-compatibility">
         <div><p class="eyebrow">BEFORE YOU BUILD</p><h3>구매 전 확인해 주세요</h3><p>지금 사용 중인 부품과 함께 비교하면 구성을 계획하기 편리합니다.</p></div>
         <ul><li v-for="check in product.details.checks" :key="check"><span aria-hidden="true">✓</span> {{ check }}</li></ul>

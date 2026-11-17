@@ -375,3 +375,7 @@
 .site-header .shop-nav a{flex:0 0 auto}
 @media(max-width:1250px) and (min-width:851px){.site-header .header-row{grid-template-columns:auto minmax(0,1fr) auto}.site-header .shop-nav{grid-column:1/-1;grid-row:2;justify-content:center}.site-header .search{grid-column:2;grid-row:1;justify-self:end;width:min(100%,280px)}.site-header .header-row nav[aria-label="회원 메뉴"]{grid-column:3;grid-row:1}}
 @media(max-width:850px){.site-header .shop-nav{justify-content:center;gap:2px 12px}.site-header .shop-nav a{padding:.4rem .15rem}}
+:root :is(.product-art.has-photo,.feature-photo):has(img[src^="/storefront/real-catalog/"]),
+:root .feature-photo[src^="/storefront/real-catalog/"] { background:#fff; }
+.product-art.has-photo img[src^="/storefront/real-catalog/"],
+.feature-photo[src^="/storefront/real-catalog/"] { box-sizing:border-box; padding:clamp(12px,1.5vw,24px); object-fit:contain; }

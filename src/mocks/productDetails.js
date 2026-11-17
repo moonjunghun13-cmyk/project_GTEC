@@ -1,6 +1,4 @@
-import lifestyle from './lifestyle.json'
 import { productGuides } from './productGuides'
-import { demoPartCompatibility } from './partCompatibility'
 // Temporary editorial content for the mock catalog. Confirm manufacturer specifications before API integration.
 const categoryCopy = {
   '모니터':['화면을 넘어, 나만의 몰입으로.','화면 크기와 해상도, 주사율을 살펴보고 데스크 공간과 그래픽 출력 환경에 맞는 모니터를 선택하세요.',['화면 크기','해상도','주사율']],
@@ -21,38 +19,16 @@ export function withProductDetails(product) {
   const guide = productGuides[product.category] ?? {
     overview:description,sections:[],usage:['상품 규격에 맞는 시스템 구성'],checks:['사용 환경과 제품 호환성'],
   }
-  const compatibility = demoPartCompatibility(product)
-  const connector = compatibility?.gpuPowerConnector
-  const cables = Object.entries(compatibility?.gpuCables ?? {})
-    .filter(([,count]) => count > 0)
-    .map(([pin,count]) => pin+'핀 × '+count)
-  const fitSpecs = [
-    ['소켓 (예시)',compatibility?.socket],
-    ['메모리 규격 (예시)',compatibility?.memoryType],
-    ['메인보드 폼팩터 (예시)',compatibility?.boardFormat],
-    ['저장장치 연결 규격 (예시)',compatibility?.storageInterfaces?.join(' · ')],
-    ['드라이브 베이 (예시)',compatibility?.driveBays?.join(' · ')],
-    ['파워 장착 규격 (예시)',compatibility?.supportedPowerFormats?.join(' · ')],
-    ['파워 폼팩터 (예시)',compatibility?.powerFormat],
-    ['그래픽카드 두께 (예시)',compatibility?.gpuSlotWidth && compatibility.gpuSlotWidth+' 슬롯'],
-    ['그래픽카드 슬롯 한도 (예시)',compatibility?.maxGpuSlotWidth && compatibility.maxGpuSlotWidth+' 슬롯'],
-    ['필요한 보조전원 (예시)',connector && connector.pin+'핀 × '+connector.count],
-    ['기본 제공 그래픽카드 케이블 (예시)',cables.join(' · ')],
-    ['지원 메인보드 폼팩터 (예시)',compatibility?.supportedBoardFormats?.join(' · ')],
-    ['권장 시스템 파워 (예시)',compatibility?.recommendedWatts && compatibility.recommendedWatts+' W'],
-    ['정격 출력 (예시)',compatibility?.supplyWatts && compatibility.supplyWatts+' W'],
-    ['그래픽카드 길이 (예시)',compatibility?.gpuLengthMm && compatibility.gpuLengthMm+' mm'],
-    ['그래픽카드 장착 한도 (예시)',compatibility?.maxGpuLengthMm && compatibility.maxGpuLengthMm+' mm'],
-  ].filter(([,value]) => value)
-  return {...product,compatibility,lifestyle:product.lifestyle ?? lifestyle[product.productId] ?? [],details:{
-    overview:product.brand + ' ' + product.name + '은(는) ' + product.spec + ' 구성의 ' + product.category + ' 상품입니다. ' + guide.overview,
+  return {...product,details:{
+    overview:product.name + '은(는) ' + product.spec + ' 구성의 ' + product.category + ' 상품입니다. ' + guide.overview,
     sections:guide.sections,
     usage:guide.usage,
     checks:guide.checks,
     headline:product.headline || headline,description:product.description || description,
     features,
     specifications:[
-      ['상품명',product.name],['브랜드',product.brand],['카테고리',product.category],...fitSpecs,
+      ['상품명',product.name],['브랜드',product.brand],['카테고리',product.category],
+      ...(product.tier ? [['구성 등급',product.tier]] : []),
       ...(product.displaySpecifications ?? product.spec.split(' · ').map((value,index) => ['주요 사양 '+(index+1),value])),
     ],
   }}

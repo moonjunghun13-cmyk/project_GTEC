@@ -19,3 +19,6 @@
 :root .detail .storage-gallery .product-gallery-dots button[aria-pressed=true]{background:#7c8998}
 :root .detail .storage-gallery .product-gallery-toolbar button:focus-visible{outline-color:#7c8998}
 :root .detail .storage-gallery .product-gallery-stage .styled-scene .product-art.has-photo img:not(.product-watermark){object-fit:cover}
+
+:root .detail .product-gallery-stage .product-art.has-photo img[src^="/storefront/real-catalog/"],
+.product-gallery-thumbnails img[src^="/storefront/real-catalog/"] { object-fit:contain; }
