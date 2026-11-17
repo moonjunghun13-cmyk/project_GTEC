@@ -44,7 +44,7 @@ function checkout() {
     <div class="cart-compatibility" aria-live="polite">
       <section v-if="compatibilityWarnings.length" aria-labelledby="cart-compatibility-title">
         <h2 id="cart-compatibility-title">부품 호환성을 확인해 주세요</h2>
-        <p>장바구니의 가상 사양을 기준으로 같은 PC에 장착하기 어려운 조합이에요.</p>
+        <p>장바구니의 가상 사양을 기준으로 장착 규격이나 권장 전원 용량을 확인해야 하는 조합이에요.</p>
         <ul>
           <li v-for="warning in compatibilityWarnings" :key="warning.key">
             <strong>{{ warning.part.name }} · {{ warning.fit.name }}</strong>

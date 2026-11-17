@@ -1,4 +1,4 @@
-// Check the known socket and clearance requirements for the parts in the cart.
+// Compare the requirements each part declares against the matching parts in the cart.
 const rules = [
   {
     partCategory:'CPU', fitCategory:'메인보드', partField:'socket', fitField:'socket',
@@ -9,6 +9,21 @@ const rules = [
     partCategory:'그래픽카드', fitCategory:'케이스', partField:'gpuLengthMm', fitField:'maxGpuLengthMm',
     fits:(part, fit) => part <= fit,
     reason:(part, fit) => '그래픽카드 길이 ' + part + 'mm가 케이스 장착 한도 ' + fit + 'mm를 초과해요.',
+  },
+  {
+    partCategory:'메모리', fitCategory:'메인보드', partField:'memoryType', fitField:'memoryType',
+    fits:(part, fit) => part === fit,
+    reason:(part, fit) => '메모리는 ' + part + '이고 메인보드는 ' + fit + ' 메모리를 지원해요.',
+  },
+  {
+    partCategory:'메인보드', fitCategory:'케이스', partField:'boardFormat', fitField:'supportedBoardFormats',
+    fits:(part, fit) => fit.includes(part),
+    reason:(part, fit) => '메인보드는 ' + part + '이고 케이스는 ' + fit.join(' · ') + '까지만 지원해요.',
+  },
+  {
+    partCategory:'그래픽카드', fitCategory:'파워', partField:'recommendedWatts', fitField:'supplyWatts',
+    fits:(part, fit) => part <= fit,
+    reason:(part, fit) => '파워 정격 ' + fit + 'W가 그래픽카드의 권장 시스템 파워 ' + part + 'W보다 낮아요.',
   },
 ]
 

@@ -21,9 +21,14 @@ export function withProductDetails(product) {
   const guide = productGuides[product.category] ?? {
     overview:description,sections:[],usage:['상품 규격에 맞는 시스템 구성'],checks:['사용 환경과 제품 호환성'],
   }
-  const compatibility = demoPartCompatibility(product.productId)
+  const compatibility = demoPartCompatibility(product)
   const fitSpecs = [
     ['소켓 (예시)',compatibility?.socket],
+    ['메모리 규격 (예시)',compatibility?.memoryType],
+    ['메인보드 폼팩터 (예시)',compatibility?.boardFormat],
+    ['지원 메인보드 폼팩터 (예시)',compatibility?.supportedBoardFormats?.join(' · ')],
+    ['권장 시스템 파워 (예시)',compatibility?.recommendedWatts && compatibility.recommendedWatts+' W'],
+    ['정격 출력 (예시)',compatibility?.supplyWatts && compatibility.supplyWatts+' W'],
     ['그래픽카드 길이 (예시)',compatibility?.gpuLengthMm && compatibility.gpuLengthMm+' mm'],
     ['그래픽카드 장착 한도 (예시)',compatibility?.maxGpuLengthMm && compatibility.maxGpuLengthMm+' mm'],
   ].filter(([,value]) => value)
