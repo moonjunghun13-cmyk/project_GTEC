@@ -57,11 +57,8 @@ function addSelected() {
   if (selected.value > remaining.value) return
   const amount = selected.value
   const total = inCart.value + amount
-  store.quantity(product.value.productId,total)
-  store.cartOpen = true
-  store.lastAdded = product.value.productId
-  store.cartNotice = product.value.name + ' ' + amount + '개를 담았습니다.'
-  added.value = {product:{...product.value},quantity:amount}
+  const hasWarnings = store.addAndShow(product.value.productId,amount)
+  if (!hasWarnings) added.value = {product:{...product.value},quantity:amount}
   notice.value = amount + '개를 담았습니다. 장바구니에 총 ' + total + '개가 있습니다.'
 }
 let request = 0

@@ -1290,7 +1290,7 @@
       ],
       [
         "보조전원",
-        "16핀 × 6"
+        "16핀 × 1"
       ],
       [
         "두께",
@@ -1304,7 +1304,7 @@
       "recommendedWatts": 750,
       "gpuPowerConnector": {
         "pin": 16,
-        "count": 6
+        "count": 1
       }
     },
     "image": "/storefront/real-catalog/gpu-gaming-rtx5070-ti.webp",
@@ -1352,7 +1352,7 @@
       ],
       [
         "보조전원",
-        "16핀 × 6"
+        "16핀 × 1"
       ],
       [
         "두께",
@@ -1366,7 +1366,7 @@
       "recommendedWatts": 850,
       "gpuPowerConnector": {
         "pin": 16,
-        "count": 6
+        "count": 1
       }
     },
     "image": "/storefront/real-catalog/gpu-trio-rtx5080.webp",
@@ -1414,7 +1414,7 @@
       ],
       [
         "보조전원",
-        "16핀 × 6"
+        "16핀 × 1"
       ],
       [
         "두께",
@@ -1432,7 +1432,7 @@
       "recommendedWatts": 850,
       "gpuPowerConnector": {
         "pin": 16,
-        "count": 6
+        "count": 1
       },
       "gpuSlotWidth": 3.8
     },

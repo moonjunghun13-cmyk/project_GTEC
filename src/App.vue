@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useShop } from './stores/shop'
 import StoreFooter from './components/StoreFooter.vue'
 import CartRail from './components/CartRail.vue'
+import CartCompatibilityDialog from './components/CartCompatibilityDialog.vue'
 import AuthDialog from './components/AuthDialog.vue'
 import StatePanel from './components/StatePanel.vue'
 import ThemeToggle from './components/ThemeToggle.vue'
@@ -74,5 +75,6 @@ function signOut() {
   </template>
   <RouterView v-else />
   <CartRail/>
+  <CartCompatibilityDialog/>
   <AuthDialog v-if="store.authMode" />
 </template>

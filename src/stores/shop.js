@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { shop } from '../services'
+import { cartCompatibilityWarnings } from '../services/cartCompatibility'
 
 const cartKey = 'gt-demo-guest-cart'
 function guestCart() {
@@ -9,7 +10,7 @@ function guestCart() {
   } catch { return [] }
 }
 export const useShop = defineStore('shop', {
-  state: () => ({user:null, products:[], categories:[], purposes:[], cart:guestCart(), cartOpen:false, checkoutIds:null, lastCheckout:null, deliveryAddresses:{}, cartNotice:'', lastAdded:'', favorites:[], recentlyViewed:[], busy:true, error:'', authMode:'', afterLogin:null, afterLoginRole:'USER'}),
+  state: () => ({user:null, products:[], categories:[], purposes:[], cart:guestCart(), cartOpen:false, cartWarnings:[], checkoutIds:null, lastCheckout:null, deliveryAddresses:{}, cartNotice:'', lastAdded:'', favorites:[], recentlyViewed:[], busy:true, error:'', authMode:'', afterLogin:null, afterLoginRole:'USER'}),
   getters: {
     role: state => state.user?.role ?? 'GUEST',
     cartItems: state => state.cart.flatMap(line => {
@@ -54,19 +55,21 @@ export const useShop = defineStore('shop', {
       }
       this.checkoutIds = null
     },
-    addAndShow(productId) {
+    addAndShow(productId, amount = 1) {
       if (this.role === 'ADMIN') return
       const product = this.products.find(row => row.productId === productId)
       if (!product) return
       const before = this.cart.find(row => row.productId === productId)?.quantity ?? 0
-      this.add(productId)
+      this.quantity(productId, before + amount)
       const after = this.cart.find(row => row.productId === productId)?.quantity ?? 0
-      this.cartNotice = after > before ? product.name + ' 1개를 담았습니다.' : '담을 수 있는 재고를 모두 담았습니다.'
+      this.cartNotice = after > before ? product.name + ' ' + (after - before) + '개를 담았습니다.' : '담을 수 있는 재고를 모두 담았습니다.'
       this.lastAdded = productId
       this.cartOpen = true
-    },
-    add(productId) {
-      this.quantity(productId, (this.cart.find(row => row.productId === productId)?.quantity ?? 0) + 1)
+      if (after <= before) return
+      this.cartWarnings = cartCompatibilityWarnings(this.cartItems).filter(
+        warning => warning.part.productId === productId || warning.fit.productId === productId,
+      )
+      return this.cartWarnings.length > 0
     },
     openAuth(mode='login') { this.authMode = mode },
     closeAuth() { this.authMode = ''; this.afterLogin = null; this.afterLoginRole = 'USER' },
@@ -107,6 +110,6 @@ export const useShop = defineStore('shop', {
       this.favorites = this.favorites.includes(productId)
         ? this.favorites.filter(id => id !== productId) : [...this.favorites,productId]
     },
-    signOut() { this.lastCheckout = null; this.checkoutIds = null; this.cartOpen = false; this.cartNotice = ''; this.lastAdded = ''; this.user = null; this.cart = guestCart(); this.favorites = []; this.recentlyViewed = []; this.closeAuth() },
+    signOut() { this.lastCheckout = null; this.checkoutIds = null; this.cartOpen = false; this.cartWarnings = []; this.cartNotice = ''; this.lastAdded = ''; this.user = null; this.cart = guestCart(); this.favorites = []; this.recentlyViewed = []; this.closeAuth() },
   },
 })

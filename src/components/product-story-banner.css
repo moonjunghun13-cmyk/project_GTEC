@@ -29,7 +29,6 @@
 
 .story-product-set {
   position:relative;
-  isolation:isolate;
   display:grid;
   align-items:center;
   width:min(88%,1100px);
@@ -42,10 +41,7 @@
   position:absolute;
   inset:0;
   z-index:-1;
-  border-radius:50% / 22%;
-  background:radial-gradient(ellipse at 48% 40%,#fff 30%,#e3eaf5 60%,#94a3b8 88%,transparent 100%);
-  mask-image:radial-gradient(ellipse,#000 48%,#000 63%,transparent 78%);
-  filter:drop-shadow(0 14px 38px #90b5dd66);
+  background:radial-gradient(ellipse 67% 62% at 50% 45%,#fff 26%,#e3eaf5 46%,#94a3b8 63%,transparent 86%);
 }
 .story-product-set::after {
   content:"";
