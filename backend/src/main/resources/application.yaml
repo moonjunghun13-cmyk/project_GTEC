@@ -77,3 +77,11 @@ toss:
 
 server:
   port: 8090
+
+ai:
+  customer:
+    base-url: ${AI_CUSTOMER_BASE_URL:http://127.0.0.1:8001}
+  recommend:
+    base-url: ${AI_RECOMMEND_BASE_URL:http://127.0.0.1:8002}
+  review:
+    base-url: ${AI_REVIEW_BASE_URL:http://127.0.0.1:8003}
