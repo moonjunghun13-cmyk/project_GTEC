@@ -76,7 +76,7 @@ const stockCounts = computed(() => [
   data.value.products.filter(row => row.stock === 0).length,
 ])
 const adminFaq = [
-  ['환불은 어떻게 하나요?','배송 관리의 취소·반품·환불 탭에서 요청을 확인하고 승인한 뒤 Mock 환불 완료 처리를 진행합니다.'],
+  ['환불은 어떻게 하나요?','배송 관리의 취소·반품·환불 탭에서 요청을 확인하고 승인한 뒤 PG 반품 환불 미지원를 진행합니다.'],
   ['배송 처리는 어디서 하나요?','주문·배송에서 주문을 선택하고 배송 준비, 운송장 입력, 발송 순서로 진행합니다.'],
   ['상품 이미지 변경은 어떻게 하나요?','상품 관리에서 상품을 선택하고 대표 이미지 파일을 추가한 뒤 저장해 주세요.'],
   ['재고는 어디서 수정하나요?','상품 관리에서 상품을 선택하고 재고 수량을 변경한 뒤 저장합니다.'],
@@ -109,7 +109,7 @@ const lowStock = computed(() => data.value.products.filter(row => row.stock < 10
 const day = value => new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul'}).format(new Date(value))
 const today = () => day(new Date())
 const paidToday = computed(() => data.value.orders.filter(row => day(row.date) === today()))
-const sum = rows => rows.reduce((total,row) => total + row.total,0)
+const sum = rows => rows.filter(row => ['PAID','PREPARING','SHIPPED','DELIVERED','COMPLETED'].includes(row.backendStatus)).reduce((total,row) => total + row.total,0)
 const revenueToday = computed(() => sum(paidToday.value) - sum(data.value.orders.filter(row => row.refundedAt && day(row.refundedAt) === today())))
 const visibleReviews = computed(() => data.value.reviews.filter(row => !row.hidden))
 const sentiments = [{ label:'긍정', tone:'sentiment-tone-0' }, { label:'부정', tone:'sentiment-tone-2' }]
@@ -310,12 +310,15 @@ function remove() {
     <RouterLink :to="shippingPath" :aria-current="page === 'orders' ? 'page' : undefined"><AdminIcon name="shipping"/>배송 목록</RouterLink>
     <RouterLink :to="{path:shippingPath,query:{tab:'refunds'}}" :aria-current="page === 'refunds' ? 'page' : undefined"><AdminIcon name="refunds"/>취소 · 반품 · 환불</RouterLink>
   </nav>
-  <LiveSentimentReport v-if="page === 'sentiment' && sentimentApiConfigured"/>
+  <StatePanel v-if="['sentiment','customers','inquiries'].includes(page)" empty="이 기능은 현재 서버 연동을 지원하지 않습니다."/>
   <StatePanel v-else-if="loading || loadError" :busy="loading" :error="loadError" @retry="load"/>
   <template v-else-if="data">
+    <p v-if="page === 'products'" class="muted">서버에서 공개한 상품을 표시합니다. 비활성 상품 전체 조회 API는 제공되지 않습니다.</p>
+    <p v-if="page === 'refunds'" class="muted">반품 내역은 조회만 지원합니다. 상품별 처리 화면과 PG 반품 환불은 아직 연결하지 않았습니다.</p>
+    <p v-if="page === 'notices'" class="muted">공지 등록을 지원합니다. 수정과 삭제는 백엔드의 세션 인증 문제로 제한됩니다.</p>
     <section v-if="page === 'dashboard'" class="ops-dashboard reference-dashboard" aria-label="운영 현황">
       <div class="reference-kpis">
-        <article class="reference-kpi-gold dashboard-link-card" role="link" tabindex="0" aria-label="고객분석으로 이동" @click="openDashboardCard($event,'/admin/customers')" @keydown.enter="openDashboardCard($event,'/admin/customers')"><AdminIcon name="coin"/><div><span>총 순매출액</span><strong>{{ money(rangeRevenue) }}</strong><small>{{ rangeLabel }} · 환불 반영</small></div></article>
+        <article class="reference-kpi-gold dashboard-link-card" role="link" tabindex="0" aria-label="고객분석으로 이동" @click="openDashboardCard($event,'/admin/customers')" @keydown.enter="openDashboardCard($event,'/admin/customers')"><AdminIcon name="coin"/><div><span>결제 완료 주문금액</span><strong>{{ money(rangeRevenue) }}</strong><small>{{ rangeLabel }} · 서버 주문 기준</small></div></article>
         <RouterLink to="/admin/orders"><AdminIcon name="orders"/><div><span>신규 주문</span><strong>{{ rangeOrders.length }}건</strong><small>{{ rangeLabel }} 주문</small></div></RouterLink>
         <RouterLink to="/admin/shipping"><AdminIcon name="truck"/><div><span>배송 대기</span><strong>{{ data.orders.filter(row => ['결제 완료','배송 준비'].includes(row.status) && !pending(row)).length }}건</strong><small>현재 처리 대기</small></div></RouterLink>
         <RouterLink to="/admin/members"><AdminIcon name="members"/><div><span>신규 가입 회원</span><strong>{{ data.members.filter(row => row.role === 'USER' && row.createdAt && day(row.createdAt) >= rangeStart).length }}명</strong><small>{{ rangeLabel }} 가입</small></div></RouterLink>
@@ -439,14 +442,14 @@ function remove() {
           <h2 id="admin-record-title" ref="detailHeading" tabindex="-1">{{ selected === 'new' ? '신규 등록' : detail ? titleFor(detail) : '항목 상세' }}</h2>
           <div v-if="!selected" class="ops-detail-empty"><AdminIcon :name="pageIcon"/><p>목록에서 항목을 선택해 주세요.</p></div>
           <form v-else-if="page === 'products'" class="stack ops-product-form" @submit.prevent="!readingImage && mutate(() => admin.saveProduct(actor(),form),selected === 'new')">
-            <label>상품명<input v-model="form.name" required></label><label>브랜드<input v-model="form.brand" required></label>
+            <label>상품명<input v-model="form.name" required></label><label>브랜드<input v-model="form.brand" disabled></label>
             <label>카테고리<select v-model="form.category"><option v-for="category in data.categories" :key="category">{{ category }}</option></select></label>
             <label>가격 (원)<input v-model.number="form.price" type="number" min="1" required></label><label>재고 수량<input v-model.number="form.stock" type="number" min="0" required></label>
             <label>상세 스펙<input v-model="form.spec" required></label>
             <div class="ops-image-editor">
               <div class="ops-image-preview"><img v-if="form.image" :src="form.image" alt="상품 이미지 미리보기"><span v-else>등록된 이미지 없음</span></div>
-              <label>대표 이미지 추가 또는 변경<input type="file" accept="image/png,image/jpeg,image/webp" :disabled="busy || readingImage" @change="chooseImage"></label>
-              <small>PNG, JPG, WebP · 최대 5MB</small>
+              <label>대표 이미지 URL<input v-model.trim="form.image" maxlength="255" required placeholder="https://... 또는 /storefront/..."></label>
+              <small>서버는 이미지 URL을 저장합니다. 파일 업로드는 지원하지 않습니다.</small>
               <button v-if="form.image" type="button" class="button" :disabled="busy || readingImage" @click="form.image = ''">대표 이미지 제거</button>
             </div>
             <label>상품 설명<textarea v-model="form.description" rows="3"></textarea></label>
@@ -464,12 +467,12 @@ function remove() {
             <h3 class="ops-detail-subtitle">주문 상품</h3>
             <ul class="ops-order-items"><li v-for="item in detail.items" :key="item.productId"><span>{{ item.name }} × {{ item.quantity }}</span><strong>{{ money(item.price * item.quantity) }}</strong></li></ul>
             <RouterLink class="button gold" :to="'/admin/shipping/'+encodeURIComponent(detail.orderId)">배송 상세 보기 →</RouterLink>
-            <form v-if="page === 'orders' && !pending(detail) && ['결제 완료','배송 준비','배송 중'].includes(detail.status)" class="stack" @submit.prevent="mutate(() => admin.advanceOrder(actor(),detail.orderId,form.tracking))">
+            <form v-if="page === 'orders' && !pending(detail) && ['배송 중'].includes(detail.status)" class="stack" @submit.prevent="mutate(() => admin.advanceOrder(actor(),detail.orderId,form.tracking))">
               <label v-if="detail.status === '배송 준비'">운송장 번호<input v-model="form.tracking" required></label>
               <button class="button gold" :disabled="busy">{{ {'결제 완료':'배송 준비 처리','배송 준비':'발송 처리','배송 중':'배송 완료 처리'}[detail.status] }}</button>
             </form>
-            <div v-if="page === 'refunds' && pending(detail)" class="actions"><button class="button gold" :disabled="busy" @click="mutate(() => admin.resolveOrder(actor(),detail.orderId,true))">요청 승인</button><button class="button" :disabled="busy" @click="mutate(() => admin.resolveOrder(actor(),detail.orderId,false))">요청 거절</button></div>
-            <button v-if="page === 'refunds' && detail.status === '환불 대기'" class="button gold" :disabled="busy" @click="mutate(() => admin.refund(actor(),detail.orderId))">Mock 환불 완료 처리</button>
+            <div v-if="false" class="actions"><button class="button gold" :disabled="busy" @click="mutate(() => admin.resolveOrder(actor(),detail.orderId,true))">요청 승인</button><button class="button" :disabled="busy" @click="mutate(() => admin.resolveOrder(actor(),detail.orderId,false))">요청 거절</button></div>
+            <button disabled v-if="page === 'refunds' && detail.returnRefundPending" class="button gold" :disabled="busy" @click="mutate(() => admin.refund(actor(),detail.orderId))">PG 반품 환불 미지원</button>
             <p v-if="detail.refundedAt">환불 완료일 {{ dateLabel(detail.refundedAt) }}</p>
           </template>
           <template v-else-if="detail && page === 'members'">
@@ -487,9 +490,9 @@ function remove() {
             <div class="ops-review-meta"><strong>{{ productName(detail.productId) }}</strong><span>별점 {{ detail.rating }}/5</span><span class="ops-status" :data-status="recordStatus(detail)">{{ recordStatus(detail) }}</span></div>
             <p v-if="detailSentimentScore !== null">분석 신뢰도 {{ (detailSentimentScore * 100).toFixed(1) }}%</p>
             <blockquote class="ops-body ops-review-body">{{ detail.body }}</blockquote>
-            <button class="button" :disabled="busy" @click="mutate(() => admin.reviewVisibility(actor(),detail.reviewId,!detail.hidden))">{{ detail.hidden ? '다시 공개' : '리뷰 숨기기' }}</button></template>
+            <p class="muted">리뷰 숨김 기능은 지원하지 않습니다.</p></template>
           <template v-else-if="detail && page === 'inquiries'"><p class="ops-body">{{ detail.body }}</p><form class="stack" @submit.prevent="mutate(() => admin.answer(actor(),detail.inquiryId,form.answer))"><label>관리자 답변<textarea v-model="form.answer" rows="5" required></textarea></label><button class="button gold" :disabled="busy">답변 저장</button></form></template>
-          <form v-else-if="page === 'notices' && selected" class="stack" @submit.prevent="mutate(() => admin.saveNotice(actor(),form),selected === 'new')"><label>제목<input v-model="form.title" required></label><label>내용<textarea v-model="form.body" rows="6" required></textarea></label><div class="actions"><button class="button gold" :disabled="busy">저장</button><button v-if="detail" class="button" type="button" :disabled="busy" @click="remove">공지 삭제</button></div></form>
+          <form v-else-if="page === 'notices' && selected" class="stack" @submit.prevent="mutate(() => admin.saveNotice(actor(),form),selected === 'new')"><label>제목<input v-model="form.title" required maxlength="100"></label><label>내용<textarea v-model="form.body" rows="6" required></textarea></label><div class="actions"><button class="button gold" :disabled="busy || !!detail">{{ detail ? '공지 수정 미지원' : '등록' }}</button><button disabled v-if="detail" class="button" type="button" :disabled="busy" @click="remove">공지 삭제</button></div></form>
           <p v-if="error" class="error" role="alert">{{ error }}</p><p v-if="notice" role="status">{{ notice }}</p>
         </article>
       </div>

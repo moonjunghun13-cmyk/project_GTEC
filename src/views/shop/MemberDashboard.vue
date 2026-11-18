@@ -77,8 +77,8 @@ const image = item => store.products.find(p => p.productId === item.productId)?.
       </div>
     </template>
     <section class="member-recommendations" aria-labelledby="member-recommend-title">
-      <div class="member-section-head"><div><p>SELECTED FOR YOU</p><h2 id="member-recommend-title">당신을 위한 추천상품</h2><span>관심 상품과 최근 살펴본 카테고리를 모아봤어요.</span></div><RouterLink to="/products">전체 상품 ↗</RouterLink></div>
-      <StatePanel v-if="recommending || recommendationError || !recommended.length" :busy="recommending" :error="recommendationError" empty="추천할 상품을 준비하고 있습니다." @retry="loadRecommendations"/>
+      <div class="member-section-head"><div><p>SELECTED FOR YOU</p><h2 id="member-recommend-title">당신을 위한 추천상품</h2><span>추천 기능은 아직 연동하지 않았습니다.</span></div><RouterLink to="/products">전체 상품 ↗</RouterLink></div>
+      <StatePanel v-if="recommending || recommendationError || !recommended.length" :busy="recommending" :error="recommendationError" empty="추천 기능은 아직 연동하지 않았습니다." @retry="loadRecommendations"/>
       <div v-else class="product-grid"><ProductCard v-for="product in recommended" :key="product.productId" :product="product" :ribbon="badges[product.recommendationReason || 'popular']" :ribbon-tone="product.recommendationReason"/></div>
     </section>
   </div>

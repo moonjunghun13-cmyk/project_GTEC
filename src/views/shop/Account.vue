@@ -25,7 +25,7 @@ const reviewTarget = ref('')
 const rating = ref(null)
 const body = ref('')
 const favorites = computed(() => store.products.filter(row => store.favorites.includes(row.productId)))
-const orderItems = computed(() => orders.value.filter(order => !['환불 대기','환불 완료'].includes(order.status)).flatMap(order => order.items.map(item => ({...item,orderId:order.orderId}))))
+const orderItems = computed(() => orders.value.filter(order => ['구매 확정'].includes(order.status)).flatMap(order => order.items.map(item => ({...item,orderId:order.orderId}))))
 const reviewItems = computed(() => orderItems.value.filter(item => !route.query.review || item.productId === route.query.review))
 let request = 0
 async function loadOrders() {
@@ -67,7 +67,7 @@ function write(item) {
 }
 function saveReview(item) {
   submit(async () => {
-    const row = await shop.review(store.user,item.productId,rating.value,body.value.trim())
+    const row = await shop.review(store.user,item.productId,rating.value,body.value.trim(),item.orderItemId)
     reviewTarget.value = ''
     notice.value = '리뷰 등록 완료 · ' + reviewSentimentLabel(row)
   })
@@ -85,7 +85,7 @@ function saveReview(item) {
       <StatePanel v-else empty="찜한 상품이 없습니다."/>
     </template>
     <template v-else>
-      <p v-if="route.query.placed" role="status">모의 결제를 완료했습니다.</p>
+      <p v-if="route.query.placed" role="status">결제를 완료했습니다.</p>
       <StatePanel v-if="loading || loadError || !orders.length" :busy="loading" :error="loadError" empty="주문 내역이 없습니다." @retry="loadOrders"/>
       <template v-else>
         <article v-for="order in orders" :key="order.orderId" class="review">
@@ -94,7 +94,7 @@ function saveReview(item) {
           <p v-if="order.paymentMethod">결제 수단 · {{ order.paymentMethod }}</p>
           <p v-if="order.tracking">운송장 {{ order.tracking }}</p>
           <p v-if="order.request">{{ order.request }}</p>
-          <button v-if="!order.request && ['결제 완료','배송 준비','배송 완료'].includes(order.status)" class="button" :disabled="busy" @click="requestOrder(order.orderId)">{{ order.status === '배송 완료' ? '반품 요청' : '취소 요청' }}</button>
+          <button v-if="!order.request && ['결제 대기','결제 완료'].includes(order.status)" class="button" :disabled="busy" @click="requestOrder(order.orderId)">{{ order.status === '배송 완료' ? '반품 요청' : '취소 요청' }}</button>
         </article>
       </template>
       <template v-if="!loading && !loadError">

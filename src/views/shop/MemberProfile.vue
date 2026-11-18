@@ -55,7 +55,7 @@ function saveAddress(value) {
   store.deliveryAddresses[store.user.userId] = value
   addressOpen.value = false
   error.value = ''
-  notice.value = '기본 배송지를 저장했습니다.'
+  notice.value = '이 화면에서 사용할 배송지를 저장했습니다. 서버 주소록 저장은 지원하지 않습니다.'
 }
 </script>
 
@@ -68,7 +68,7 @@ function saveAddress(value) {
     <form class="profile-fields" @submit.prevent="saveProfile">
       <label>이름<input v-model="profile.name" required maxlength="50" autocomplete="name"></label>
       <label>이메일<input v-model="profile.email" type="email" required autocomplete="email"></label>
-      <label>아이디<input v-model="profile.username" pattern="[A-Za-z0-9]{4,20}" maxlength="20" autocomplete="username" placeholder="미설정 · 영문·숫자 4~20자"></label>
+      <label>아이디<input v-model="profile.username" readonly pattern="[A-Za-z0-9]{4,20}" maxlength="20" autocomplete="username" placeholder="미설정 · 영문·숫자 4~20자"></label>
       <button type="submit" class="button gold" :disabled="busy">회원정보 저장</button>
     </form>
 
@@ -77,15 +77,15 @@ function saveAddress(value) {
       <button type="button" class="button" :aria-expanded="passwordOpen" :disabled="busy" @click="passwordOpen = !passwordOpen">{{ store.user.hasPassword ? '비밀번호 변경' : '비밀번호 설정' }}</button>
       <form v-if="passwordOpen" class="profile-fields profile-password" @submit.prevent="savePassword">
         <label v-if="store.user.hasPassword">현재 비밀번호<input v-model="password.current" type="password" required autocomplete="current-password"></label>
-        <label>새 비밀번호<input v-model="password.next" type="password" required minlength="8" maxlength="20" autocomplete="new-password"></label>
-        <label>새 비밀번호 확인<input v-model="password.confirm" type="password" required minlength="8" maxlength="20" autocomplete="new-password"></label>
+        <label>새 비밀번호<input v-model="password.next" type="password" required minlength="4" maxlength="30" autocomplete="new-password"></label>
+        <label>새 비밀번호 확인<input v-model="password.confirm" type="password" required minlength="4" maxlength="30" autocomplete="new-password"></label>
         <button type="submit" class="button gold" :disabled="busy">비밀번호 저장</button>
       </form>
     </section>
 
     <section class="profile-row">
       <div>
-        <h3>기본 배송지</h3>
+        <h3>이번 접속의 배송지</h3>
         <template v-if="delivery">
           <p><span v-if="delivery.postcode">({{ delivery.postcode }}) </span>{{ delivery.address }} {{ delivery.detail }}</p>
           <p>{{ delivery.recipient }} · {{ delivery.phone }}</p>

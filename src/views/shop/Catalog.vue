@@ -33,7 +33,7 @@ const results = computed(() => {
   if (sort === 'low') rows.sort((a,b) => a.price-b.price)
   if (sort === 'high') rows.sort((a,b) => b.price-a.price)
   if (sort === 'popular') rows.sort((a,b) => b.popularity-a.popularity)
-  if (sort === 'new') rows.reverse()
+  if (sort === 'new') rows.sort((a,b) => new Date(b.createdAt)-new Date(a.createdAt))
   return rows
 })
 </script>
@@ -48,7 +48,7 @@ const results = computed(() => {
       <label class="catalog-keyword">상품 검색<input v-model="filters.q" type="search" placeholder="상품명 또는 브랜드"></label>
       <label>카테고리<select v-model="filters.category"><option value="">전체</option><option v-for="category in store.categories" :key="category">{{ category }}</option></select></label>
       <label>최대 가격<input v-model="filters.maxPrice" type="number" min="0" step="1" placeholder="제한 없음"></label>
-      <label>정렬<select v-model="filters.sort"><option value="">기본</option><option value="popular">인기순</option><option value="new">신상품순</option><option value="low">낮은 가격순</option><option value="high">높은 가격순</option></select></label>
+      <label>정렬<select v-model="filters.sort"><option value="">기본</option><option value="new">신상품순</option><option value="low">낮은 가격순</option><option value="high">높은 가격순</option></select></label>
       <button class="button catalog-apply" type="submit">확인</button>
     </form>
     <div class="catalog-results-bar">

@@ -8,8 +8,8 @@ const store = useShop()
 const router = useRouter()
 const search = ref('')
 const scope = ref('products')
-function logout() {
-  store.signOut()
+async function logout() {
+  await store.signOut()
   router.replace('/')
 }
 function submit() {

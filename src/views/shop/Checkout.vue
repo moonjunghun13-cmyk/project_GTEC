@@ -6,7 +6,6 @@ import { checkoutPaymentGroups, shop } from '../../services'
 import { openTossTestWindow, tossTestConfigured } from '../../services/tossCheckout'
 import { money } from '../../utils'
 import CheckoutSteps from '../../components/CheckoutSteps.vue'
-import CheckoutPaymentDialog from '../../components/CheckoutPaymentDialog.vue'
 import PaymentBrand from '../../components/PaymentBrand.vue'
 import CheckoutAddressDialog from '../../components/CheckoutAddressDialog.vue'
 import StatePanel from '../../components/StatePanel.vue'
@@ -16,13 +15,12 @@ const route = useRoute()
 const router = useRouter()
 const addressOpen = ref(false)
 const savedDelivery = computed(() => store.deliveryAddresses[store.user?.userId] ?? null)
-const pendingPayment = ref(null)
 const paymentNotice = ref('')
 const tossOpen = ref(false)
 const tossError = ref('')
 let disposeToss
 let tossAttempt = 0
-const paymentMethod = ref('카드')
+const paymentMethod = ref('토스페이먼츠')
 function saveDelivery(delivery) {
   store.deliveryAddresses[store.user.userId] = delivery
   addressOpen.value = false
@@ -35,16 +33,6 @@ const complete = computed(() => route.name === 'checkout-complete')
 const quantity = computed(() => store.checkoutItems.reduce((sum,item) => sum + item.quantity,0))
 const unavailable = computed(() => store.checkoutItems.some(item => item.quantity > item.stock))
 
-function openPayment() {
-  if (store.role !== 'USER' || busy.value || unavailable.value || !store.checkoutItems.length) return
-  error.value = ''
-  paymentNotice.value = ''
-  if (!savedDelivery.value) {
-    addressOpen.value = true
-    return
-  }
-  pendingPayment.value = {method:paymentMethod.value,total:store.checkoutTotal}
-}
 async function startTossPayment() {
   if (!tossTestConfigured || store.role !== 'USER' || busy.value || tossOpen.value || unavailable.value || !store.checkoutItems.length) return
   tossError.value = ''
@@ -56,14 +44,28 @@ async function startTossPayment() {
 
   const attempt = ++tossAttempt
   const memberId = store.user.userId
-  const total = store.checkoutTotal
+  let total = store.checkoutTotal
   const [first,...rest] = store.checkoutItems
   const suffix = rest.length ? ' 외 ' + rest.length + '종' : ''
   const orderName = first.name.slice(0,100 - suffix.length) + suffix
   tossOpen.value = true
   const active = () => tossAttempt === attempt && store.user?.userId === memberId && route.name === 'checkout'
   try {
+    const items=store.checkoutItems.map(({productId,quantity}) => ({productId,quantity}))
+    const signature=JSON.stringify({items,delivery:savedDelivery.value})
+    let pending
+    try { pending=JSON.parse(sessionStorage.getItem('gt-server-checkout') || 'null') } catch { pending=null }
+    let order
+    if (pending?.memberId === memberId && pending.signature === signature) {
+      const existing=await shop.orderDetail(pending.orderId)
+      if (existing.status === 'PENDING') order=existing
+    }
+    if (!order) order=await shop.createOrder(items,savedDelivery.value)
+    sessionStorage.setItem('gt-server-checkout',JSON.stringify({memberId,orderId:order.orderId,orderNumber:order.orderNumber,items,signature}))
+    const ready=await shop.preparePayment(order.orderNumber)
+    total=ready.amount
     const dispose = await openTossTestWindow({
+      orderId:order.orderNumber,
       memberId,total,orderName,active,
       cancel:() => {
         if (!active()) return
@@ -94,41 +96,6 @@ onBeforeUnmount(() => {
   disposeToss?.()
 })
 
-function cancelPayment() {
-  pendingPayment.value = null
-  error.value = ''
-  paymentNotice.value = '결제를 취소했습니다.'
-}
-async function pay(outcome) {
-  const saved = savedDelivery.value
-  if (store.role !== 'USER' || busy.value || !pendingPayment.value || !saved) return
-  error.value = ''
-  const delivery = {
-    recipient:saved.recipient,
-    phone:saved.phone,
-    postcode:saved.postcode,
-    address:[saved.address,saved.detail].filter(Boolean).join(' '),
-    memo:saved.memo,
-  }
-  const items = store.checkoutItems.map(({productId,quantity}) => ({productId,quantity}))
-  busy.value = true
-  try {
-    const order = await shop.order(store.user.userId,items,delivery,{...pendingPayment.value,outcome})
-    store.lastCheckout = {
-      orderId:order.orderId,
-      total:order.total,
-      paymentMethod:order.paymentMethod,
-    }
-    pendingPayment.value = null
-    store.completeCheckout(items)
-    await router.replace({name:'checkout-complete'})
-    await store.load()
-  } catch (e) {
-    error.value = e.message
-  } finally {
-    busy.value = false
-  }
-}
 </script>
 
 <template>
@@ -143,7 +110,7 @@ async function pay(outcome) {
 
     <template v-if="complete">
       <section v-if="store.lastCheckout" class="checkout-receipt" aria-label="주문 확인">
-        <p role="status">모의 결제를 완료했습니다.</p>
+        <p role="status">서버에서 결제를 승인했습니다.</p>
         <dl>
           <div><dt>주문번호</dt><dd>{{ store.lastCheckout.orderId }}</dd></div>
           <div><dt>결제 금액</dt><dd>{{ money(store.lastCheckout.total) }}</dd></div>
@@ -162,7 +129,7 @@ async function pay(outcome) {
       <RouterLink to="/cart">장바구니로 이동 →</RouterLink>
     </template>
 
-    <form v-else class="checkout-layout" @submit.prevent="openPayment">
+    <form v-else class="checkout-layout" @submit.prevent="startTossPayment">
       <div class="checkout-information">
         <section class="checkout-delivery" aria-labelledby="checkout-delivery-title">
           <div class="checkout-delivery-heading">
@@ -210,16 +177,14 @@ async function pay(outcome) {
           <div><dt>배송비</dt><dd>무료</dd></div>
           <div class="checkout-total"><dt>총 결제금액</dt><dd>{{ money(store.checkoutTotal) }}</dd></div>
         </dl>
-        <p class="checkout-note">모의 결제입니다. 테스트 배송 정보를 입력해 주세요.</p>
+        <p class="checkout-note">서버 주문을 생성한 뒤 토스 결제 승인을 진행합니다. 결제창을 닫은 주문은 주문 내역에서 취소해 주세요.</p>
         <p v-if="unavailable" class="error">장바구니에서 상품 재고를 확인해 주세요.</p>
         <p v-if="paymentNotice" class="checkout-note" role="status">{{ paymentNotice }}</p>
         <p v-if="tossError" class="error" role="alert">{{ tossError }}</p>
-        <button type="submit" class="button" :disabled="busy || unavailable || tossOpen">{{ busy ? '처리 중…' : '모의 결제하기' }}</button>
-        <button type="button" class="button toss-test-button" :disabled="!tossTestConfigured || busy || unavailable || tossOpen" :aria-describedby="tossTestConfigured ? undefined : 'toss-test-status'" @click="startTossPayment"><PaymentBrand method="토스페이먼츠"/>{{ tossOpen ? '토스 결제창 열림…' : '토스페이먼츠 테스트 결제' }}</button>
+        <button type="button" class="button toss-test-button" :disabled="!tossTestConfigured || busy || unavailable || tossOpen" :aria-describedby="tossTestConfigured ? undefined : 'toss-test-status'" @click="startTossPayment"><PaymentBrand method="토스페이먼츠"/>{{ tossOpen ? '토스 결제창 열림…' : '토스페이먼츠 결제' }}</button>
         <p v-if="!tossTestConfigured" id="toss-test-status" class="checkout-note toss-test-status">테스트 키를 설정하면 토스페이먼츠 결제창을 열 수 있어요.</p>
       </aside>
     </form>
-    <CheckoutPaymentDialog v-if="pendingPayment" :method="pendingPayment.method" :total="pendingPayment.total" :busy="busy" :error="error" @approve="pay" @close="cancelPayment"/>
     <CheckoutAddressDialog v-if="addressOpen" :current="savedDelivery" :member-name="store.user?.name" @close="addressOpen = false" @save="saveDelivery"/>
   </section>
 </template>

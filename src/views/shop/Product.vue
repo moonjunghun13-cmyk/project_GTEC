@@ -53,11 +53,12 @@ function setSelected(value) {
   const integer = Math.trunc(Number(value)) || 1
   selected.value = Math.max(1,Math.min(integer,product.value.stock))
 }
-function addSelected() {
+async function addSelected() {
   if (selected.value > remaining.value) return
   const amount = selected.value
   const total = inCart.value + amount
-  const hasWarnings = store.addAndShow(product.value.productId,amount)
+  const hasWarnings = await store.addAndShow(product.value.productId,amount)
+  if (hasWarnings === null) { error.value=store.cartNotice; return }
   if (!hasWarnings) added.value = {product:{...product.value},quantity:amount}
   notice.value = amount + '개를 담았습니다. 장바구니에 총 ' + total + '개가 있습니다.'
 }
@@ -79,8 +80,8 @@ watch(() => [store.role,product.value?.productId], ([role,productId]) => {
 function buy() {
   const productId = product.value.productId
   const quantity = selected.value
-  store.requireUser(() => {
-    store.quantity(productId,quantity)
+  store.requireUser(async () => {
+    if (await store.quantity(productId,quantity) === false) { error.value=store.cartNotice; return }
     store.checkoutIds = [productId]
     return router.push('/checkout')
   })

@@ -1,6 +1,6 @@
 import { createApiClient } from '../api'
 
-const baseURL = import.meta.env.VITE_SENTIMENT_API_BASE_URL?.trim()
+const baseURL = null // AI integration is intentionally disabled.
 const client = baseURL ? createApiClient({ baseURL, timeout:10000 }) : null
 export const sentimentApiConfigured = Boolean(client)
 

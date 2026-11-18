@@ -37,11 +37,11 @@ function customerKeyFor(memberId) {
   return token
 }
 
-export async function openTossTestWindow({memberId,total,orderName,active,cancel,report}) {
+export async function openTossTestWindow({memberId,total,orderName,orderId,active,cancel,report}) {
   if (!tossTestConfigured) throw new Error('토스페이먼츠 테스트 클라이언트 키를 설정해 주세요.')
   if (!memberId || !Number.isSafeInteger(total) || total < 1) throw new Error('회원과 주문 금액을 확인해 주세요.')
   const customerKey = customerKeyFor(memberId)
-  const orderId = crypto.randomUUID()
+  if (!orderId) throw new Error('서버 주문번호가 필요합니다.')
   const TossPayments = await loadSdk()
   if (!active()) return
 
@@ -99,5 +99,5 @@ export function readTossTestResult(result,query) {
       typeof query.amount !== 'string' || !/^\d+$/.test(query.amount) || Number(query.amount) !== attempt.total) {
     return {status:'invalid'}
   }
-  return {status:'authenticated',orderId:attempt.orderId,total:attempt.total}
+  return {status:'authenticated',orderId:attempt.orderId,total:attempt.total,paymentKey:query.paymentKey}
 }
