@@ -1,0 +1,16 @@
+# 절대 버전 관리에 올리지 않는 개인 설정
+.env
+.env.*
+!.env.example
+
+# 실행 후 생성되는 임시 파일
+__pycache__/
+*.py[cod]
+*.tmp
+*.pkl.tmp
+*.json.tmp
+
+# 모델 재학습 결과 및 기록 (실제로 생성될 경우)
+customer_pattern_real_candidate.pkl
+customer_pattern_real_settings.json
+customer_weekly_refresh_last.json
