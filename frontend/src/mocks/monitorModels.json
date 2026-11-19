@@ -1,0 +1,184 @@
+[
+  {
+    "id": "GT-MON-1",
+    "name": "AERO 24 FHD 180",
+    "size": "24인치",
+    "resolution": "1920 × 1080",
+    "hz": 180,
+    "panel": "IPS",
+    "ratio": "16:9",
+    "price": 189000,
+    "ports": "HDMI · DisplayPort",
+    "design": "compact 24-inch flat 16:9 panel, narrow angular central neck, two slim splayed V feet",
+    "screen": "vivid cyan and violet futuristic racing landscape",
+    "usage": [
+      "gaming",
+      "office"
+    ],
+    "headline": "반응은 빠르게, 플레이는 선명하게."
+  },
+  {
+    "id": "GT-MON-2",
+    "name": "LUMA 27 QHD 165",
+    "size": "27인치",
+    "resolution": "2560 × 1440",
+    "hz": 165,
+    "panel": "IPS",
+    "ratio": "16:9",
+    "price": 289000,
+    "ports": "HDMI · DisplayPort",
+    "design": "27-inch flat 16:9 thin panel with softly rounded outer corners, tall cylindrical neck through an open circular ring, perfectly round disc base",
+    "screen": "luminous emerald alpine lake and mountain aurora",
+    "usage": [
+      "gaming",
+      "office"
+    ],
+    "headline": "일상과 게임 사이, 선명한 균형."
+  },
+  {
+    "id": "GT-MON-3",
+    "name": "PRISM 27 4K 60",
+    "size": "27인치",
+    "resolution": "3840 × 2160",
+    "hz": 60,
+    "panel": "IPS",
+    "ratio": "16:9",
+    "price": 359000,
+    "ports": "HDMI · DisplayPort · USB-C",
+    "design": "27-inch flat 16:9 elegant thin brushed-metal frame, single angled sculptural blade neck offset slightly to right, very thin square flat slab base",
+    "screen": "brilliant coral magenta and amber fluid abstract macro art",
+    "usage": [
+      "editing",
+      "office"
+    ],
+    "headline": "디테일의 차이가 작업의 차이로."
+  },
+  {
+    "id": "GT-MON-4",
+    "name": "ORBIT 32 QHD 240",
+    "size": "32인치",
+    "resolution": "2560 × 1440",
+    "hz": 240,
+    "panel": "VA",
+    "ratio": "16:9",
+    "price": 459000,
+    "ports": "HDMI · DisplayPort",
+    "design": "32-inch 16:9 strongly curved 1000R gaming display with slightly thick sculpted chassis, angular armor-like central neck, broad crescent-moon base, subtle rear RGB rim",
+    "screen": "vivid orange planet over blue science fiction city horizon",
+    "usage": [
+      "gaming"
+    ],
+    "headline": "곡선 안으로 들어오는 몰입감."
+  },
+  {
+    "id": "GT-MON-5",
+    "name": "HORIZON 34 UWQHD 180",
+    "size": "34인치",
+    "resolution": "3440 × 1440",
+    "hz": 180,
+    "panel": "VA",
+    "ratio": "21:9",
+    "price": 499000,
+    "ports": "HDMI · DisplayPort",
+    "design": "34-inch wide 21:9 curved gaming display, thin horizontal panel, tall slender central support with triangular negative-space cutout, three-pronged low tripod stand",
+    "screen": "panoramic purple cosmic nebula with blue crystalline terrain",
+    "usage": [
+      "gaming",
+      "editing",
+      "development"
+    ],
+    "headline": "더 넓은 시야, 끊김 없는 흐름."
+  },
+  {
+    "id": "GT-MON-6",
+    "name": "PANORAMA 49 DQHD 144",
+    "size": "49인치",
+    "resolution": "5120 × 1440",
+    "hz": 144,
+    "panel": "VA",
+    "ratio": "32:9",
+    "price": 899000,
+    "ports": "HDMI · DisplayPort · USB-C",
+    "design": "49-inch super ultrawide 32:9 curved panoramic screen, exceptionally long horizontal silhouette, sturdy short center spine, broad low symmetrical twin boomerang legs",
+    "screen": "spectacular panoramic cyan ocean and pink sunrise across futuristic coastline",
+    "usage": [
+      "gaming",
+      "development",
+      "editing"
+    ],
+    "headline": "두 개의 화면을 하나의 파노라마로."
+  },
+  {
+    "id": "GT-MON-7",
+    "name": "PIVOT 28 4K 144",
+    "size": "28인치",
+    "resolution": "3840 × 2160",
+    "hz": 144,
+    "panel": "IPS",
+    "ratio": "16:9 피벗",
+    "price": 529000,
+    "ports": "HDMI · DisplayPort · USB-C",
+    "design": "28-inch 16:9 panel ROTATED into portrait orientation, genuinely tall vertical screen, robust rectangular telescoping height-adjustable column, flat rounded-rectangle base with small central cable slot",
+    "screen": "vertical luminous cyan violet digital waterfall",
+    "usage": [
+      "development",
+      "editing"
+    ],
+    "headline": "가로도 세로도, 작업에 맞게."
+  },
+  {
+    "id": "GT-MON-8",
+    "name": "STUDIO 32 4K 60",
+    "size": "32인치",
+    "resolution": "3840 × 2160",
+    "hz": 60,
+    "panel": "IPS",
+    "ratio": "16:9",
+    "price": 579000,
+    "ports": "HDMI · DisplayPort · USB-C",
+    "design": "32-inch flat 16:9 professional creator display, thicker smooth bottom chin, distinctive inverted U-frame easel stand with two side supports and horizontal low foot, minimal elegant construction",
+    "screen": "highly detailed saturated turquoise orange tropical bird photograph",
+    "usage": [
+      "editing",
+      "office"
+    ],
+    "headline": "창작의 색과 디테일을 한 화면에."
+  },
+  {
+    "id": "GT-MON-9",
+    "name": "ARC 38 WQHD+ 160",
+    "size": "38인치",
+    "resolution": "3840 × 1600",
+    "hz": 160,
+    "panel": "IPS",
+    "ratio": "24:10",
+    "price": 749000,
+    "ports": "HDMI · DisplayPort · USB-C",
+    "design": "38-inch curved 24:10 expansive screen, slim swept-back chassis with silver bevel edge on black housing, polished arch-shaped hollow pedestal support, wide flat oval base",
+    "screen": "luxurious vivid violet blue liquid chrome ribbons on dark space",
+    "usage": [
+      "gaming",
+      "editing",
+      "development"
+    ],
+    "headline": "넓은 작업 공간에 더한 곡선의 감각."
+  },
+  {
+    "id": "GT-MON-10",
+    "name": "DUALVIEW 28 SDQHD 60",
+    "size": "28인치",
+    "resolution": "2560 × 2880",
+    "hz": 60,
+    "panel": "IPS",
+    "ratio": "16:18",
+    "price": 469000,
+    "ports": "HDMI · DisplayPort · USB-C",
+    "design": "28-inch unusual nearly square but slightly tall 16:18 dual-up productivity screen, rounded top corners, single thick L-shaped articulated side arm rising from back-left, deep D-shaped desktop base",
+    "screen": "two stacked beautiful abstract wallpapers upper violet crystal waves lower emerald flowing dunes, no UI no text",
+    "usage": [
+      "development",
+      "office"
+    ],
+    "headline": "위아래로 펼치는 새로운 작업 공간."
+  }
+]
