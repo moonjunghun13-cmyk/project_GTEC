@@ -212,11 +212,15 @@ public class ReviewService {
 
         return new ReviewResponse(
                 review.getId(),
+                review.getOrderItem().getId(),
                 product.getId(),
                 product.getName(),
                 productImage,
                 review.getRating(),
                 review.getContent(),
+                review.getSentiment(),
+                review.getSentimentScore(),
+                review.getSentimentAnalyzedAt(),
                 review.getCreatedAt(),
                 review.getUpdatedAt()
         );
@@ -247,6 +251,9 @@ public class ReviewService {
                 productImage,
                 review.getRating(),
                 review.getContent(),
+                review.getSentiment(),
+                review.getSentimentScore(),
+                review.getSentimentAnalyzedAt(),
                 review.getCreatedAt(),
                 review.getUpdatedAt()
         );

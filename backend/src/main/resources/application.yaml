@@ -7,9 +7,9 @@ spring:
     import: optional:file:.env[.properties]
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/gtec
-    username: postgres
-    password: 1004
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/gtec}
+    username: ${USER_NAME}
+    password: ${PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -74,6 +74,25 @@ jwt:
 toss:
   payments:
     secret-key: ${TOSS_SECRET_KEY}
+
+app:
+  ai:
+    recommend-url: ${AI_RECOMMEND_URL:http://127.0.0.1:8002}
+    review-url: ${AI_REVIEW_URL:http://127.0.0.1:8003}
+    customer-url: ${AI_CUSTOMER_URL:http://127.0.0.1:8001}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - name: Spring Boot REST
+        url: /v3/api-docs
+      - name: AI 추천
+        url: http://localhost:8002/openapi.json
+      - name: AI 리뷰 분석
+        url: http://localhost:8003/openapi.json
+      - name: AI 고객 분석
+        url: http://localhost:8001/openapi.json
 
 server:
   port: 8090

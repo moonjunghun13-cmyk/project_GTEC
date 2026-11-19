@@ -8,7 +8,7 @@ build/
 ### STS ###
 .apt_generated
 .classpath
-.env
+.env.example
 .factorypath
 .project
 .settings
