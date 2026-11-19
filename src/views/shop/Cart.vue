@@ -27,12 +27,12 @@ const selectedQuantity = computed(() => chosen.value.reduce((sum,item) => sum + 
 const selectedTotal = computed(() => chosen.value.reduce((sum,item) => sum + item.price * item.quantity,0))
 const unavailable = computed(() => chosen.value.some(item => item.stock < item.quantity || item.stock === 0))
 function selectAll(event) { selected.value = event.target.checked ? store.cartItems.map(item => item.productId) : [] }
-async function removeSelected() {
-  for (const id of [...selected.value]) await store.quantity(id,0)
+function removeSelected() {
+  for (const id of [...selected.value]) store.quantity(id,0)
 }
-async function quantity(item,event) {
+function quantity(item,event) {
   const value = Number(event.target.value)
-  if (Number.isInteger(value) && value >= 1) await store.quantity(item.productId,value)
+  if (Number.isInteger(value) && value >= 1) store.quantity(item.productId,value)
   event.target.value = store.cart.find(row => row.productId === item.productId)?.quantity ?? 0
 }
 function checkout() {
@@ -76,8 +76,6 @@ function checkout() {
         <p v-if="!chosen.length">주문할 상품을 선택해 주세요.</p><p v-else-if="unavailable" class="error">선택 상품의 재고를 확인해 주세요.</p><p v-else>선택한 상품만 주문합니다.</p>
       </aside>
     </div>
-    <p v-if="store.cartNotice" role="status">{{ store.cartNotice }}</p>
-    <p class="muted">등록된 부품 사양으로 호환성을 확인합니다. 사양이 없는 상품은 자동 검사에 포함되지 않습니다.</p>
     <RouterLink to="/products">← 쇼핑 계속하기</RouterLink>
   </section>
 </template>

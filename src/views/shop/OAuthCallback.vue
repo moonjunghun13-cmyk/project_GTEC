@@ -1,46 +1,26 @@
 <script setup>
-import { onMounted, ref } from 'vue'
-import { useRoute,useRouter } from 'vue-router'
-import { shop } from '../../services'
+import { onBeforeUnmount, reactive, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useShop } from '../../stores/shop'
+import { toFrontendUser } from '../../services'
+import { exchangeSocialCode, completeSocialSignup, signupPreview } from '../../services/socialAuth'
+import { startSocialLogin, socialReturnPath } from '../../services/socialNavigation'
+import SocialAuthButtons from '../../components/SocialAuthButtons.vue'
 const route=useRoute(),router=useRouter(),store=useShop()
-const error=ref(''),busy=ref(true),signupToken=ref(''),email=ref(''),name=ref(''),agreed=ref(false)
-onMounted(async () => {
-  const code=route.query.code
-  window.history.replaceState({},'',route.path)
-  try {
-    if (typeof code !== 'string') throw new Error('소셜 인증 코드가 없습니다.')
-    const result=await shop.socialExchange(code)
-    if (result.status === 'LOGIN') {
-      await store.finishAuthentication(await shop.me())
-      await router.replace('/')
-    } else if (result.status === 'SIGNUP') signupToken.value=result.signupToken
-    else throw new Error('소셜 인증 응답을 확인해 주세요.')
-  } catch(e) { error.value=e.message }
-  finally { busy.value=false }
-})
-async function signup() {
-  busy.value=true;error.value=''
-  try {
-    const user=await shop.socialSignup(signupToken.value,{email:email.value,name:name.value,termsAgreed:agreed.value,privacyAgreed:agreed.value})
-    signupToken.value=''
-    await store.finishAuthentication(user)
-    await router.replace('/')
-  } catch(e) { error.value=e.message }
-  finally { busy.value=false }
+const busy=ref(true),error=ref(''),signupToken=ref('')
+const form=reactive({name:'',email:'',termsAgreed:false,privacyAgreed:false})
+let started=false,active=true
+onBeforeUnmount(()=>{active=false;signupToken.value=''})
+async function finish(member){if(!active)return;const user=toFrontendUser(member);await store.finishAuthentication(user);if(active)await router.replace(socialReturnPath(user.role))}
+async function exchange(){
+  const code=typeof route.query.code==='string'?route.query.code:''
+  window.history.replaceState(window.history.state,'',window.location.pathname)
+  try{const result=await exchangeSocialCode(code);if(!active)return;if(result.status==='LOGIN')await finish(result.member);else{signupToken.value=result.signupToken;Object.assign(form,signupPreview(result.signupToken))}}
+  catch(e){if(active)error.value=e.message}
+  finally{if(active)busy.value=false}
 }
+watch(()=>store.busy,value=>{if(!value&&!started){started=true;exchange()}},{immediate:true})
+async function signup(){if(busy.value)return;busy.value=true;error.value='';try{await finish(await completeSocialSignup(signupToken.value,{name:form.name.trim(),email:form.email,termsAgreed:form.termsAgreed,privacyAgreed:form.privacyAgreed}))}catch(e){error.value=e.message}finally{busy.value=false}}
 </script>
-<template>
-  <section class="wrap section">
-    <h1>소셜 로그인</h1><p v-if="busy" role="status">인증 정보를 확인하고 있습니다.</p>
-    <form v-if="signupToken" class="stack" @submit.prevent="signup">
-      <p>처음 가입하는 회원입니다. 소셜 계정의 이메일과 사용할 이름을 입력해 주세요.</p>
-      <label>이메일<input v-model="email" type="email" required></label>
-      <label>이름<input v-model="name" required></label>
-      <p>회원정보는 서버에 저장되며 쇼핑 서비스 제공에 사용합니다.</p>
-      <label class="check"><input v-model="agreed" type="checkbox" required>이용약관 및 개인정보 수집과 이용에 동의합니다.</label>
-      <button class="button" :disabled="busy || !agreed">가입 완료</button>
-    </form>
-    <p v-if="error" class="error" role="alert">{{ error }}</p><RouterLink to="/">홈으로</RouterLink>
-  </section>
-</template>
+<template><section class="wrap section oauth-callback"><h1>{{ signupToken ? '소셜 회원가입' : '소셜 로그인' }}</h1><p v-if="busy" role="status">인증 정보를 확인하고 있습니다…</p><p v-if="error" class="error" role="alert">{{ error }}</p><form v-if="signupToken" class="stack" @submit.prevent="signup"><p>소셜 계정 정보를 확인하고 필수 항목에 동의해 주세요.</p><label>이메일<input v-model="form.email" type="email" readonly required autocomplete="email"></label><label>이름<input v-model="form.name" required maxlength="50" autocomplete="name"></label><label class="check"><input v-model="form.termsAgreed" type="checkbox" required>이용약관에 동의합니다.</label><label class="check"><input v-model="form.privacyAgreed" type="checkbox" required>개인정보 수집·이용에 동의합니다.</label><p>계정 식별 정보와 이름·이메일은 회원가입 및 로그인 처리를 위해 프로젝트 서버에 저장됩니다.</p><button class="button" :disabled="busy || !form.termsAgreed || !form.privacyAgreed">동의하고 가입하기</button></form><template v-else-if="!busy"><p>인증이 만료되거나 취소됐다면 다시 로그인해 주세요.</p><SocialAuthButtons @select="startSocialLogin"/><RouterLink to="/">홈으로</RouterLink></template></section></template>
+<style scoped>.oauth-callback{max-width:640px}.oauth-callback form{margin:20px 0}.oauth-callback p{line-height:1.7}</style>

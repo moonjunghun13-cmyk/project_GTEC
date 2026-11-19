@@ -25,7 +25,7 @@ function cart() {
     <h2 id="cart-added-title">장바구니에 담았습니다</h2>
     <div class="cart-added-product">
       <img v-if="product.image" :src="product.image" alt="">
-      <div><small>{{ product.category }} · {{ product.brand }}</small><strong>{{ product.name }}</strong><p>{{ quantity }}개 · {{ money(product.price * quantity) }}</p></div>
+      <div><small>{{ product.category }}<template v-if="product.brand"> · {{ product.brand }}</template></small><strong>{{ product.name }}</strong><p>{{ quantity }}개 · {{ money(product.price * quantity) }}</p></div>
     </div>
     <div class="cart-added-actions"><button class="button" @click="emit('close')">계속 쇼핑</button><button class="button gold" @click="cart">장바구니 보기</button></div>
   </dialog>

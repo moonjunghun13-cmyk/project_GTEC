@@ -1,10 +1,11 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import {fileURLToPath} from 'node:url'
-import {categoryCodes} from '../src/services/backendModels.js'
+const categoryCodes={GPU:'그래픽카드',CASE:'케이스',CPU:'CPU',KEYBOARD:'키보드',MOUSE:'마우스',SSD:'SSD',SPEAKER:'스피커',HDD:'HDD',POWER:'파워',RAM:'메모리',MONITOR:'모니터',MAINBOARD:'메인보드'}
+for(const [code,name] of Object.entries({...categoryCodes})){delete categoryCodes[code];categoryCodes[name]=code}
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..')
 const source=JSON.parse(fs.readFileSync(path.join(root,'src/mocks/realCatalog.json'),'utf8'))
-const base=process.env.GT_API_URL || 'http://localhost:8090/api'
+const base=process.env.GT_API_URL || 'http://localhost:8093/api'
 let token
 async function request(method,url,data) {
  const response=await fetch(base+url,{method,headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{})},body:data?JSON.stringify(data):undefined})

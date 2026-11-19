@@ -26,6 +26,7 @@ function scheduleHeaderAppearance() {
 }
 watch(() => [route.path, store.busy], scheduleHeaderAppearance, {flush:'post'})
 onMounted(() => {
+  store.load()
   scheduleHeaderAppearance()
   window.addEventListener('scroll', scheduleHeaderAppearance, {passive:true})
   window.addEventListener('resize', scheduleHeaderAppearance)
@@ -49,8 +50,8 @@ function reviewCartLink(event, navigate) {
     return router.push('/cart')
   })
 }
-async function signOut() {
-  await store.signOut()
+function signOut() {
+  store.signOut()
   if (route.meta.role) router.push('/')
 }
 </script>

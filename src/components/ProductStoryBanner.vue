@@ -23,7 +23,7 @@ const alternate = computed(() => props.product.gallery?.find(photo => photo.imag
   <div class="story-banner" :data-mood="theme.mood" :style="{'--story-accent':theme.accent,'--story-glow':theme.glow,'--story-base':theme.base}">
     <div class="story-banner-atmosphere" aria-hidden="true"><i></i><i></i><i></i></div>
     <div class="story-banner-topline">
-      <span>{{ product.brand }} <b>/</b> {{ product.category }}</span>
+      <span>{{ product.brand ? `${product.brand} / ` : '' }}{{ product.category }}</span>
       <img src="/gt-logo-chrome.png" alt="GT전자" width="88" height="48">
     </div>
     <div class="story-banner-copy">

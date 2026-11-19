@@ -37,11 +37,10 @@ function customerKeyFor(memberId) {
   return token
 }
 
-export async function openTossTestWindow({memberId,total,orderName,orderId,active,cancel,report}) {
+export async function openTossTestWindow({memberId,orderId,cancelOrderId=null,total,orderName,items=[],active,cancel,report}) {
   if (!tossTestConfigured) throw new Error('토스페이먼츠 테스트 클라이언트 키를 설정해 주세요.')
-  if (!memberId || !Number.isSafeInteger(total) || total < 1) throw new Error('회원과 주문 금액을 확인해 주세요.')
+  if (!memberId || !orderId || !Number.isSafeInteger(total) || total < 1) throw new Error('회원, 주문 번호, 결제 금액을 확인해 주세요.')
   const customerKey = customerKeyFor(memberId)
-  if (!orderId) throw new Error('서버 주문번호가 필요합니다.')
   const TossPayments = await loadSdk()
   if (!active()) return
 
@@ -65,12 +64,12 @@ export async function openTossTestWindow({memberId,total,orderName,orderId,activ
   paymentWindow.on('paymentRequest', async ({paymentMethod}) => {
     if (requesting || !active()) return
     if (['TRANSFER','VIRTUAL_ACCOUNT'].includes(paymentMethod?.method)) {
-      report('이 주문에서는 계좌이체나 가상계좌를 선택할 수 없습니다.')
+      report('이 주문에서는 계좌이체나 가상계좌를 선택할 수 없습니다.',false)
       return
     }
     requesting = true
     try {
-      sessionStorage.setItem(attemptKey,JSON.stringify({orderId,total}))
+      sessionStorage.setItem(attemptKey,JSON.stringify({orderId,cancelOrderId,total,items}))
       await widgets.requestPayment({
         orderId,orderName,
         successUrl:new URL('/checkout/toss/success',window.location.origin).href,
@@ -79,7 +78,7 @@ export async function openTossTestWindow({memberId,total,orderName,orderId,activ
     } catch (error) {
       requesting = false
       sessionStorage.removeItem(attemptKey)
-      report(error?.code === 'USER_CANCEL' ? '결제를 취소했습니다.' : '토스 테스트 결제 요청을 완료하지 못했습니다.')
+      report(error?.code === 'USER_CANCEL' ? '결제를 취소했습니다.' : '토스 테스트 결제 요청을 완료하지 못했습니다.',true)
     }
   })
   return destroy
@@ -93,11 +92,11 @@ export function readTossTestResult(result,query) {
   } catch { return {status:'invalid'} }
   if (!attempt) return {status:'invalid'}
   if (result === 'fail') {
-    return {status:['PAY_PROCESS_CANCELED','USER_CANCEL'].includes(query.code) ? 'cancelled' : 'failed'}
+    return {status:['PAY_PROCESS_CANCELED','USER_CANCEL'].includes(query.code) ? 'cancelled' : 'failed',orderId:attempt.cancelOrderId}
   }
   if (query.orderId !== attempt.orderId || typeof query.paymentKey !== 'string' || !query.paymentKey ||
       typeof query.amount !== 'string' || !/^\d+$/.test(query.amount) || Number(query.amount) !== attempt.total) {
     return {status:'invalid'}
   }
-  return {status:'authenticated',orderId:attempt.orderId,total:attempt.total,paymentKey:query.paymentKey}
+  return {status:'authenticated',orderId:attempt.orderId,total:attempt.total,paymentKey:query.paymentKey,items:attempt.items ?? []}
 }

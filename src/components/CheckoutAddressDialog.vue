@@ -6,6 +6,7 @@ const props = defineProps({
   current: {type:Object, default:null},
   memberName: {type:String, default:''},
 })
+const apiAuth = (import.meta.env.VITE_AUTH_MODE || 'api') === 'api'
 const emit = defineEmits(['close','save'])
 const dialog = ref(null)
 const searchOpen = ref(false)
@@ -66,8 +67,8 @@ async function search() {
 }
 function save() {
   const delivery = Object.fromEntries(Object.entries(draft).map(([key,value]) => [key,value.trim()]))
-  if (!delivery.recipient || !delivery.address || !/^\d{10,11}$/.test(delivery.phone.replace(/[- ]/g,''))) {
-    error.value = '받는 사람, 전화번호, 배송지를 확인해 주세요.'
+  if (!delivery.recipient || !delivery.address || !/^\d{10,11}$/.test(delivery.phone.replace(/[- ]/g,'')) || (apiAuth && !/^\d{5}$/.test(delivery.postcode))) {
+    error.value = apiAuth ? '받는 사람, 전화번호, 우편번호, 배송지를 확인해 주세요.' : '받는 사람, 전화번호, 배송지를 확인해 주세요.'
     return
   }
   emit('save', delivery)
@@ -96,7 +97,7 @@ function save() {
         <label>전화번호<input v-model="draft.phone" type="tel" required maxlength="20" autocomplete="shipping tel" placeholder="010-1234-5678"></label>
       </div>
       <div class="address-postcode">
-        <label>우편번호 <span>(선택)</span><input v-model="draft.postcode" maxlength="5" pattern="[0-9]{5}" inputmode="numeric" autocomplete="shipping postal-code"></label>
+        <label>우편번호 <span v-if="!apiAuth">(선택)</span><input v-model="draft.postcode" maxlength="5" pattern="[0-9]{5}" inputmode="numeric" autocomplete="shipping postal-code" :required="apiAuth"></label>
         <button ref="searchButton" type="button" class="button" @click="search">주소 찾기</button>
       </div>
       <p v-if="searchError" class="error address-search-error" role="alert">{{ searchError }}</p>

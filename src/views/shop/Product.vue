@@ -53,12 +53,11 @@ function setSelected(value) {
   const integer = Math.trunc(Number(value)) || 1
   selected.value = Math.max(1,Math.min(integer,product.value.stock))
 }
-async function addSelected() {
+function addSelected() {
   if (selected.value > remaining.value) return
   const amount = selected.value
   const total = inCart.value + amount
-  const hasWarnings = await store.addAndShow(product.value.productId,amount)
-  if (hasWarnings === null) { error.value=store.cartNotice; return }
+  const hasWarnings = store.addAndShow(product.value.productId,amount)
   if (!hasWarnings) added.value = {product:{...product.value},quantity:amount}
   notice.value = amount + '개를 담았습니다. 장바구니에 총 ' + total + '개가 있습니다.'
 }
@@ -80,8 +79,8 @@ watch(() => [store.role,product.value?.productId], ([role,productId]) => {
 function buy() {
   const productId = product.value.productId
   const quantity = selected.value
-  store.requireUser(async () => {
-    if (await store.quantity(productId,quantity) === false) { error.value=store.cartNotice; return }
+  store.requireUser(() => {
+    store.quantity(productId,quantity)
     store.checkoutIds = [productId]
     return router.push('/checkout')
   })
@@ -92,7 +91,7 @@ function buy() {
     <RouterLink to="/products">← 상품 목록</RouterLink>
     <div class="detail">
       <ProductGallery :key="product.productId" :product="product" :slides="gallery"/>
-      <div class="product-purchase-info"><p class="eyebrow">{{ product.category }} / {{ product.brand }}</p><h1>{{ product.name }}</h1><p>{{ product.spec }}</p><p v-if="product.description">{{ product.description }}</p><p class="price">{{ money(product.price) }}</p><p class="muted">{{ product.stock ? '재고 '+product.stock+'개' : '품절' }}</p>
+      <div class="product-purchase-info"><p class="eyebrow">{{ product.category }}<template v-if="product.brand"> / {{ product.brand }}</template></p><h1>{{ product.name }}</h1><p>{{ product.spec }}</p><p v-if="product.description">{{ product.description }}</p><p class="price">{{ money(product.price) }}</p><p class="muted">{{ product.stock ? '재고 '+product.stock+'개' : '품절' }}</p>
       <div v-if="product.stock" class="detail-quantity" role="group" aria-label="구매 수량">
         <label for="product-quantity">수량</label>
         <button class="button" type="button" aria-label="수량 줄이기" :disabled="selected <= 1" @click="setSelected(selected-1)">−</button>

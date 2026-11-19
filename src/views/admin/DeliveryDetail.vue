@@ -10,6 +10,7 @@ import './delivery.css'
 import './admin-common.css'
 const route = useRoute()
 const store = useShop()
+const apiMode = (import.meta.env.VITE_AUTH_MODE || 'api') === 'api'
 const order = ref(null)
 const products = ref([])
 const busy = ref(false)
@@ -19,7 +20,7 @@ const error = ref('')
 const notice = ref('')
 const form = reactive({carrier:'',tracking:'',status:'',dispatchDate:'',memo:''})
 const steps = ['결제 완료','배송 준비','배송 중','배송 완료']
-const locked = computed(() => order.value?.backendStatus === 'PAID' || !steps.includes(order.value?.status) || order.value?.request?.endsWith('요청'))
+const locked = computed(() => !steps.includes(order.value?.status) || order.value?.request?.endsWith('요청'))
 const currentStep = computed(() => steps.indexOf(order.value?.status))
 const total = computed(() => order.value.items.reduce((sum,item) => sum + item.price*item.quantity,0))
 function timestamp(value) {
@@ -39,9 +40,15 @@ async function load() {
   try {
     const data = await admin.snapshot(store.user.userId)
     if (current !== request) return
-    order.value = data.orders.find(row => row.orderId === route.params.orderId)
+    const selectedOrder = data.orders.find(row => row.orderId === route.params.orderId)
     products.value = data.products
-    if (!order.value) throw new Error('주문을 찾을 수 없습니다.')
+    if (!selectedOrder) throw new Error('주문을 찾을 수 없습니다.')
+    if (apiMode) {
+      const delivery = await admin.getDelivery(store.user.userId,selectedOrder.orderId)
+      if (current !== request) return
+      order.value = {...selectedOrder,carrier:delivery.carrierName ?? '',tracking:delivery.invoiceNumber ?? '',
+        dispatchDate:delivery.estimatedAt ?? '',shippingMemo:delivery.deliveryMemo ?? '',shipmentId:delivery.deliveryId ? `DLV-${delivery.deliveryId}` : ''}
+    } else order.value = selectedOrder
     reset()
   } catch(e) { if (current === request) loadError.value = e.message }
   finally { if (current === request) loading.value = false }
@@ -53,8 +60,9 @@ async function save() {
   error.value = ''
   notice.value = ''
   try {
-    const updated = await admin.saveShipping(store.user.userId,order.value.orderId,{...form})
+    await admin.saveShipping(store.user.userId,order.value.orderId,{...form,currentStatus:order.value.status})
     await load()
+    if (loadError.value) throw new Error(loadError.value)
     notice.value = '배송 정보를 저장했습니다.'
   } catch(e) { error.value = e.message }
   finally { busy.value = false }
@@ -80,7 +88,7 @@ async function save() {
         <article class="delivery-panel"><h2><AdminIcon name="truck"/>배송 진행 상태</h2>
           <ol class="delivery-steps"><li v-for="(step,index) in steps" :key="step" :class="{complete:index <= currentStep,active:index === currentStep}" :aria-current="index === currentStep ? 'step' : undefined"><span>{{ index < currentStep ? '✓' : index+1 }}</span>{{ step === '결제 완료' ? '주문 확인' : step }}</li></ol>
           <p v-if="locked" class="delivery-alert">{{ order.request || order.status }} · 배송 상태를 변경할 수 없습니다.</p>
-          <ol class="delivery-history"><li><time>{{ timestamp(order.date) }}</time><strong>주문 생성</strong></li><li v-for="(entry,index) in order.shippingHistory || []" :key="index"><time>{{ timestamp(entry.date) }}</time><strong>{{ entry.status }} · {{ entry.message }}</strong></li></ol>
+          <ol class="delivery-history"><li><time>{{ timestamp(order.date) }}</time><strong>주문 생성 · 결제 완료</strong></li><li v-for="(entry,index) in order.shippingHistory || []" :key="index"><time>{{ timestamp(entry.date) }}</time><strong>{{ entry.status }} · {{ entry.message }}</strong></li></ol>
         </article>
       </div>
       <div>
@@ -93,8 +101,8 @@ async function save() {
               <label>택배사<select v-model="form.carrier"><option value="">택배사 선택</option><option>CJ대한통운</option><option>한진택배</option><option>롯데택배</option><option>우체국택배</option><option>로젠택배</option><option>기타</option></select></label>
               <label>운송장번호<input v-model.trim="form.tracking" maxlength="40" placeholder="운송장 번호를 입력하세요"></label>
               <label>배송 상태<select v-model="form.status"><option v-for="(step,index) in steps" :key="step" :disabled="index < currentStep || index > currentStep+1">{{ step }}</option><option v-if="locked">{{ order.status }}</option></select></label>
-              <label>예상 배송일<input v-model="form.dispatchDate" type="date"></label>
-              <label>관리 메모<textarea v-model="form.memo" disabled rows="3" maxlength="1000" placeholder="포장 및 발송 관련 메모"></textarea></label>
+              <label>발송예정일<input v-model="form.dispatchDate" type="date"></label>
+              <label>관리 메모<textarea v-model="form.memo" rows="3" maxlength="1000" placeholder="포장 및 발송 관련 메모"></textarea></label>
             </fieldset>
             <div class="delivery-form-actions"><button class="button" type="button" :disabled="busy" @click="reset">입력 초기화</button><button class="button gold" :disabled="busy || locked">{{ busy ? '저장 중…' : '배송 정보 저장' }}</button></div>
           </form>
@@ -103,6 +111,6 @@ async function save() {
         <article class="delivery-panel"><h2><AdminIcon name="arrow"/>관련 처리 바로가기</h2><div class="actions"><RouterLink class="button" :to="{path:'/admin/orders',query:{q:order.orderId}}">주문 상세</RouterLink><RouterLink class="button" :to="{path:'/admin/shipping',query:{tab:'refunds',q:order.orderId}}">취소 · 반품 · 환불</RouterLink></div></article>
       </div>
     </div>
-    <p class="delivery-note">배송 상태와 운송장 번호는 서버에 저장합니다. 결제 완료에서 상품 준비로 전환하는 API는 현재 제공되지 않습니다.</p>
+    <p class="delivery-note">{{ apiMode ? '배송 상태와 운송장 번호는 백엔드 서버에서 관리됩니다.' : '배송 상태와 운송장 번호는 Mock 데이터로 관리됩니다.' }}</p>
   </section>
 </template>

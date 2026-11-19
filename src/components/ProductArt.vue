@@ -21,6 +21,6 @@ defineProps({category:String,brand:String,photo:String,ribbon:String,ribbonTone:
         <text x="120" y="80" fill="#f1dbad" text-anchor="middle" font-size="12" font-family="sans-serif">GT</text>
       </g>
     </svg>
-    <span v-if="ribbon" class="photo-ribbon" :data-tone="ribbonTone"><span aria-hidden="true">✦</span> {{ ribbon }}</span><span v-else-if="!photo">{{ brand }}</span>
+    <span v-if="ribbon" class="photo-ribbon" :data-tone="ribbonTone"><span aria-hidden="true">✦</span> {{ ribbon }}</span><span v-else-if="!photo && brand">{{ brand }}</span>
   </div>
 </template>

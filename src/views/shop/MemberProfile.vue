@@ -1,12 +1,15 @@
 <script setup>
 import { computed, reactive, ref } from 'vue'
 import { shop } from '../../services'
+import { backendActions } from '../../services/backendActions'
 import { useShop } from '../../stores/shop'
 import CheckoutAddressDialog from '../../components/CheckoutAddressDialog.vue'
 
+async function deactivate(){if(busy.value || !window.confirm('회원 탈퇴 시 로그아웃되고 계정이 비활성화됩니다. 계속할까요?'))return;busy.value=true;error.value='';try{await backendActions.deactivate();await store.signOut();emit('close');window.location.assign('/')}catch(e){error.value=e.message}finally{busy.value=false}}
 const emit = defineEmits(['close'])
 const store = useShop()
-const profile = reactive({name:store.user.name,email:store.user.email,username:store.user.username ?? ''})
+const apiAuth = (import.meta.env.VITE_AUTH_MODE || 'api') === 'api'
+const profile = reactive({name:store.user.name,email:store.user.email,username:store.user.username ?? '',phone:store.user.phone ?? ''})
 const password = reactive({current:'',next:'',confirm:''})
 const addressOpen = ref(false)
 const passwordOpen = ref(false)
@@ -36,8 +39,9 @@ async function saveProfile() {
     name:profile.name.trim(),
     email:profile.email.trim().toLowerCase(),
     username:profile.username.trim().toLowerCase(),
+    phone:profile.phone.trim(),
   }), '회원정보를 저장했습니다.')
-  if (saved) Object.assign(profile,{name:store.user.name,email:store.user.email,username:store.user.username ?? ''})
+  if (saved) Object.assign(profile,{name:store.user.name,email:store.user.email,username:store.user.username ?? '',phone:store.user.phone ?? ''})
 }
 async function savePassword() {
   if (password.next !== password.confirm) {
@@ -55,7 +59,7 @@ function saveAddress(value) {
   store.deliveryAddresses[store.user.userId] = value
   addressOpen.value = false
   error.value = ''
-  notice.value = '이 화면에서 사용할 배송지를 저장했습니다. 서버 주소록 저장은 지원하지 않습니다.'
+  notice.value = '이번 접속에서 사용할 배송지를 저장했습니다. 서버 주소록 저장은 지원하지 않습니다.'
 }
 </script>
 
@@ -68,21 +72,23 @@ function saveAddress(value) {
     <form class="profile-fields" @submit.prevent="saveProfile">
       <label>이름<input v-model="profile.name" required maxlength="50" autocomplete="name"></label>
       <label>이메일<input v-model="profile.email" type="email" required autocomplete="email"></label>
-      <label>아이디<input v-model="profile.username" readonly pattern="[A-Za-z0-9]{4,20}" maxlength="20" autocomplete="username" placeholder="미설정 · 영문·숫자 4~20자"></label>
+      <label>연락처<input v-model="profile.phone" type="tel" autocomplete="tel" maxlength="20"></label>
+      <label>아이디<input v-model="profile.username" pattern="[A-Za-z0-9]{4,20}" maxlength="20" autocomplete="username" placeholder="미설정 · 영문·숫자 4~20자" :disabled="apiAuth"></label>
       <button type="submit" class="button gold" :disabled="busy">회원정보 저장</button>
     </form>
 
-    <section class="profile-row">
+    <section v-if="store.user.hasPassword" class="profile-row">
       <div><h3>비밀번호</h3><p>{{ store.user.hasPassword ? '설정됨' : '미설정' }}</p></div>
       <button type="button" class="button" :aria-expanded="passwordOpen" :disabled="busy" @click="passwordOpen = !passwordOpen">{{ store.user.hasPassword ? '비밀번호 변경' : '비밀번호 설정' }}</button>
       <form v-if="passwordOpen" class="profile-fields profile-password" @submit.prevent="savePassword">
         <label v-if="store.user.hasPassword">현재 비밀번호<input v-model="password.current" type="password" required autocomplete="current-password"></label>
-        <label>새 비밀번호<input v-model="password.next" type="password" required minlength="4" maxlength="30" autocomplete="new-password"></label>
-        <label>새 비밀번호 확인<input v-model="password.confirm" type="password" required minlength="4" maxlength="30" autocomplete="new-password"></label>
+        <label>새 비밀번호<input v-model="password.next" type="password" required minlength="8" maxlength="20" autocomplete="new-password"></label>
+        <label>새 비밀번호 확인<input v-model="password.confirm" type="password" required minlength="8" maxlength="20" autocomplete="new-password"></label>
         <button type="submit" class="button gold" :disabled="busy">비밀번호 저장</button>
       </form>
     </section>
 
+    <section v-if="!store.user.hasPassword" class="profile-row"><div><h3>소셜 계정</h3><p>비밀번호는 로그인한 소셜 서비스에서 관리합니다.</p></div></section>
     <section class="profile-row">
       <div>
         <h3>이번 접속의 배송지</h3>
@@ -94,6 +100,7 @@ function saveAddress(value) {
       </div>
       <button type="button" class="button" :disabled="busy" @click="addressOpen = true">{{ delivery ? '배송지 변경' : '배송지 추가' }}</button>
     </section>
+    <section class="profile-row"><div><h3>회원 탈퇴</h3><p>계정을 비활성화하고 로그아웃합니다.</p></div><button class="button" :disabled="busy" @click="deactivate">회원 탈퇴</button></section>
     <p v-if="error" class="error" role="alert">{{ error }}</p>
     <p v-if="notice" class="profile-notice" role="status">{{ notice }}</p>
     <CheckoutAddressDialog v-if="addressOpen" :current="delivery" :member-name="store.user.name" @close="addressOpen=false" @save="saveAddress"/>

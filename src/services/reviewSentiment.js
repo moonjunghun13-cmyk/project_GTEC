@@ -1,17 +1,21 @@
-import { createApiClient } from '../api'
+import { api } from '../api'
 
-const baseURL = null // AI integration is intentionally disabled.
-const client = baseURL ? createApiClient({ baseURL, timeout:10000 }) : null
-export const sentimentApiConfigured = Boolean(client)
+export const sentimentApiConfigured = (import.meta.env.VITE_AUTH_MODE || 'api') === 'api'
 
 export async function getSentimentStatistics(signal) {
-  if (!client) throw new Error('감정분석 서버 주소를 설정해 주세요.')
-  const { data } = await client.get('/api/ai/reviews/statistics', { signal })
+  if (!sentimentApiConfigured) throw new Error('API 인증 모드가 설정되지 않았습니다.')
+  const { data } = await api.get('/api/admin/ai/reviews/statistics', { signal })
   const { total, positive, negative } = data ?? {}
   if (![total, positive, negative].every(count => Number.isSafeInteger(count) && count >= 0) || positive + negative > total) {
     throw new Error('감정분석 통계의 응답 형식이 올바르지 않습니다.')
   }
   return { total, positive, negative, pending:total - positive - negative }
+}
+
+export async function analyzeAllReviews(signal) {
+  if (!sentimentApiConfigured) throw new Error('API 인증 모드가 설정되지 않았습니다.')
+  const {data} = await api.post('/api/admin/ai/reviews/analyze-all',null,{signal,timeout:120000})
+  return data
 }
 
 const labels = {
@@ -25,7 +29,7 @@ export function readReviewSentiment(review) {
   const analyzedAt = Date.parse(review.sentiment_analyzed_at)
   const updatedAt = Date.parse(review.updated_at)
   const label = Object.hasOwn(labels,review.sentiment) ? labels[review.sentiment] : null
-  if (!label || updatedAt > analyzedAt) {
+  if (!label || (source !== 'mock' && !Number.isFinite(analyzedAt)) || updatedAt > analyzedAt) {
     return { label:'분석 대기', score:null, source }
   }
 

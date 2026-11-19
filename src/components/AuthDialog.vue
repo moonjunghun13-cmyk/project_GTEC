@@ -1,13 +1,15 @@
 <script setup>
-import { computed, nextTick, onMounted, reactive, ref } from 'vue'
+import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useShop } from '../stores/shop'
 import { shop } from '../services'
 import './auth-dialog.css'
 import SocialAuthButtons from './SocialAuthButtons.vue'
+import { startSocialLogin } from '../services/socialNavigation'
 
 const store = useShop()
 const router = useRouter()
+const apiAuth = (import.meta.env.VITE_AUTH_MODE || 'api') === 'api'
 const dialog = ref(null)
 const title = ref(null)
 const step = ref(0)
@@ -20,24 +22,31 @@ const code = ref('')
 const socialSelection = ref(null)
 const socialConsent = ref(false)
 const checkedId = ref('')
+const idFeedback = ref('')
+const idInvalid = ref(false)
 const form = reactive({username:'',password:'',name:'',email:'',phone:''})
-const stages = ['약관 동의','정보 입력','가입 확인','가입 완료']
+watch(() => form.username, () => {
+  checkedId.value = ''
+  idFeedback.value = ''
+  idInvalid.value = false
+})
+const stages = ['약관 동의','정보 입력',apiAuth ? '가입 처리' : '이메일 인증','가입 완료']
 const terms = [
   [
     "(필수) 이용약관 동의",
     [
-      "서비스 범위 · GT전자에서 상품 조회, 장바구니, 주문 및 리뷰 기능을 이용합니다.",
-      "주문과 결제 · 서버에 등록된 상품 가격과 재고를 기준으로 주문하며 결제 승인 후 결제가 완료됩니다.",
-      "이용 시 유의사항 · 리뷰에 본인이나 다른 사람의 개인정보를 적지 마세요."
+      "서비스 범위 · GT전자 데모에서 상품 검색, 장바구니, 모의 주문, 구매 리뷰 등 쇼핑 기능을 체험할 수 있습니다.",
+      "모의 주문 · 화면의 가격, 재고, 배송 상태는 체험용입니다. 주문을 완료해도 실제 결제나 상품 발송은 이루어지지 않습니다.",
+      "이용 시 유의사항 · 실제 비밀번호나 결제 정보를 입력하지 말고, 리뷰에는 본인이나 다른 사람의 개인정보를 적지 마세요."
     ]
   ],
   [
     "(필수) 개인정보 수집 및 이용 동의",
     [
-      "입력 항목과 목적 · 아이디, 이름, 이메일, 비밀번호, 휴대폰 번호는 회원가입 및 쇼핑 서비스 이용을 위해 서버에 전송합니다.",
-      "보관 및 전송 · 회원정보는 서버에 저장합니다. 이메일 인증과 문자 인증은 현재 제공하지 않습니다.",
-      "간편 가입 · 선택한 소셜 서비스의 인증을 통해 회원정보를 전달받습니다.",
-      "동의 선택 · 필수 항목에 동의하지 않으면 회원가입을 진행할 수 없습니다."
+      "입력 항목과 목적 · 아이디, 이름, 이메일, 비밀번호는 계정 생성과 로그인에 사용합니다. 휴대폰 번호는 배송과 계정 정보에 사용됩니다.",
+      "보관 및 전송 · API 모드에서는 가입 정보가 프로젝트 백엔드로 전송되어 저장됩니다. 이메일 인증은 연결되어 있지 않습니다.",
+      "간편 가입 · 선택한 서비스에서 인증한 계정의 이름과 이메일을 회원가입·로그인에 사용합니다.",
+      "동의 선택 · 필수 항목에 동의하지 않으면 테스트 계정 가입을 진행할 수 없습니다."
     ]
   ],
   [
@@ -50,15 +59,19 @@ const terms = [
     "(선택) 마케팅 정보 수신 동의",
     [
       "상품 소식, 할인 및 이벤트 안내의 수신 여부를 선택하는 항목입니다. 선택하지 않아도 가입과 쇼핑 체험이 가능합니다.",
-      "마케팅 수신 동의 저장과 발송 기능은 현재 제공하지 않습니다."
+      "현재 데모에서는 이 선택을 별도로 저장하거나 광고 이메일과 문자를 발송하지 않습니다."
     ]
   ]
 ]
 const consent = reactive([false,false,false,false])
 const agreed = computed(() => consent.slice(0,3).every(Boolean))
-const allAgreed = computed(() => consent.slice(0,3).every(Boolean))
+const allAgreed = computed(() => consent.every(Boolean))
 const signingUp = computed(() => store.authMode === 'signup')
-onMounted(() => dialog.value.showModal())
+onMounted(() => {
+  dialog.value.showModal()
+  const reason=router.currentRoute.value.query.error
+  if(reason)error.value=({inactive:'비활성화된 계정입니다.', 'email-required':'소셜 제공자의 이메일 정보 제공 동의가 필요합니다.', 'oauth-failed':'소셜 인증을 완료하지 못했습니다. 다시 시도해 주세요.'})[reason] || '소셜 인증을 완료하지 못했습니다.'
+})
 
 function go(index) {
   step.value = index
@@ -81,23 +94,61 @@ async function run(operation) {
   catch (e) { error.value = e.message }
   finally { busy.value = false }
 }
+async function checkId() {
+  if (busy.value) return
+  const input = form.username
+  const username = input.trim().toLowerCase()
+  busy.value = true
+  checkedId.value = ''
+  idFeedback.value = ''
+  idInvalid.value = false
+  try {
+    await shop.checkUsername(username)
+    if (form.username !== input) return
+    checkedId.value = username
+    idFeedback.value = apiAuth
+      ? '아이디 형식이 확인되었습니다. 중복 여부는 가입 시 서버에서 확인합니다.'
+      : '확인되었습니다.'
+  } catch (e) {
+    if (form.username !== input) return
+    idInvalid.value = true
+    idFeedback.value = e.message
+  } finally { busy.value = false }
+}
+function sendCode() {
+  code.value = ''
+  error.value = ''
+  notice.value = '테스트 인증번호 123456을 입력해 주세요.'
+}
 function nextInfo() {
   if (form.password !== confirmation.value) { error.value = '비밀번호가 일치하지 않습니다.'; return }
-  if (!/^[a-z0-9]{4,20}$/.test(form.username)) { error.value = '아이디는 영문 소문자와 숫자 4~20자로 입력해 주세요.'; return }
-  checkedId.value = form.username
-  if (!/^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{4,30}$/.test(form.password)) { error.value = '비밀번호는 4~30자 영문, 숫자, 특수문자 !@#$%^&*를 포함해야 합니다.'; return }
+  if (checkedId.value !== form.username.trim().toLowerCase()) { error.value = '아이디 중복 확인을 해 주세요.'; return }
+  if (apiAuth) { signup(); return }
   go(2)
+  sendCode()
 }
 function signup() {
   run(async () => {
-    await shop.signup({...form,username:checkedId.value,name:form.name.trim(),email:form.email.trim().toLowerCase(),agreed:agreed.value})
-    identity.value = form.username
+    if (!apiAuth && code.value !== '123456') throw new Error('테스트 인증번호를 확인해 주세요.')
+    try {
+      await shop.signup({...form,username:checkedId.value,name:form.name.trim(),email:form.email.trim().toLowerCase(),agreed:agreed.value})
+    } catch (e) {
+      if (/아이디/.test(e.message) && /중복|이미|사용 중|등록/.test(e.message)) {
+        checkedId.value = ''
+        idInvalid.value = true
+        idFeedback.value = e.message
+        return
+      }
+      throw e
+    }
+    identity.value = apiAuth ? checkedId.value : form.email
     form.password = ''
     confirmation.value = ''
     go(3)
   })
 }
 function chooseSocial(provider) {
+  if(apiAuth){startSocialLogin(provider,router.currentRoute.value.fullPath);return}
   run(async () => {
     const mode = store.authMode
     const preview = await shop.socialPreview(provider)
@@ -143,15 +194,13 @@ function home() {
       <div class="gt-auth-brand"><div class="gt-auth-emblem"><img src="/gt-logo-chrome.png" alt="GT전자"></div><p>아직 회원이 아니신가요? <button type="button" class="auth-link" :disabled="busy" @click="switchMode('signup')">회원가입</button></p></div>
       <div class="gt-auth-content">
         <h2 ref="title" id="auth-title" tabindex="-1">로그인</h2>
-        <form class="stack" @submit.prevent="run(() => store.authenticate({email:identity.trim(),password:form.password}))">
-          <label>아이디<input v-model="identity" required autocomplete="username" placeholder="아이디"></label>
+        <form class="stack" @submit.prevent="run(() => store.authenticate({email:identity.trim().toLowerCase(),password:form.password}))">
+          <label>{{ apiAuth ? '아이디' : '이메일 또는 아이디' }}<input v-model="identity" required autocomplete="username" :placeholder="apiAuth ? '아이디 입력' : '이메일 또는 아이디'"></label>
           <label>비밀번호<input v-model="form.password" type="password" required autocomplete="current-password" placeholder="비밀번호"></label>
           <p v-if="error" class="error" role="alert">{{ error }}</p>
           <button class="button" :disabled="busy">{{ busy ? '로그인 중…' : '로그인' }}</button>
         </form>
-        <div class="gt-social-divider"><span>간편 로그인</span></div>
-        <SocialAuthButtons :disabled="busy" @select="chooseSocial"/>
-        <p class="gt-social-mock-note">소셜 서비스의 인증 화면으로 이동합니다.</p>
+        <div class="gt-social-divider"><span>간편 로그인</span></div><SocialAuthButtons :disabled="busy" @select="chooseSocial"/><p class="gt-social-mock-note">{{ apiAuth ? '선택한 서비스의 인증 화면으로 이동합니다.' : '테스트용 Mock 로그인입니다.' }}</p>
       </div>
     </template>
 
@@ -163,20 +212,23 @@ function home() {
       <div v-if="step === 0" class="gt-signup-social">
         <p class="gt-social-heading">간편 회원가입</p>
         <SocialAuthButtons mode="signup" :disabled="busy" @select="chooseSocial"/>
-        <p class="gt-social-mock-note">소셜 인증 후 필수 약관에 동의하여 가입합니다.</p>
-        <div class="gt-social-divider"><span>또는 이메일로 회원가입</span></div>
+        <p v-if="!apiAuth" class="gt-social-mock-note">소셜 가입도 Mock 테스트 계정으로 진행됩니다.</p>
+        <div class="gt-social-divider"><span>{{ apiAuth ? '또는 아이디로 회원가입' : '또는 이메일로 회원가입' }}</span></div>
       </div>
       <form v-if="step === 0" class="stack" @submit.prevent="go(1)">
         <label class="check gt-term"><input type="checkbox" :checked="allAgreed" @change="consent.fill($event.target.checked)"> 모든 약관에 동의합니다.</label>
-        <div v-for="([label,paragraphs],index) in terms.slice(0,3)" :key="label" class="gt-term">
+        <div v-for="([label,paragraphs],index) in terms" :key="label" class="gt-term">
           <label class="check"><input v-model="consent[index]" type="checkbox"> {{ label }}</label>
           <details><summary>내용 보기</summary><div class="gt-term-copy"><p v-for="paragraph in paragraphs" :key="paragraph">{{ paragraph }}</p></div></details>
         </div>
         <div class="gt-auth-actions"><button type="button" class="button outline" @click="switchMode('login')">이전</button><button class="button" :disabled="!agreed">다음</button></div>
       </form>
       <form v-else-if="step === 1" class="stack" @submit.prevent="nextInfo">
-        <div class="gt-auth-inline"><label>아이디<input v-model="form.username" required pattern="[A-Za-z0-9]{4,20}" autocomplete="username" placeholder="영문·숫자 4~20자"></label></div>
-        <label>비밀번호<input v-model="form.password" type="password" required minlength="4" maxlength="30" autocomplete="new-password"></label>
+        <div class="gt-username-field">
+          <div class="gt-auth-inline"><label>아이디<input v-model="form.username" required pattern="[A-Za-z0-9]{4,20}" autocomplete="username" placeholder="영문·숫자 4~20자" :aria-invalid="idInvalid || undefined" :aria-describedby="idFeedback ? 'signup-id-feedback' : undefined"></label><button type="button" class="button outline" :disabled="busy" @click="checkId">중복 확인</button></div>
+          <p v-if="idFeedback" id="signup-id-feedback" class="gt-id-feedback" :class="{'is-error':idInvalid}" :role="idInvalid ? 'alert' : 'status'">{{ idFeedback }}</p>
+        </div>
+        <label>비밀번호<input v-model="form.password" type="password" required minlength="8" maxlength="20" pattern="^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]+$" autocomplete="new-password"><small>영문, 숫자, 특수문자를 포함해 8~20자로 입력해 주세요.</small></label>
         <label>비밀번호 확인<input v-model="confirmation" type="password" required autocomplete="new-password"></label>
         <label>이름<input v-model="form.name" required autocomplete="name"></label>
         <label>이메일<input v-model="form.email" type="email" required autocomplete="email"></label>
@@ -185,7 +237,8 @@ function home() {
       </form>
       <form v-else-if="step === 2" class="stack" @submit.prevent="signup">
         <p class="gt-term">{{ form.email }}</p>
-        <p>입력한 정보로 회원가입합니다. 아이디와 이메일 중복 여부는 가입 시 확인합니다. 이메일 인증은 현재 지원하지 않습니다.</p>
+        <label>인증번호<input v-model="code" required inputmode="numeric" pattern="[0-9]{6}" placeholder="인증번호 6자리"></label>
+        <button type="button" class="button outline" :disabled="busy" @click="sendCode">테스트 코드 다시 표시</button>
         <div class="gt-auth-actions"><button type="button" class="button outline" :disabled="busy" @click="go(1)">이전</button><button class="button" :disabled="busy">{{ busy ? '가입 중…' : '가입 완료' }}</button></div>
       </form>
       <div v-else class="stack gt-auth-done">

@@ -9,7 +9,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "check:storage": "node scripts/check-storage.mjs",
-    "check:monitors": "node scripts/check-monitors.mjs"
+    "check:monitors": "node scripts/check-monitors.mjs",
+    "check:integration": "node scripts/check-integration.mjs",
+    "check:social": "node scripts/check-social.mjs"
   },
   "keywords": [],
   "author": "",

@@ -55,3 +55,6 @@
 .gt-auth .gt-term-copy { margin-top:.55rem; font-size:.82rem; line-height:1.65; }
 .gt-auth .gt-term-copy p { margin:.4rem 0 0; color:var(--ui-muted); }
 .gt-auth .gt-term-copy + .gt-term-copy { margin-top:1rem; }
+
+.gt-auth .gt-id-feedback{margin:5px 0 0;font-size:.8rem;line-height:1.5;color:#4ade80}
+.gt-auth .gt-id-feedback.is-error{color:#ef4444}
