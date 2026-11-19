@@ -166,6 +166,14 @@ public class OrderService {
         return OrderResponse.from(order);
     }
 
+    // 3-1. 회원 구매 확정
+    @Transactional
+    public void completeMyOrder(Long memberId, Long orderId) {
+        Order order = orderRepository.findByIdAndMemberId(orderId, memberId)
+                .orElseThrow(() -> new IllegalArgumentException("주문을 찾을 수 없습니다."));
+        order.complete();
+    }
+
     // 4. 관리자 전체 주문 조회
     public Page<OrderResponse> getAllOrders(Pageable pageable) {
         return orderRepository.findAllByOrderByCreatedAtDesc(pageable)
@@ -249,5 +257,12 @@ public class OrderService {
                 .replace("-", "")
                 .substring(0, 20)
                 .toUpperCase();
+    }
+    @Transactional
+    public void startPreparing(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("주문을 찾을 수 없습니다."));
+
+        order.startPreparing();
     }
 }

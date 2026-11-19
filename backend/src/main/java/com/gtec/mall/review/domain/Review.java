@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -43,6 +44,16 @@ public class Review {
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private Sentiment sentiment;
+
+    @Column(name = "sentiment_score", precision = 5, scale = 4)
+    private BigDecimal sentimentScore;
+
+    @Column(name = "sentiment_analyzed_at")
+    private LocalDateTime sentimentAnalyzedAt;
 
     @Column(nullable = false, updatable = false, name = "created_at")
     @Builder.Default

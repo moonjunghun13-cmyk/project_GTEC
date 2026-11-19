@@ -1,14 +1,12 @@
 
 package com.gtec.mall.review.controller;
 
-import com.gtec.mall.config.LoginSession;
 import com.gtec.mall.review.dto.AdminReviewResponse;
 import com.gtec.mall.review.dto.ReviewCreateRequest;
 import com.gtec.mall.review.dto.ReviewResponse;
 import com.gtec.mall.review.dto.ReviewUpdateRequest;
 import com.gtec.mall.review.service.ReviewService;
 import com.gtec.mall.security.JwtAuth;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,11 +30,8 @@ public class ReviewController {
 
     // 1. 내 리뷰 목록 조회
     @GetMapping("/reviews/me")
-    public ResponseEntity<List<ReviewResponse>> getMyReviews(
-            HttpSession session
-    ) {
-
-        Long memberId = LoginSession.memberId(session);
+    public ResponseEntity<List<ReviewResponse>> getMyReviews() {
+        Long memberId = JwtAuth.memberId();
 
         return ResponseEntity.ok(
                 reviewService.getMyReviews(memberId)
@@ -62,12 +57,10 @@ public class ReviewController {
     // 3. 리뷰 작성
     @PostMapping("/products/{productId}/reviews")
     public ResponseEntity<ReviewResponse> createReview(
-            HttpSession session,
             @PathVariable Long productId,
             @Valid @RequestBody ReviewCreateRequest request
     ) {
-
-        Long memberId = LoginSession.memberId(session);
+        Long memberId = JwtAuth.memberId();
 
         ReviewResponse response = reviewService.createReview(
                 memberId,
@@ -83,12 +76,10 @@ public class ReviewController {
     // 4. 리뷰 수정
     @PatchMapping("/reviews/{reviewId}")
     public ResponseEntity<ReviewResponse> updateReview(
-            HttpSession session,
             @PathVariable Long reviewId,
             @Valid @RequestBody ReviewUpdateRequest request
     ) {
-
-        Long memberId = LoginSession.memberId(session);
+        Long memberId = JwtAuth.memberId();
 
         ReviewResponse response = reviewService.updateReview(
                 memberId,
@@ -102,11 +93,9 @@ public class ReviewController {
     // 5. 리뷰 삭제
     @DeleteMapping("/reviews/{reviewId}")
     public ResponseEntity<Void> deleteReview(
-            HttpSession session,
             @PathVariable Long reviewId
     ) {
-
-        Long memberId = LoginSession.memberId(session);
+        Long memberId = JwtAuth.memberId();
 
         reviewService.deleteReview(memberId, reviewId);
 
@@ -118,7 +107,6 @@ public class ReviewController {
     // 1. 전체 리뷰 목록 조회
     @GetMapping("/admin/reviews")
     public ResponseEntity<Page<AdminReviewResponse>> getAllReviews(
-            HttpSession session,
             @PageableDefault(
                     size = 10,
                     sort = "createdAt",
@@ -136,7 +124,6 @@ public class ReviewController {
     // 2. 리뷰 상세 조회
     @GetMapping("/admin/reviews/{reviewId}")
     public ResponseEntity<AdminReviewResponse> getReview(
-            HttpSession session,
             @PathVariable Long reviewId
     ) {
 
@@ -150,7 +137,6 @@ public class ReviewController {
     // 3. 관리자 리뷰 삭제
     @DeleteMapping("/admin/reviews/{reviewId}")
     public ResponseEntity<Void> deleteReviewByAdmin(
-            HttpSession session,
             @PathVariable Long reviewId
     ) {
 

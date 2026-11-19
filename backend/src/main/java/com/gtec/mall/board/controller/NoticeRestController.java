@@ -4,9 +4,7 @@ package com.gtec.mall.board.controller;
 import com.gtec.mall.board.dto.NoticeRequest;
 import com.gtec.mall.board.dto.NoticeResponse;
 import com.gtec.mall.board.service.NoticeService;
-import com.gtec.mall.config.LoginSession;
 import com.gtec.mall.security.JwtAuth;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,22 +19,13 @@ import java.util.List;
 public class NoticeRestController {
     private final NoticeService noticeService;
 
-    //로그인 여부 확인
-    private boolean isLogin(HttpSession session) {
-        return LoginSession.isLoggedIn(session);
-    }
-    //관리자 여부 확인
-    private boolean isAdmin(HttpSession session) {
-        return LoginSession.isAdmin(session);
-    }
     //로그인한 회원이 관리자인지 확인하는 것 - 에러 코드 분류용
-    private void requireAdmin(HttpSession session) {
-        if (!isLogin(session)) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다.");
-        }
-
-        if (!isAdmin(session)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "관리자 권한이 필요합니다.");
+    private void requireAdmin() {
+        if (!JwtAuth.isAdmin()) {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN,
+                    "관리자 권한이 필요합니다."
+            );
         }
     }
     //공지사항 목록
@@ -64,6 +53,7 @@ public class NoticeRestController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public NoticeResponse create(@Valid @RequestBody NoticeRequest request) {
+        requireAdmin();
         return noticeService.create(
                 request.getTitle(),
                 request.getContent(),
@@ -74,16 +64,19 @@ public class NoticeRestController {
     //공지사항 수정
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public NoticeResponse update(@PathVariable("id")Long id,@Valid @RequestBody NoticeRequest request, HttpSession session){
-        requireAdmin(session);
-        return noticeService.update(id,request.getTitle(),request.getContent());
+    public NoticeResponse update(
+            @PathVariable("id") Long id,
+            @Valid @RequestBody NoticeRequest request
+    ) {
+        requireAdmin();
+        return noticeService.update(id, request.getTitle(), request.getContent());
     }
 
     //공지사항 삭제
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("id")Long id, HttpSession session){
-        requireAdmin(session);
+    public void delete(@PathVariable("id") Long id) {
+        requireAdmin();
         noticeService.delete(id);
     }
 }

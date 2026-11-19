@@ -69,6 +69,16 @@ public class OrderController {
         );
     }
 
+    // 구매 확정
+    @PatchMapping("/orders/{orderId}/complete")
+    public ResponseEntity<Void> completeMyOrder(
+            @PathVariable Long orderId
+    ) {
+        Long memberId = JwtAuth.memberId();
+        orderService.completeMyOrder(memberId, orderId);
+        return ResponseEntity.noContent().build();
+    }
+
     // 4. 주문 취소 요청
     @PatchMapping("/orders/{orderId}/cancel")
     public ResponseEntity<Void> requestCancellation(
@@ -125,5 +135,14 @@ public class OrderController {
         return ResponseEntity.ok(
             orderService.getOrdersByStatus(status, pageable)
         );
+    }
+
+    @PatchMapping("/admin/orders/{orderId}/prepare")
+    public ResponseEntity<Void> startPreparing(
+            @PathVariable Long orderId
+    ) {
+        requireAdmin();
+        orderService.startPreparing(orderId);
+        return ResponseEntity.noContent().build();
     }
 }

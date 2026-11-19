@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/admin/products")
 @RequiredArgsConstructor
@@ -28,6 +30,13 @@ public class AdminProductRestController {
                     "관리자 권한이 필요합니다."
             );
         }
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<ProductResponse> list() {
+        requireAdmin();
+        return productService.adminList();
     }
 
     // 상품 등록
