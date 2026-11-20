@@ -1,9 +1,25 @@
+# Keep the app in frontend/; root duplicates were intentionally removed.
+/src/
+/public/
 node_modules/
 dist/
+.vite/
 .env
 .env.*
 !.env.example
-
-# Runtime administrator uploads and temporary nested checkout
-/public/storefront/uploads/
-/GTEC-frontend-upload/
+.idea/
+.gradle/
+**/build/
+**/out/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.log
+*.tmp
+*.json.tmp
+*.pkl.tmp
+*.pem
+*.key
+.DS_Store
+Thumbs.db

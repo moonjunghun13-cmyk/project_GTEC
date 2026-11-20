@@ -1,0 +1,468 @@
+﻿id,name,category,stock,description,specification,price,status,created_at,updated_at,thumbnail_url
+1,LG 24MP400-B,MONITOR,692,23.8인치 · FHD IPS · 75Hz; 화면 크기: 23.8인치; 해상도 · 패널: FHD IPS; 최대 주사율: 75Hz,"GRADE: LOW
+COMPATIBILITY_VERIFIED: NO",144000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/monitor-24mp400-b.webp
+2,Samsung F24T350,MONITOR,526,23.8인치 · FHD IPS · 75Hz; 화면 크기: 23.8인치; 해상도 · 패널: FHD IPS; 최대 주사율: 75Hz,"GRADE: LOW
+COMPATIBILITY_VERIFIED: NO",205000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/monitor-f24t350.webp
+3,AOC 24G2SP,MONITOR,394,23.8인치 · FHD IPS · 165Hz; 화면 크기: 23.8인치; 해상도 · 패널: FHD IPS; 최대 주사율: 165Hz,"GRADE: LOW
+COMPATIBILITY_VERIFIED: NO",237000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/monitor-24g2sp.webp
+4,LG UltraGear 27GP850-B,MONITOR,559,27인치 · QHD Nano IPS · 165Hz·최대 180Hz OC; 화면 크기: 27인치; 해상도 · 패널: QHD Nano IPS; 최대 주사율: 165Hz·최대 180Hz OC,"GRADE: MID
+COMPATIBILITY_VERIFIED: NO",433000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/monitor-27gp850-b.webp
+5,Dell G2724D,MONITOR,619,27인치 · QHD Fast IPS · 165Hz; 화면 크기: 27인치; 해상도 · 패널: QHD Fast IPS; 최대 주사율: 165Hz,"GRADE: MID
+COMPATIBILITY_VERIFIED: NO",379000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/monitor-g2724d.webp
+6,GIGABYTE M27Q X,MONITOR,231,27인치 · QHD IPS · 240Hz; 화면 크기: 27인치; 해상도 · 패널: QHD IPS; 최대 주사율: 240Hz,"GRADE: MID
+COMPATIBILITY_VERIFIED: NO",368000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/monitor-m27q-x.webp
+7,Samsung Odyssey G5 G50D 27인치,MONITOR,283,27인치 · QHD Fast IPS · 180Hz; 화면 크기: 27인치; 해상도 · 패널: QHD Fast IPS; 최대 주사율: 180Hz,"GRADE: MID
+COMPATIBILITY_VERIFIED: NO",305000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/monitor-g50d-27.webp
+8,LG UltraGear OLED 27GS95QE-B,MONITOR,527,26.5인치 · QHD OLED · 240Hz; 화면 크기: 26.5인치; 해상도 · 패널: QHD OLED; 최대 주사율: 240Hz,"GRADE: HIGH
+COMPATIBILITY_VERIFIED: NO",1673000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/monitor-27gs95qe-b.webp
+9,Samsung Odyssey OLED G8 G80SD,MONITOR,420,32인치 · 4K OLED · 240Hz; 화면 크기: 32인치; 해상도 · 패널: 4K OLED; 최대 주사율: 240Hz,"GRADE: HIGH
+COMPATIBILITY_VERIFIED: NO",1805000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/monitor-g80sd.webp
+10,ASUS ROG Swift OLED PG32UCDM,MONITOR,795,31.5인치 · 4K QD-OLED · 240Hz; 화면 크기: 31.5인치; 해상도 · 패널: 4K QD-OLED; 최대 주사율: 240Hz,"GRADE: HIGH
+COMPATIBILITY_VERIFIED: NO",1820000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/monitor-pg32ucdm.webp
+11,Intel Core i3-14100F,CPU,214,4코어 8스레드 · 최대 4.7GHz · LGA1700; 코어·스레드: 4코어 8스레드; 최대 부스트 클럭: 최대 4.7GHz; 소켓: LGA1700; CPU 소켓: LGA1700,"GRADE: LOW
+CPU_SOCKET: LGA1700
+COMPATIBILITY_VERIFIED: NO",134000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/cpu-14100f.webp
+12,AMD Ryzen 5 5600,CPU,409,6코어 12스레드 · 최대 4.4GHz · AM4; 코어·스레드: 6코어 12스레드; 최대 부스트 클럭: 최대 4.4GHz; 소켓: AM4; CPU 소켓: AM4,"GRADE: LOW
+CPU_SOCKET: AM4
+COMPATIBILITY_VERIFIED: NO",149000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/cpu-5600.webp
+13,Intel Core i5-14400F,CPU,465,10코어 16스레드 · 최대 4.7GHz · LGA1700; 코어·스레드: 10코어 16스레드; 최대 부스트 클럭: 최대 4.7GHz; 소켓: LGA1700; CPU 소켓: LGA1700,"GRADE: LOW
+CPU_SOCKET: LGA1700
+COMPATIBILITY_VERIFIED: NO",203000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/cpu-14400f.webp
+14,AMD Ryzen 5 7500F,CPU,435,6코어 12스레드 · 최대 5.0GHz · AM5; 코어·스레드: 6코어 12스레드; 최대 부스트 클럭: 최대 5.0GHz; 소켓: AM5; CPU 소켓: AM5,"GRADE: MID
+CPU_SOCKET: AM5
+COMPATIBILITY_VERIFIED: NO",159000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/cpu-7500f.webp
+15,Intel Core i5-14600K,CPU,304,14코어 20스레드 · 최대 5.3GHz · LGA1700; 코어·스레드: 14코어 20스레드; 최대 부스트 클럭: 최대 5.3GHz; 소켓: LGA1700; CPU 소켓: LGA1700,"GRADE: MID
+CPU_SOCKET: LGA1700
+COMPATIBILITY_VERIFIED: NO",400000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/cpu-14600k.webp
+16,AMD Ryzen 5 9600X,CPU,460,6코어 12스레드 · 최대 5.4GHz · AM5; 코어·스레드: 6코어 12스레드; 최대 부스트 클럭: 최대 5.4GHz; 소켓: AM5; CPU 소켓: AM5,"GRADE: MID
+CPU_SOCKET: AM5
+COMPATIBILITY_VERIFIED: NO",257000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/cpu-9600x.webp
+17,Intel Core Ultra 5 245K,CPU,578,14코어 14스레드 · 최대 5.2GHz · LGA1851; 코어·스레드: 14코어 14스레드; 최대 부스트 클럭: 최대 5.2GHz; 소켓: LGA1851; CPU 소켓: LGA1851,"GRADE: MID
+CPU_SOCKET: LGA1851
+COMPATIBILITY_VERIFIED: NO",306000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/cpu-245k.webp
+18,AMD Ryzen 7 9700X,CPU,259,8코어 16스레드 · 최대 5.5GHz · AM5; 코어·스레드: 8코어 16스레드; 최대 부스트 클럭: 최대 5.5GHz; 소켓: AM5; CPU 소켓: AM5,"GRADE: HIGH
+CPU_SOCKET: AM5
+COMPATIBILITY_VERIFIED: NO",393000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/cpu-9700x.webp
+19,Intel Core Ultra 7 270K Plus,CPU,278,24코어 24스레드 · 최대 5.5GHz · LGA1851; 코어·스레드: 24코어 24스레드; 최대 부스트 클럭: 최대 5.5GHz; 소켓: LGA1851; CPU 소켓: LGA1851,"GRADE: HIGH
+CPU_SOCKET: LGA1851
+COMPATIBILITY_VERIFIED: NO",445000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/cpu-270k-plus.webp
+20,AMD Ryzen 9 9950X3D,CPU,389,16코어 32스레드 · 최대 5.7GHz · AM5; 코어·스레드: 16코어 32스레드; 최대 부스트 클럭: 최대 5.7GHz; 소켓: AM5; CPU 소켓: AM5,"GRADE: HIGH
+CPU_SOCKET: AM5
+COMPATIBILITY_VERIFIED: NO",919000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/cpu-9950x3d.webp
+21,ASUS PRIME H610M-K D4,MAINBOARD,223,H610 · LGA1700 · DDR4 · Micro ATX; 칩셋: H610; CPU 소켓: LGA1700; 메모리 규격: DDR4; 폼팩터: Micro ATX; CPU 소켓: LGA1700; 메모리 규격: DDR4; 보드 폼팩터: Micro ATX; 지원 저장장치 인터페이스: M.2 NVMe / SATA,"GRADE: LOW
+CPU_SOCKET: LGA1700
+RAM_TYPE: DDR4
+FORM_FACTOR: MICRO_ATX
+M2_NVME_SUPPORTED: YES
+SATA_SUPPORTED: YES
+COMPATIBILITY_VERIFIED: NO",75000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/board-h610m-k-d4.webp
+22,MSI PRO H610M-E DDR4,MAINBOARD,273,H610 · LGA1700 · DDR4 · Micro ATX; 칩셋: H610; CPU 소켓: LGA1700; 메모리 규격: DDR4; 폼팩터: Micro ATX; CPU 소켓: LGA1700; 메모리 규격: DDR4; 보드 폼팩터: Micro ATX; 지원 저장장치 인터페이스: M.2 NVMe / SATA,"GRADE: LOW
+CPU_SOCKET: LGA1700
+RAM_TYPE: DDR4
+FORM_FACTOR: MICRO_ATX
+M2_NVME_SUPPORTED: YES
+SATA_SUPPORTED: YES
+COMPATIBILITY_VERIFIED: NO",85000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/board-pro-h610m-e-ddr4.webp
+23,GIGABYTE A520M K V2,MAINBOARD,573,A520 · AM4 · DDR4 · Micro ATX; 칩셋: A520; CPU 소켓: AM4; 메모리 규격: DDR4; 폼팩터: Micro ATX; CPU 소켓: AM4; 메모리 규격: DDR4; 보드 폼팩터: Micro ATX; 지원 저장장치 인터페이스: M.2 NVMe / SATA,"GRADE: LOW
+CPU_SOCKET: AM4
+RAM_TYPE: DDR4
+FORM_FACTOR: MICRO_ATX
+M2_NVME_SUPPORTED: YES
+SATA_SUPPORTED: YES
+COMPATIBILITY_VERIFIED: NO",57000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/board-a520m-k-v2.webp
+24,ASUS TUF GAMING B650-PLUS WIFI,MAINBOARD,306,B650 · AM5 · DDR5 · ATX; 칩셋: B650; CPU 소켓: AM5; 메모리 규격: DDR5; 폼팩터: ATX; CPU 소켓: AM5; 메모리 규격: DDR5; 보드 폼팩터: ATX; 지원 저장장치 인터페이스: M.2 NVMe / SATA,"GRADE: MID
+CPU_SOCKET: AM5
+RAM_TYPE: DDR5
+FORM_FACTOR: ATX
+M2_NVME_SUPPORTED: YES
+SATA_SUPPORTED: YES
+COMPATIBILITY_VERIFIED: NO",389000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/board-tuf-b650-plus-wifi.webp
+25,MSI PRO B650M-A WIFI,MAINBOARD,122,B650 · AM5 · DDR5 · Micro ATX; 칩셋: B650; CPU 소켓: AM5; 메모리 규격: DDR5; 폼팩터: Micro ATX; CPU 소켓: AM5; 메모리 규격: DDR5; 보드 폼팩터: Micro ATX; 지원 저장장치 인터페이스: M.2 NVMe / SATA,"GRADE: MID
+CPU_SOCKET: AM5
+RAM_TYPE: DDR5
+FORM_FACTOR: MICRO_ATX
+M2_NVME_SUPPORTED: YES
+SATA_SUPPORTED: YES
+COMPATIBILITY_VERIFIED: NO",169000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/board-pro-b650m-a-wifi.webp
+26,GIGABYTE B760M DS3H AX DDR4,MAINBOARD,571,B760 · LGA1700 · DDR4 · Micro ATX; 칩셋: B760; CPU 소켓: LGA1700; 메모리 규격: DDR4; 폼팩터: Micro ATX; CPU 소켓: LGA1700; 메모리 규격: DDR4; 보드 폼팩터: Micro ATX; 지원 저장장치 인터페이스: M.2 NVMe / SATA,"GRADE: MID
+CPU_SOCKET: LGA1700
+RAM_TYPE: DDR4
+FORM_FACTOR: MICRO_ATX
+M2_NVME_SUPPORTED: YES
+SATA_SUPPORTED: YES
+COMPATIBILITY_VERIFIED: NO",282000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/board-b760m-ds3h-ax-ddr4.webp
+27,ASRock B650M Pro RS WiFi,MAINBOARD,362,B650 · AM5 · DDR5 · Micro ATX; 칩셋: B650; CPU 소켓: AM5; 메모리 규격: DDR5; 폼팩터: Micro ATX; CPU 소켓: AM5; 메모리 규격: DDR5; 보드 폼팩터: Micro ATX; 지원 저장장치 인터페이스: M.2 NVMe / SATA,"GRADE: MID
+CPU_SOCKET: AM5
+RAM_TYPE: DDR5
+FORM_FACTOR: MICRO_ATX
+M2_NVME_SUPPORTED: YES
+SATA_SUPPORTED: YES
+COMPATIBILITY_VERIFIED: NO",315000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/board-b650m-pro-rs-wifi.webp
+28,ASUS ROG STRIX X870E-E GAMING WIFI,MAINBOARD,459,X870E · AM5 · DDR5 · ATX; 칩셋: X870E; CPU 소켓: AM5; 메모리 규격: DDR5; 폼팩터: ATX; CPU 소켓: AM5; 메모리 규격: DDR5; 보드 폼팩터: ATX; 지원 저장장치 인터페이스: M.2 NVMe / SATA,"GRADE: HIGH
+CPU_SOCKET: AM5
+RAM_TYPE: DDR5
+FORM_FACTOR: ATX
+M2_NVME_SUPPORTED: YES
+SATA_SUPPORTED: YES
+COMPATIBILITY_VERIFIED: NO",835000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/board-x870e-e-wifi.webp
+29,MSI MPG Z890 CARBON WIFI,MAINBOARD,398,Z890 · LGA1851 · DDR5 · ATX; 칩셋: Z890; CPU 소켓: LGA1851; 메모리 규격: DDR5; 폼팩터: ATX; CPU 소켓: LGA1851; 메모리 규격: DDR5; 보드 폼팩터: ATX; 지원 저장장치 인터페이스: M.2 NVMe / SATA,"GRADE: HIGH
+CPU_SOCKET: LGA1851
+RAM_TYPE: DDR5
+FORM_FACTOR: ATX
+M2_NVME_SUPPORTED: YES
+SATA_SUPPORTED: YES
+COMPATIBILITY_VERIFIED: NO",597000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/board-z890-carbon-wifi.webp
+30,GIGABYTE X870E AORUS MASTER,MAINBOARD,289,X870E · AM5 · DDR5 · ATX; 칩셋: X870E; CPU 소켓: AM5; 메모리 규격: DDR5; 폼팩터: ATX; CPU 소켓: AM5; 메모리 규격: DDR5; 보드 폼팩터: ATX; 지원 저장장치 인터페이스: M.2 NVMe / SATA,"GRADE: HIGH
+CPU_SOCKET: AM5
+RAM_TYPE: DDR5
+FORM_FACTOR: ATX
+M2_NVME_SUPPORTED: YES
+SATA_SUPPORTED: YES
+COMPATIBILITY_VERIFIED: NO",415000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/board-x870e-aorus-master.webp
+31,Samsung DDR4-3200 8GB M378A1K43EB2-CWE,RAM,426,8GB · DDR4-3200 · UDIMM; 용량: 8GB; 메모리 규격: DDR4-3200; 타이밍 · 프로파일: UDIMM; 메모리 규격: DDR4,"GRADE: LOW
+RAM_TYPE: DDR4
+RAM_MODULE_GB: 8
+COMPATIBILITY_VERIFIED: NO",40000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/ram-samsung-ddr4-8.webp
+32,Crucial DDR4-3200 16GB CT16G4DFRA32A,RAM,167,16GB · DDR4-3200 · CL22; 용량: 16GB; 메모리 규격: DDR4-3200; 타이밍 · 프로파일: CL22; 메모리 규격: DDR4,"GRADE: LOW
+RAM_TYPE: DDR4
+RAM_MODULE_GB: 16
+COMPATIBILITY_VERIFIED: NO",52000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/ram-ct16g4dfra32a.webp
+33,Crucial DDR5-4800 16GB CT16G48C40U5,RAM,177,16GB · DDR5-4800 · CL40; 용량: 16GB; 메모리 규격: DDR5-4800; 타이밍 · 프로파일: CL40; 메모리 규격: DDR5,"GRADE: LOW
+RAM_TYPE: DDR5
+RAM_MODULE_GB: 16
+COMPATIBILITY_VERIFIED: NO",63000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/ram-ct16g48c40u5.webp
+34,Kingston FURY Beast DDR5-6000 32GB (16GB×2) KF560C36BBEK2-32,RAM,438,32GB (16GB×2) · DDR5-6000 · UDIMM; 용량: 32GB (16GB×2); 메모리 규격: DDR5-6000; 프로파일: CL36 · AMD EXPO; 메모리 규격: DDR5,"GRADE: MID
+RAM_TYPE: DDR5
+RAM_MODULE_GB: 16
+RAM_MODULE_COUNT: 2
+COMPATIBILITY_VERIFIED: NO",75000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/ram-fury-beast.webp
+35,CORSAIR VENGEANCE DDR5-6000 32GB (16GB×2) CMK32GX5M2B6000C30,RAM,362,32GB (16GB×2) · DDR5-6000 · UDIMM; 용량: 32GB (16GB×2); 메모리 규격: DDR5-6000; 타이밍 · 프로파일: UDIMM; 메모리 규격: DDR5,"GRADE: MID
+RAM_TYPE: DDR5
+RAM_MODULE_GB: 16
+RAM_MODULE_COUNT: 2
+COMPATIBILITY_VERIFIED: NO",912000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/ram-vengeance.webp
+36,TeamGroup T-FORCE VULCAN DDR5-6000 32GB (16GB×2),RAM,234,32GB (16GB×2) · DDR5-6000 · UDIMM; 용량: 32GB (16GB×2); 메모리 규격: DDR5-6000; 타이밍 · 프로파일: UDIMM; 메모리 규격: DDR5,"GRADE: MID
+RAM_TYPE: DDR5
+RAM_MODULE_GB: 16
+RAM_MODULE_COUNT: 2
+COMPATIBILITY_VERIFIED: NO",740000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/ram-vulcan.webp
+37,G.SKILL Ripjaws S5 DDR5-6000 32GB (16GB×2),RAM,522,32GB (16GB×2) · DDR5-6000 · Intel XMP; 용량: 32GB (16GB×2); 메모리 규격: DDR5-6000; 타이밍 · 프로파일: Intel XMP; 메모리 규격: DDR5,"GRADE: MID
+RAM_TYPE: DDR5
+RAM_MODULE_GB: 16
+RAM_MODULE_COUNT: 2
+COMPATIBILITY_VERIFIED: NO",990000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/ram-ripjaws-s5.webp
+38,G.SKILL Trident Z5 Neo RGB DDR5-6000 CL30 32GB (16GB×2),RAM,320,32GB (16GB×2) · DDR5-6000 CL30 · AMD EXPO; 용량: 32GB (16GB×2); 메모리 규격: DDR5-6000 CL30; 타이밍 · 프로파일: AMD EXPO; 메모리 규격: DDR5,"GRADE: HIGH
+RAM_TYPE: DDR5
+RAM_MODULE_GB: 16
+RAM_MODULE_COUNT: 2
+COMPATIBILITY_VERIFIED: NO",1080000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/ram-trident-z5-neo-rgb.webp
+39,CORSAIR DOMINATOR TITANIUM RGB DDR5-7200 CL34 32GB (16GB×2),RAM,473,32GB (16GB×2) · DDR5-7200 CL34 · Intel XMP; 용량: 32GB (16GB×2); 메모리 규격: DDR5-7200 CL34; 타이밍 · 프로파일: Intel XMP; 메모리 규격: DDR5,"GRADE: HIGH
+RAM_TYPE: DDR5
+RAM_MODULE_GB: 16
+RAM_MODULE_COUNT: 2
+COMPATIBILITY_VERIFIED: NO",133000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/ram-dominator-titanium.webp
+40,Kingston FURY Renegade RGB DDR5-7200 32GB (16GB×2) KF572C38RSAK2-32,RAM,561,32GB (16GB×2) · DDR5-7200 · Intel XMP; 용량: 32GB (16GB×2); 메모리 규격: DDR5-7200; 타이밍 · 프로파일: Intel XMP; 메모리 규격: DDR5,"GRADE: HIGH
+RAM_TYPE: DDR5
+RAM_MODULE_GB: 16
+RAM_MODULE_COUNT: 2
+COMPATIBILITY_VERIFIED: NO",144000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/ram-fury-renegade-rgb.webp
+41,ASUS DUAL GeForce RTX 3050 6GB,GPU,296,"6GB GDDR6 · 듀얼 팬; 그래픽 메모리: 6GB GDDR6; 쿨링 구성: 듀얼 팬; 길이: 201 mm; 권장 시스템 파워: 450 W; 두께: 37mm; 그래픽카드 길이(mm): 201; 권장 파워(W): 450; GPU 보조전원: pin: 8, count: 0; GPU 두께(슬롯): 2","GRADE: LOW
+GPU_LENGTH_MM: 201
+GPU_RECOMMENDED_PSU_W: 450
+GPU_POWER_CONNECTOR: NONE
+COMPATIBILITY_VERIFIED: NO",409000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/gpu-dual-rtx3050.webp
+42,SAPPHIRE PULSE Radeon RX 6600 8GB,GPU,218,"8GB GDDR6 · 듀얼 팬; 그래픽 메모리: 8GB GDDR6; 쿨링 구성: 듀얼 팬; 길이: 193 mm; 권장 시스템 파워: 500 W; 보조전원: 8핀 × 1; 그래픽카드 길이(mm): 193; 권장 파워(W): 500; GPU 보조전원: pin: 8, count: 1","GRADE: LOW
+GPU_LENGTH_MM: 193
+GPU_RECOMMENDED_PSU_W: 500
+GPU_POWER_CONNECTOR: PCIE_8PIN_1
+COMPATIBILITY_VERIFIED: NO",387000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/gpu-pulse-rx6600.webp
+43,MSI GeForce RTX 4060 VENTUS 2X BLACK 8G OC,GPU,247,"8GB GDDR6 · 듀얼 팬; 그래픽 메모리: 8GB GDDR6; 쿨링 구성: 듀얼 팬; 길이: 199 mm; 권장 시스템 파워: 550 W; 보조전원: 8핀 × 1; 두께: 41mm; 그래픽카드 길이(mm): 199; 권장 파워(W): 550; GPU 보조전원: pin: 8, count: 1","GRADE: LOW
+GPU_LENGTH_MM: 199
+GPU_RECOMMENDED_PSU_W: 550
+GPU_POWER_CONNECTOR: PCIE_8PIN_1
+COMPATIBILITY_VERIFIED: NO",2641000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/gpu-ventus-rtx4060.webp
+44,MSI GeForce RTX 5060 8G VENTUS 2X OC,GPU,393,"8GB GDDR7 · 듀얼 팬; 그래픽 메모리: 8GB GDDR7; 쿨링 구성: 듀얼 팬; 길이: 197 mm; 권장 시스템 파워: 550 W; 보조전원: 8핀 × 1; 두께: 41mm; 그래픽카드 길이(mm): 197; 권장 파워(W): 550; GPU 보조전원: pin: 8, count: 1","GRADE: MID
+GPU_LENGTH_MM: 197
+GPU_RECOMMENDED_PSU_W: 550
+GPU_POWER_CONNECTOR: PCIE_8PIN_1
+COMPATIBILITY_VERIFIED: NO",689000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/gpu-ventus-rtx5060.webp
+45,MSI GeForce RTX 5060 Ti 16G VENTUS 2X OC PLUS,GPU,317,"16GB GDDR7 · 듀얼 팬; 그래픽 메모리: 16GB GDDR7; 쿨링 구성: 듀얼 팬; 길이: 227 mm; 권장 시스템 파워: 600 W; 보조전원: 8핀 × 1; 두께: 41mm; 그래픽카드 길이(mm): 227; 권장 파워(W): 600; GPU 보조전원: pin: 8, count: 1","GRADE: MID
+GPU_LENGTH_MM: 227
+GPU_RECOMMENDED_PSU_W: 600
+GPU_POWER_CONNECTOR: PCIE_8PIN_1
+COMPATIBILITY_VERIFIED: NO",1272000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/gpu-ventus-rtx5060-ti.webp
+46,SAPPHIRE PULSE Radeon RX 9060 XT OC 16GB,GPU,302,"16GB GDDR6 · 듀얼 팬; 그래픽 메모리: 16GB GDDR6; 쿨링 구성: 듀얼 팬; 길이: 240 mm; 권장 시스템 파워: 450 W; 보조전원: 8핀 × 1; 두께: 46.1mm; 그래픽카드 길이(mm): 240; 권장 파워(W): 450; GPU 보조전원: pin: 8, count: 1","GRADE: MID
+GPU_LENGTH_MM: 240
+GPU_RECOMMENDED_PSU_W: 450
+GPU_POWER_CONNECTOR: PCIE_8PIN_1
+COMPATIBILITY_VERIFIED: NO",817000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/gpu-pulse-rx9060-xt.webp
+47,ASUS DUAL GeForce RTX 5070 12GB,GPU,182,"12GB GDDR7 · 듀얼 팬; 그래픽 메모리: 12GB GDDR7; 쿨링 구성: 듀얼 팬; 길이: 249 mm; 권장 시스템 파워: 750 W; 보조전원: 16핀 × 1; 그래픽카드 길이(mm): 249; 권장 파워(W): 750; GPU 보조전원: pin: 16, count: 1; GPU 두께(슬롯): 2.53","GRADE: MID
+GPU_LENGTH_MM: 249
+GPU_RECOMMENDED_PSU_W: 750
+GPU_POWER_CONNECTOR: PCIE_16PIN_1
+COMPATIBILITY_VERIFIED: NO",822000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/gpu-dual-rtx5070.webp
+48,GIGABYTE GeForce RTX 5070 Ti GAMING OC 16G,GPU,343,"16GB GDDR7 · 트리플 팬; 그래픽 메모리: 16GB GDDR7; 쿨링 구성: 트리플 팬; 길이: 340 mm; 권장 시스템 파워: 750 W; 보조전원: 16핀 × 1; 두께: 70mm; 그래픽카드 길이(mm): 340; 권장 파워(W): 750; GPU 보조전원: pin: 16, count: 1","GRADE: HIGH
+GPU_LENGTH_MM: 340
+GPU_RECOMMENDED_PSU_W: 750
+GPU_POWER_CONNECTOR: PCIE_16PIN_1
+COMPATIBILITY_VERIFIED: NO",2110000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/gpu-gaming-rtx5070-ti.webp
+49,MSI GeForce RTX 5080 16G GAMING TRIO OC,GPU,172,"16GB GDDR7 · 트리플 팬; 그래픽 메모리: 16GB GDDR7; 쿨링 구성: 트리플 팬; 길이: 338 mm; 권장 시스템 파워: 850 W; 보조전원: 16핀 × 1; 두께: 50mm; 그래픽카드 길이(mm): 338; 권장 파워(W): 850; GPU 보조전원: pin: 16, count: 1","GRADE: HIGH
+GPU_LENGTH_MM: 338
+GPU_RECOMMENDED_PSU_W: 850
+GPU_POWER_CONNECTOR: PCIE_16PIN_1
+COMPATIBILITY_VERIFIED: NO",4639000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/gpu-trio-rtx5080.webp
+50,ASUS ROG Astral GeForce RTX 5090 32GB OC Edition,GPU,406,"32GB GDDR7 · 쿼드 팬; 그래픽 메모리: 32GB GDDR7; 쿨링 구성: 쿼드 팬; 길이: 357.6 mm; 권장 시스템 파워: 850 W; 보조전원: 16핀 × 1; 두께: 76mm; 장착 두께: 3.8 슬롯; 그래픽카드 길이(mm): 357.6; 권장 파워(W): 850; GPU 보조전원: pin: 16, count: 1; GPU 두께(슬롯): 3.8","GRADE: HIGH
+GPU_LENGTH_MM: 357.6
+GPU_RECOMMENDED_PSU_W: 1000
+GPU_POWER_CONNECTOR: PCIE_16PIN_1
+COMPATIBILITY_VERIFIED: NO",14176000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/gpu-astral-rtx5090.webp
+51,Kingston NV2 500GB,SSD,176,500GB · M.2 2280 · PCIe 4.0 NVMe; 용량: 500GB; 폼팩터: M.2 2280; 인터페이스: PCIe 4.0 NVMe; 저장장치 인터페이스: M.2 NVMe,"GRADE: LOW
+STORAGE_INTERFACE: NVME
+STORAGE_FORM_FACTOR: M2_2280
+COMPATIBILITY_VERIFIED: NO",75000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/ssd-nv2-500.webp
+52,Western Digital WD Blue SN580 500GB,SSD,163,500GB · M.2 2280 · PCIe 4.0 NVMe; 용량: 500GB; 폼팩터: M.2 2280; 인터페이스: PCIe 4.0 NVMe; 저장장치 인터페이스: M.2 NVMe,"GRADE: LOW
+STORAGE_INTERFACE: NVME
+STORAGE_FORM_FACTOR: M2_2280
+COMPATIBILITY_VERIFIED: NO",97000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/ssd-sn580-500.webp
+53,Crucial P3 Plus 500GB,SSD,318,500GB · M.2 2280 · PCIe 4.0 NVMe; 용량: 500GB; 폼팩터: M.2 2280; 인터페이스: PCIe 4.0 NVMe; 저장장치 인터페이스: M.2 NVMe,"GRADE: LOW
+STORAGE_INTERFACE: NVME
+STORAGE_FORM_FACTOR: M2_2280
+COMPATIBILITY_VERIFIED: NO",118000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/ssd-p3-plus-500.webp
+54,Western Digital WD_BLACK SN770 1TB,SSD,233,1TB · M.2 2280 · PCIe 4.0 NVMe; 용량: 1TB; 폼팩터: M.2 2280; 인터페이스: PCIe 4.0 NVMe; 저장장치 인터페이스: M.2 NVMe,"GRADE: MID
+STORAGE_INTERFACE: NVME
+STORAGE_FORM_FACTOR: M2_2280
+COMPATIBILITY_VERIFIED: NO",140000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/ssd-sn770-1tb.webp
+55,Samsung 990 EVO Plus 1TB,SSD,166,1TB · M.2 2280 · PCIe 4.0 x4·5.0 x2 NVMe; 용량: 1TB; 폼팩터: M.2 2280; 인터페이스: PCIe 4.0 x4·5.0 x2 NVMe; 저장장치 인터페이스: M.2 NVMe,"GRADE: MID
+STORAGE_INTERFACE: NVME
+STORAGE_FORM_FACTOR: M2_2280
+COMPATIBILITY_VERIFIED: NO",322000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/ssd-990-evo-plus-1tb.webp
+56,SK hynix Platinum P41 1TB,SSD,155,1TB · M.2 2280 · PCIe 4.0 NVMe; 용량: 1TB; 폼팩터: M.2 2280; 인터페이스: PCIe 4.0 NVMe; 저장장치 인터페이스: M.2 NVMe,"GRADE: MID
+STORAGE_INTERFACE: NVME
+STORAGE_FORM_FACTOR: M2_2280
+COMPATIBILITY_VERIFIED: NO",466000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/ssd-p41-1tb.webp
+57,Crucial T500 1TB,SSD,133,1TB · M.2 2280 · PCIe 4.0 NVMe; 용량: 1TB; 폼팩터: M.2 2280; 인터페이스: PCIe 4.0 NVMe; 저장장치 인터페이스: M.2 NVMe,"GRADE: MID
+STORAGE_INTERFACE: NVME
+STORAGE_FORM_FACTOR: M2_2280
+COMPATIBILITY_VERIFIED: NO",406000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/ssd-t500-1tb.webp
+58,Samsung 990 PRO 2TB,SSD,372,2TB · M.2 2280 · PCIe 4.0 NVMe; 용량: 2TB; 폼팩터: M.2 2280; 인터페이스: PCIe 4.0 NVMe; 저장장치 인터페이스: M.2 NVMe,"GRADE: HIGH
+STORAGE_INTERFACE: NVME
+STORAGE_FORM_FACTOR: M2_2280
+COMPATIBILITY_VERIFIED: NO",787000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/ssd-990-pro-2tb.webp
+59,Western Digital WD_BLACK SN850X 2TB,SSD,254,2TB · M.2 2280 · PCIe 4.0 NVMe; 용량: 2TB; 폼팩터: M.2 2280; 인터페이스: PCIe 4.0 NVMe; 저장장치 인터페이스: M.2 NVMe,"GRADE: HIGH
+STORAGE_INTERFACE: NVME
+STORAGE_FORM_FACTOR: M2_2280
+COMPATIBILITY_VERIFIED: NO",604000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/ssd-sn850x-2tb.webp
+60,Crucial T705 2TB,SSD,372,2TB · M.2 2280 · PCIe 5.0 NVMe; 용량: 2TB; 폼팩터: M.2 2280; 인터페이스: PCIe 5.0 NVMe; 저장장치 인터페이스: M.2 NVMe,"GRADE: HIGH
+STORAGE_INTERFACE: NVME
+STORAGE_FORM_FACTOR: M2_2280
+COMPATIBILITY_VERIFIED: NO",271000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/ssd-t705-2tb.webp
+61,Western Digital WD Blue 1TB WD10EZEX,HDD,331,1TB · 3.5인치 SATA · 7200RPM; 용량: 1TB; 규격: 3.5인치 SATA; 회전 속도 · 용도: 7200RPM; 모델 번호: WD10EZEX; 저장장치 인터페이스: SATA; 드라이브 크기(인치): 3.5인치,"GRADE: LOW
+STORAGE_INTERFACE: SATA
+STORAGE_FORM_FACTOR: 3_5
+COMPATIBILITY_VERIFIED: NO",233000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/hdd-wd10ezex.webp
+62,Seagate BarraCuda 2TB ST2000DM008,HDD,274,2TB · 3.5인치 SATA · 7200RPM; 용량: 2TB; 규격: 3.5인치 SATA; 회전 속도 · 용도: 7200RPM; 모델 번호: ST2000DM008; 저장장치 인터페이스: SATA; 드라이브 크기(인치): 3.5인치,"GRADE: LOW
+STORAGE_INTERFACE: SATA
+STORAGE_FORM_FACTOR: 3_5
+COMPATIBILITY_VERIFIED: NO",278000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/hdd-st2000dm008.webp
+63,Toshiba P300 1TB HDWD110,HDD,306,1TB · 3.5인치 SATA · 7200RPM; 용량: 1TB; 규격: 3.5인치 SATA; 회전 속도 · 용도: 7200RPM; 모델 번호: HDWD110; 저장장치 인터페이스: SATA; 드라이브 크기(인치): 3.5인치,"GRADE: LOW
+STORAGE_INTERFACE: SATA
+STORAGE_FORM_FACTOR: 3_5
+COMPATIBILITY_VERIFIED: NO",126000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/hdd-hdwd110.webp
+64,Seagate BarraCuda 4TB ST4000DM004,HDD,390,4TB · 3.5인치 SATA · 5400RPM; 용량: 4TB; 규격: 3.5인치 SATA; 회전 속도 · 용도: 5400RPM; 모델 번호: ST4000DM004; 저장장치 인터페이스: SATA; 드라이브 크기(인치): 3.5인치,"GRADE: MID
+STORAGE_INTERFACE: SATA
+STORAGE_FORM_FACTOR: 3_5
+COMPATIBILITY_VERIFIED: NO",312000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/hdd-st4000dm004.webp
+65,Western Digital WD Blue 4TB WD40EZAX,HDD,194,4TB · 3.5인치 SATA · 5400RPM; 용량: 4TB; 규격: 3.5인치 SATA; 회전 속도 · 용도: 5400RPM; 모델 번호: WD40EZAX; 저장장치 인터페이스: SATA; 드라이브 크기(인치): 3.5인치,"GRADE: MID
+STORAGE_INTERFACE: SATA
+STORAGE_FORM_FACTOR: 3_5
+COMPATIBILITY_VERIFIED: NO",280000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/hdd-wd40ezax.webp
+66,Western Digital WD Red Plus 4TB WD40EFPX,HDD,366,4TB · 3.5인치 SATA · NAS용; 용량: 4TB; 규격: 3.5인치 SATA; 회전 속도 · 용도: NAS용; 모델 번호: WD40EFPX; 저장장치 인터페이스: SATA; 드라이브 크기(인치): 3.5인치,"GRADE: MID
+STORAGE_INTERFACE: SATA
+STORAGE_FORM_FACTOR: 3_5
+COMPATIBILITY_VERIFIED: NO",650000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/hdd-wd40efpx.webp
+67,Seagate IronWolf 4TB ST4000VN006,HDD,483,4TB · 3.5인치 SATA · NAS용; 용량: 4TB; 규격: 3.5인치 SATA; 회전 속도 · 용도: NAS용; 모델 번호: ST4000VN006; 저장장치 인터페이스: SATA; 드라이브 크기(인치): 3.5인치,"GRADE: MID
+STORAGE_INTERFACE: SATA
+STORAGE_FORM_FACTOR: 3_5
+COMPATIBILITY_VERIFIED: NO",325000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/hdd-st4000vn006.webp
+68,Seagate IronWolf Pro 8TB ST8000NT001,HDD,484,8TB · 3.5인치 SATA · 7200RPM; 용량: 8TB; 규격: 3.5인치 SATA; 회전 속도 · 용도: 7200RPM; 모델 번호: ST8000NT001; 저장장치 인터페이스: SATA; 드라이브 크기(인치): 3.5인치,"GRADE: HIGH
+STORAGE_INTERFACE: SATA
+STORAGE_FORM_FACTOR: 3_5
+COMPATIBILITY_VERIFIED: NO",683000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/hdd-st8000nt001.webp
+69,Western Digital WD Red Pro 8TB WD8005FFBX,HDD,369,8TB · 3.5인치 SATA · 7200RPM; 용량: 8TB; 규격: 3.5인치 SATA; 회전 속도 · 용도: 7200RPM; 모델 번호: WD8005FFBX; 저장장치 인터페이스: SATA; 드라이브 크기(인치): 3.5인치,"GRADE: HIGH
+STORAGE_INTERFACE: SATA
+STORAGE_FORM_FACTOR: 3_5
+COMPATIBILITY_VERIFIED: NO",675000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/hdd-wd8005ffbx.webp
+70,Seagate Exos X20 20TB ST20000NM007D,HDD,381,20TB · 3.5인치 SATA · 7200RPM; 용량: 20TB; 규격: 3.5인치 SATA; 회전 속도 · 용도: 7200RPM; 모델 번호: ST20000NM007D; 저장장치 인터페이스: SATA; 드라이브 크기(인치): 3.5인치,"GRADE: HIGH
+STORAGE_INTERFACE: SATA
+STORAGE_FORM_FACTOR: 3_5
+COMPATIBILITY_VERIFIED: NO",1599000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/hdd-st20000nm007d.webp
+71,FSP HYPER K PRO 500W,POWER,168,"500W · ATX · 80 PLUS Standard; 정격 출력: 500W; 폼팩터 / 규격: ATX; 인증 · 구성: 80 PLUS Standard; 파워 길이: 140 mm; 정격 출력(W): 500; 파워 폼팩터: ATX; 파워 길이(mm): 140; GPU 전원 케이블: 8: 2, 16: 0","GRADE: LOW
+PSU_WATT: 500
+PSU_FORM_FACTOR: ATX
+PSU_LENGTH_MM: 140
+COMPATIBILITY_VERIFIED: NO",67000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/psu-hyper-k-pro-500.webp
+72,마이크로닉스 Classic II 풀체인지 600W 80PLUS BRONZE ATX 3.1,POWER,392,"600W · ATX · 80 PLUS Bronze; 정격 출력: 600W; 폼팩터 / 규격: ATX; 인증 · 구성: 80 PLUS Bronze; 파워 길이: 140 mm; 정격 출력(W): 600; 파워 폼팩터: ATX; 파워 길이(mm): 140; GPU 전원 케이블: 8: 2, 16: 0","GRADE: LOW
+PSU_WATT: 600
+PSU_FORM_FACTOR: ATX
+PSU_LENGTH_MM: 140
+COMPATIBILITY_VERIFIED: NO",66000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/psu-classic-ii-600.webp
+73,DeepCool PK650D 650W,POWER,467,"650W · ATX · 80 PLUS Bronze; 정격 출력: 650W; 폼팩터 / 규격: ATX; 인증 · 구성: 80 PLUS Bronze; 파워 길이: 140 mm; 정격 출력(W): 650; 파워 폼팩터: ATX; 파워 길이(mm): 140; GPU 전원 케이블: 8: 2, 16: 0","GRADE: LOW
+PSU_WATT: 650
+PSU_FORM_FACTOR: ATX
+PSU_LENGTH_MM: 140
+COMPATIBILITY_VERIFIED: NO",103000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/psu-pk650d.webp
+74,CORSAIR RM750e (2025),POWER,516,"750W · ATX 3.1 · 풀모듈러; 정격 출력: 750W; 폼팩터 / 규격: ATX 3.1; 인증 · 구성: 풀모듈러; 파워 길이: 140 mm; 정격 출력(W): 750; 파워 폼팩터: ATX; 파워 길이(mm): 140; GPU 전원 케이블: 8: 2, 16: 1","GRADE: MID
+PSU_WATT: 750
+PSU_FORM_FACTOR: ATX
+PSU_LENGTH_MM: 140
+COMPATIBILITY_VERIFIED: NO",122000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/psu-rm750e.webp
+75,MSI MAG A750GL PCIE5,POWER,437,"750W · ATX 3.0 · 80 PLUS Gold; 정격 출력: 750W; 폼팩터 / 규격: ATX 3.0; 인증 · 구성: 80 PLUS Gold; 파워 길이: 140 mm; 정격 출력(W): 750; 파워 폼팩터: ATX; 파워 길이(mm): 140; GPU 전원 케이블: 8: 3, 16: 1","GRADE: MID
+PSU_WATT: 750
+PSU_FORM_FACTOR: ATX
+PSU_LENGTH_MM: 140
+COMPATIBILITY_VERIFIED: NO",140000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/psu-a750gl.webp
+76,Seasonic FOCUS GX-850 ATX 3.0,POWER,396,"850W · ATX 3.0 · 80 PLUS Gold; 정격 출력: 850W; 폼팩터 / 규격: ATX 3.0; 인증 · 구성: 80 PLUS Gold; 파워 길이: 140 mm; 정격 출력(W): 850; 파워 폼팩터: ATX; 파워 길이(mm): 140; GPU 전원 케이블: 8: 3, 16: 1","GRADE: MID
+PSU_WATT: 850
+PSU_FORM_FACTOR: ATX
+PSU_LENGTH_MM: 140
+COMPATIBILITY_VERIFIED: NO",159000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/psu-focus-gx-850.webp
+77,SuperFlower LEADEX III GOLD 850W,POWER,329,"850W · ATX · 80 PLUS Gold; 정격 출력: 850W; 폼팩터 / 규격: ATX; 인증 · 구성: 80 PLUS Gold; 파워 길이: 160 mm; 정격 출력(W): 850; 파워 폼팩터: ATX; 파워 길이(mm): 160; GPU 전원 케이블: 8: 6, 16: 0","GRADE: MID
+PSU_WATT: 850
+PSU_FORM_FACTOR: ATX
+PSU_LENGTH_MM: 160
+COMPATIBILITY_VERIFIED: NO",178000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/psu-leadex-iii-850.webp
+78,CORSAIR HX1000i,POWER,253,"1000W · ATX 3.0 · 80 PLUS Platinum; 정격 출력: 1000W; 폼팩터 / 규격: ATX 3.0; 인증 · 구성: 80 PLUS Platinum; 파워 길이: 180 mm; 정격 출력(W): 1000; 파워 폼팩터: ATX; 파워 길이(mm): 180; GPU 전원 케이블: 8: 6, 16: 12","GRADE: HIGH
+PSU_WATT: 1000
+PSU_FORM_FACTOR: ATX
+PSU_LENGTH_MM: 180
+COMPATIBILITY_VERIFIED: NO",365000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/psu-hx1000i.webp
+79,Seasonic VERTEX GX-1200 ATX 3.1,POWER,467,"1200W · ATX 3.1 · 80 PLUS Gold; 정격 출력: 1200W; 폼팩터 / 규격: ATX 3.1; 인증 · 구성: 80 PLUS Gold; 파워 길이: 160 mm; 정격 출력(W): 1200; 파워 폼팩터: ATX; 파워 길이(mm): 160; GPU 전원 케이블: 8: 3, 16: 12","GRADE: HIGH
+PSU_WATT: 1200
+PSU_FORM_FACTOR: ATX
+PSU_LENGTH_MM: 160
+COMPATIBILITY_VERIFIED: NO",428000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/psu-vertex-gx-1200.webp
+80,MSI MEG Ai1300P PCIE5,POWER,361,"1300W · ATX 3.0 · 80 PLUS Platinum; 정격 출력: 1300W; 폼팩터 / 규격: ATX 3.0; 인증 · 구성: 80 PLUS Platinum; 파워 길이: 160 mm; 정격 출력(W): 1300; 파워 폼팩터: ATX; 파워 길이(mm): 160; GPU 전원 케이블: 8: 8, 16: 12","GRADE: HIGH
+PSU_WATT: 1300
+PSU_FORM_FACTOR: ATX
+PSU_LENGTH_MM: 160
+COMPATIBILITY_VERIFIED: NO",369000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/psu-ai1300p.webp
+81,darkFlash DK200 RGB,CASE,513,미들타워 · ATX · 전면 메시; 크기 유형: 미들타워; 메인보드 지원: ATX; 디자인: 전면 메시; 그래픽카드 최대 길이: 320 mm; 파워 장착 길이: 185 mm; 지원 보드 폼팩터: Mini-ITX / Micro ATX / ATX; 지원 파워 규격: ATX; 드라이브 베이(인치): 2.5인치 / 3.5인치; GPU 최대 길이(mm): 320; 파워 최대 길이(mm): 185,"GRADE: LOW
+MAINBOARD_SUPPORT: MINI_ITX,MICRO_ATX,ATX
+MAX_GPU_LENGTH_MM: 320
+PSU_SUPPORT: ATX
+MAX_PSU_LENGTH_MM: 185
+COMPATIBILITY_VERIFIED: NO",44000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/case-dk200-rgb.webp
+82,MONTECH X3 MESH,CASE,489,미들타워 · ATX · 전면 메시; 크기 유형: 미들타워; 메인보드 지원: ATX; 디자인: 전면 메시; 그래픽카드 최대 길이: 305 mm; 파워 장착 길이: 160 mm; 지원 보드 폼팩터: Mini-ITX / Micro ATX / ATX; 지원 파워 규격: ATX; 드라이브 베이(인치): 2.5인치 / 3.5인치; GPU 최대 길이(mm): 305; 파워 최대 길이(mm): 160,"GRADE: LOW
+MAINBOARD_SUPPORT: MINI_ITX,MICRO_ATX,ATX
+MAX_GPU_LENGTH_MM: 305
+PSU_SUPPORT: ATX
+MAX_PSU_LENGTH_MM: 160
+COMPATIBILITY_VERIFIED: NO",84000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/case-x3-mesh.webp
+83,DeepCool MATREXX 40 3FS,CASE,243,미니타워 · Micro ATX · 강화유리; 크기 유형: 미니타워; 메인보드 지원: Micro ATX; 디자인: 강화유리; 그래픽카드 최대 길이: 320 mm; 파워 장착 길이: 160 mm; 확장 슬롯: 4개; 지원 보드 폼팩터: Mini-ITX / Micro ATX; 지원 파워 규격: ATX; 드라이브 베이(인치): 2.5인치 / 3.5인치; GPU 최대 길이(mm): 320; 파워 최대 길이(mm): 160; GPU 최대 두께(슬롯): 4,"GRADE: LOW
+MAINBOARD_SUPPORT: MINI_ITX,MICRO_ATX
+MAX_GPU_LENGTH_MM: 320
+PSU_SUPPORT: ATX
+MAX_PSU_LENGTH_MM: 160
+COMPATIBILITY_VERIFIED: NO",103000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/case-matrexx-40-3fs.webp
+84,darkFlash DLX21 MESH RGB,CASE,523,미들타워 · E-ATX 지원 · 전면 메시; 크기 유형: 미들타워; 메인보드 지원: E-ATX 지원; 디자인: 전면 메시; 그래픽카드 최대 길이: 400 mm; 파워 장착 길이: 235 mm; 지원 보드 폼팩터: Mini-ITX / Micro ATX / ATX; 지원 파워 규격: ATX; 드라이브 베이(인치): 2.5인치 / 3.5인치; GPU 최대 길이(mm): 400; 파워 최대 길이(mm): 235,"GRADE: MID
+MAINBOARD_SUPPORT: MINI_ITX,MICRO_ATX,ATX
+MAX_GPU_LENGTH_MM: 400
+PSU_SUPPORT: ATX
+MAX_PSU_LENGTH_MM: 235
+COMPATIBILITY_VERIFIED: NO",97000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/case-dlx21-mesh.webp
+85,LIAN LI LANCOOL 216,CASE,549,미들타워 · ATX · 전면 메시; 크기 유형: 미들타워; 메인보드 지원: ATX; 디자인: 전면 메시; 그래픽카드 최대 길이: 392 mm; 파워 장착 길이: 220 mm; 지원 보드 폼팩터: Mini-ITX / Micro ATX / ATX; 지원 파워 규격: ATX; 드라이브 베이(인치): 2.5인치 / 3.5인치; GPU 최대 길이(mm): 392; 파워 최대 길이(mm): 220,"GRADE: MID
+MAINBOARD_SUPPORT: MINI_ITX,MICRO_ATX,ATX
+MAX_GPU_LENGTH_MM: 392
+PSU_SUPPORT: ATX
+MAX_PSU_LENGTH_MM: 220
+COMPATIBILITY_VERIFIED: NO",112000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/case-lancool-216.webp
+86,MONTECH AIR 903 MAX,CASE,551,미들타워 · E-ATX 지원 · 전면 메시; 크기 유형: 미들타워; 메인보드 지원: E-ATX 지원; 디자인: 전면 메시; 그래픽카드 최대 길이: 400 mm; 파워 장착 길이: 240 mm; 지원 보드 폼팩터: Mini-ITX / Micro ATX / ATX; 지원 파워 규격: ATX; 드라이브 베이(인치): 2.5인치 / 3.5인치; GPU 최대 길이(mm): 400; 파워 최대 길이(mm): 240,"GRADE: MID
+MAINBOARD_SUPPORT: MINI_ITX,MICRO_ATX,ATX
+MAX_GPU_LENGTH_MM: 400
+PSU_SUPPORT: ATX
+MAX_PSU_LENGTH_MM: 240
+COMPATIBILITY_VERIFIED: NO",159000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/case-air-903-max.webp
+87,NZXT H5 Flow (2024),CASE,689,미들타워 · ATX · 전면 타공; 크기 유형: 미들타워; 메인보드 지원: ATX; 디자인: 전면 타공; 그래픽카드 최대 길이: 410 mm; 파워 장착 길이: 200 mm; 지원 보드 폼팩터: Mini-ITX / Micro ATX / ATX; 지원 파워 규격: ATX; 드라이브 베이(인치): 2.5인치 / 3.5인치; GPU 최대 길이(mm): 410; 파워 최대 길이(mm): 200,"GRADE: MID
+MAINBOARD_SUPPORT: MINI_ITX,MICRO_ATX,ATX
+MAX_GPU_LENGTH_MM: 410
+PSU_SUPPORT: ATX
+MAX_PSU_LENGTH_MM: 200
+COMPATIBILITY_VERIFIED: NO",178000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/case-h5-flow-2024.webp
+88,Fractal Design North XL,CASE,202,풀타워 · E-ATX 지원 · 우드 전면; 크기 유형: 풀타워; 메인보드 지원: E-ATX 지원; 디자인: 우드 전면; 그래픽카드 최대 길이: 413 mm; 파워 장착 길이: 290 mm; 지원 보드 폼팩터: Mini-ITX / Micro ATX / ATX; 지원 파워 규격: ATX; 드라이브 베이(인치): 2.5인치 / 3.5인치; GPU 최대 길이(mm): 413; 파워 최대 길이(mm): 290,"GRADE: HIGH
+MAINBOARD_SUPPORT: MINI_ITX,MICRO_ATX,ATX
+MAX_GPU_LENGTH_MM: 413
+PSU_SUPPORT: ATX
+MAX_PSU_LENGTH_MM: 290
+COMPATIBILITY_VERIFIED: NO",299000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/case-north-xl.webp
+89,LIAN LI O11 Dynamic EVO RGB,CASE,296,미들타워 · E-ATX 지원 · 듀얼 챔버; 크기 유형: 미들타워; 메인보드 지원: E-ATX 지원; 디자인: 듀얼 챔버; 그래픽카드 최대 길이: 455 mm; 파워 장착 길이: 220 mm; 지원 보드 폼팩터: Mini-ITX / Micro ATX / ATX; 지원 파워 규격: ATX; 드라이브 베이(인치): 2.5인치 / 3.5인치; GPU 최대 길이(mm): 455; 파워 최대 길이(mm): 220,"GRADE: HIGH
+MAINBOARD_SUPPORT: MINI_ITX,MICRO_ATX,ATX
+MAX_GPU_LENGTH_MM: 455
+PSU_SUPPORT: ATX
+MAX_PSU_LENGTH_MM: 220
+COMPATIBILITY_VERIFIED: NO",216000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/case-o11-dynamic-evo-rgb.webp
+90,HYTE Y70 Touch Infinite,CASE,262,미들타워 · ATX · 터치 디스플레이; 크기 유형: 미들타워; 메인보드 지원: ATX; 디자인: 터치 디스플레이; 그래픽카드 최대 길이: 422 mm; 파워 장착 길이: 235 mm; 지원 보드 폼팩터: Mini-ITX / Micro ATX / ATX; 지원 파워 규격: ATX; 드라이브 베이(인치): 2.5인치 / 3.5인치; GPU 최대 길이(mm): 422; 파워 최대 길이(mm): 235,"GRADE: HIGH
+MAINBOARD_SUPPORT: MINI_ITX,MICRO_ATX,ATX
+MAX_GPU_LENGTH_MM: 422
+PSU_SUPPORT: ATX
+MAX_PSU_LENGTH_MM: 235
+COMPATIBILITY_VERIFIED: NO",625000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/case-y70-touch-infinite.webp
+91,Logitech K120,KEYBOARD,1252,풀배열 · 유선 USB · 멤브레인; 배열: 풀배열; 연결 방식: 유선 USB; 스위치: 멤브레인,"GRADE: LOW
+COMPATIBILITY_VERIFIED: NO",12000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/keyboard-k120.webp
+92,Logitech K270,KEYBOARD,2005,풀배열 · 2.4GHz 무선 · 멤브레인; 배열: 풀배열; 연결 방식: 2.4GHz 무선; 스위치: 멤브레인,"GRADE: LOW
+COMPATIBILITY_VERIFIED: NO",26000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/keyboard-k270.webp
+93,Keychron C3 Pro,KEYBOARD,538,텐키리스 · 유선 USB · 기계식; 배열: 텐키리스; 연결 방식: 유선 USB; 스위치: 기계식,"GRADE: LOW
+COMPATIBILITY_VERIFIED: NO",71000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/keyboard-c3-pro.webp
+94,Logitech G413 SE,KEYBOARD,695,풀배열 · 유선 USB · 기계식; 배열: 풀배열; 연결 방식: 유선 USB; 스위치: 기계식,"GRADE: MID
+COMPATIBILITY_VERIFIED: NO",67000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/keyboard-g413-se.webp
+95,Keychron K2 Pro,KEYBOARD,472,75% 배열 · Bluetooth·유선 USB · 기계식; 배열: 75% 배열; 연결 방식: Bluetooth·유선 USB; 스위치: 기계식,"GRADE: MID
+COMPATIBILITY_VERIFIED: NO",97000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/keyboard-k2-pro.webp
+96,Razer BlackWidow V4 X,KEYBOARD,1123,풀배열 · 유선 USB · 기계식; 배열: 풀배열; 연결 방식: 유선 USB; 스위치: 기계식,"GRADE: MID
+COMPATIBILITY_VERIFIED: NO",179000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/keyboard-blackwidow-v4-x.webp
+97,CORSAIR K70 CORE,KEYBOARD,436,풀배열 · 유선 USB · 기계식; 배열: 풀배열; 연결 방식: 유선 USB; 스위치: 기계식,"GRADE: MID
+COMPATIBILITY_VERIFIED: NO",97000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/keyboard-k70-core.webp
+98,Logitech G PRO X TKL LIGHTSPEED,KEYBOARD,994,텐키리스 · LIGHTSPEED·Bluetooth·USB · 기계식; 배열: 텐키리스; 연결 방식: LIGHTSPEED·Bluetooth·USB; 스위치: 기계식,"GRADE: HIGH
+COMPATIBILITY_VERIFIED: NO",229000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/keyboard-pro-x-tkl.webp
+99,Razer Huntsman V3 Pro TKL,KEYBOARD,1732,텐키리스 · 유선 USB · 아날로그 광축; 배열: 텐키리스; 연결 방식: 유선 USB; 스위치: 아날로그 광축,"GRADE: HIGH
+COMPATIBILITY_VERIFIED: NO",310000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/keyboard-huntsman-v3-pro-tkl.webp
+100,SteelSeries Apex Pro TKL (2023),KEYBOARD,795,텐키리스 · 유선 USB · OmniPoint 2.0; 배열: 텐키리스; 연결 방식: 유선 USB; 스위치: OmniPoint 2.0,"GRADE: HIGH
+COMPATIBILITY_VERIFIED: NO",162000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/keyboard-apex-pro-tkl-2023.webp
+101,Logitech B100,MOUSE,209,유선 USB · 광학 센서; 연결 방식: 유선 USB; 주요 사양: 광학 센서,"GRADE: LOW
+COMPATIBILITY_VERIFIED: NO",7000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/mouse-b100.webp
+102,Logitech M185,MOUSE,313,2.4GHz 무선 · USB 수신기; 연결 방식: 2.4GHz 무선; 주요 사양: USB 수신기,"GRADE: LOW
+COMPATIBILITY_VERIFIED: NO",15000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/mouse-m185.webp
+103,Razer DeathAdder Essential,MOUSE,405,유선 USB · 광학 센서; 연결 방식: 유선 USB; 주요 사양: 광학 센서; 무게: 96g,"GRADE: LOW
+COMPATIBILITY_VERIFIED: NO",26000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/mouse-deathadder-essential.webp
+104,Logitech G304 LIGHTSPEED,MOUSE,435,LIGHTSPEED 무선 · HERO 센서; 연결 방식: LIGHTSPEED 무선; 주요 사양: HERO 센서; 무게: 99g,"GRADE: MID
+COMPATIBILITY_VERIFIED: NO",40000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/mouse-g304.webp
+105,Logitech G502 HERO,MOUSE,302,유선 USB · HERO 센서; 연결 방식: 유선 USB; 주요 사양: HERO 센서; 무게: 121g,"GRADE: MID
+COMPATIBILITY_VERIFIED: NO",39000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/mouse-g502-hero.webp
+106,Razer DeathAdder V3,MOUSE,842,유선 USB · 59g; 연결 방식: 유선 USB; 주요 사양: 59g,"GRADE: MID
+COMPATIBILITY_VERIFIED: NO",116000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/mouse-deathadder-v3.webp
+107,SteelSeries Rival 5,MOUSE,379,유선 USB · 9개 버튼; 연결 방식: 유선 USB; 주요 사양: 9개 버튼; 무게: 85g,"GRADE: MID
+COMPATIBILITY_VERIFIED: NO",89000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/mouse-rival-5.webp
+108,Logitech G PRO X SUPERLIGHT 2 DEX,MOUSE,959,LIGHTSPEED 무선 · HERO 2 센서; 연결 방식: LIGHTSPEED 무선; 주요 사양: HERO 2 센서; 무게: 60g,"GRADE: HIGH
+COMPATIBILITY_VERIFIED: NO",178000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/mouse-superlight-2-dex.webp
+109,Razer Viper V3 Pro,MOUSE,328,2.4GHz 무선·유선 USB · 광학 센서; 연결 방식: 2.4GHz 무선·유선 USB; 주요 사양: 광학 센서; 무게: 54g,"GRADE: HIGH
+COMPATIBILITY_VERIFIED: NO",211000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/mouse-viper-v3-pro.webp
+110,ASUS ROG Harpe Ace Aim Lab Edition,MOUSE,365,2.4GHz·Bluetooth·유선 USB · 54g; 연결 방식: 2.4GHz·Bluetooth·유선 USB; 주요 사양: 54g,"GRADE: HIGH
+COMPATIBILITY_VERIFIED: NO",118000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/mouse-harpe-ace.webp
+111,Creative Pebble 2.0,SPEAKER,295,2.0채널 · 3.5mm AUX · USB 전원; 채널: 2.0채널; 연결 방식: 3.5mm AUX; 주요 사양: USB 전원,"GRADE: LOW
+COMPATIBILITY_VERIFIED: NO",23000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/speaker-pebble-2.webp
+112,Logitech Z150,SPEAKER,577,2.0채널 · 3.5mm AUX · 헤드폰 출력; 채널: 2.0채널; 연결 방식: 3.5mm AUX; 주요 사양: 헤드폰 출력,"GRADE: LOW
+COMPATIBILITY_VERIFIED: NO",31000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/speaker-z150.webp
+113,Creative Pebble V2,SPEAKER,452,2.0채널 · 3.5mm AUX · USB-C 전원; 채널: 2.0채널; 연결 방식: 3.5mm AUX; 주요 사양: USB-C 전원,"GRADE: LOW
+COMPATIBILITY_VERIFIED: NO",32000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/speaker-pebble-v2.webp
+114,Creative Pebble Pro,SPEAKER,337,2.0채널 · Bluetooth·USB·AUX · RGB; 채널: 2.0채널; 연결 방식: Bluetooth·USB·AUX; 주요 사양: RGB,"GRADE: MID
+COMPATIBILITY_VERIFIED: NO",80000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/speaker-pebble-pro.webp
+115,Logitech Z407,SPEAKER,426,2.1채널 · Bluetooth·USB·AUX · 40W RMS; 채널: 2.1채널; 연결 방식: Bluetooth·USB·AUX; 주요 사양: 40W RMS,"GRADE: MID
+COMPATIBILITY_VERIFIED: NO",97000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/speaker-z407.webp
+116,Edifier R1280DB,SPEAKER,425,2.0채널 · Bluetooth·광·동축·RCA · 42W RMS; 채널: 2.0채널; 연결 방식: Bluetooth·광·동축·RCA; 주요 사양: 42W RMS,"GRADE: MID
+COMPATIBILITY_VERIFIED: NO",146000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/speaker-r1280db.webp
+117,Edifier R1700BTs,SPEAKER,536,2.0채널 · Bluetooth·RCA · 66W RMS; 채널: 2.0채널; 연결 방식: Bluetooth·RCA; 주요 사양: 66W RMS,"GRADE: MID
+COMPATIBILITY_VERIFIED: NO",243000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/speaker-r1700bts.webp
+118,Edifier S2000MKIII,SPEAKER,455,2.0채널 · Bluetooth·광·동축·RCA · 130W RMS; 채널: 2.0채널; 연결 방식: Bluetooth·광·동축·RCA; 주요 사양: 130W RMS,"GRADE: HIGH
+COMPATIBILITY_VERIFIED: NO",325000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/speaker-s2000mkiii.webp
+119,Audioengine A2+ Wireless,SPEAKER,343,2.0채널 · Bluetooth·USB·RCA · 앰프 내장; 채널: 2.0채널; 연결 방식: Bluetooth·USB·RCA; 주요 사양: 앰프 내장,"GRADE: HIGH
+COMPATIBILITY_VERIFIED: NO",369000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/speaker-a2-wireless.webp
+120,Klipsch The Fives,SPEAKER,189,2.0채널 · HDMI ARC·Bluetooth · 앰프 내장; 채널: 2.0채널; 연결 방식: HDMI ARC·Bluetooth; 주요 사양: 앰프 내장,"GRADE: HIGH
+COMPATIBILITY_VERIFIED: NO",1039000,ACTIVE,2026-11-20 09:30:32,2026-11-20 09:30:32,/storefront/real-catalog/speaker-the-fives.webp

@@ -1,0 +1,2 @@
+# Preserve the uploaded sentiment models through Git LFS.
+backend/**/models/sentiment_model/*.bin filter=lfs diff=lfs merge=lfs -text

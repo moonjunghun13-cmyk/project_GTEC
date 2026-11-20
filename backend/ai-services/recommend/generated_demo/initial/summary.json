@@ -1,0 +1,30 @@
+{
+  "mode": "init",
+  "member_count": 1000,
+  "product_count": 120,
+  "image_count": 228,
+  "order_count": 10000,
+  "order_item_count": 17733,
+  "delivery_count": 9606,
+  "review_count": 5000,
+  "positive_ratio": 0.4914,
+  "return_count": 20,
+  "notice_count": 100,
+  "faq_count": 25,
+  "seed": 6302766042425567497,
+  "category_item_counts": {
+    "KEYBOARD": 6052,
+    "MOUSE": 2120,
+    "SPEAKER": 1047,
+    "RAM": 894,
+    "MONITOR": 1979,
+    "HDD": 1181,
+    "MAINBOARD": 1083,
+    "GPU": 279,
+    "CPU": 1010,
+    "CASE": 1226,
+    "POWER": 849,
+    "SSD": 13
+  },
+  "warning": "CSV 내부 ID는 실제 DB PK가 아닙니다. 참조 ID 재매핑 없이 직접 INSERT하지 마세요."
+}

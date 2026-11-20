@@ -1,0 +1,41 @@
+Docker 배포 전, FE1 및 BE 사용 방법(반드시 순서대로 적용)
+
+0. SSD를 통해 물리적으로 공유 및 배포 예정
+
+1. BE-java, Rest API
+  a. Intellij를 켜서 backend 폴더를 선택하여 프로젝트 오픈
+  b. pgAdmin4를 실행하여 PostgreSQL 18 서버 연결 및 gtec DB 생성
+  c. DB 생성 및 연결시키고, pgAdmin4 닫지 말 것
+  d. 후술한 2-e까지 모두 실행시켰다면 MallApplication.java로 넘어가 실행
+     (또는 해당 파일이 위치한 폴더에서 gradlew.bat bootRun 입력 및 실행)
+
+2. BE-python, Fast API
+  a. cmd 창 4개를 열 것. 그리고 테스트 끝낼 때까지 종료시키지 말 것.
+  b. 창 1은 아래 커맨드를 순차적으로 입력하고 실행할 것(AI 상품추천)
+    Set-Location C:\jh\project_GTEC\backend\ai-services\recommend
+    ..\..\..\.venv\Scripts\python.exe -m uvicorn main:app --reload --host 127.0.0.1 --port 8002
+  c. 창 2는 아래 커맨드를 순차적으로 입력하고 실행할 것(AI 감정분석)
+    Set-Location C:\jh\project_GTEC\backend\ai-services\review_analyze
+    ..\..\..\.venv\Scripts\python.exe -m uvicorn main:app --reload --host 127.0.0.1 --port 8003
+  d. 창 3은 아래 커맨드를 순차적으로 입력하고 실행할 것(AI 고객분석)
+    Set-Location C:\jh\project_GTEC\backend\ai-services\customer_analyze
+    ..\..\..\.venv\Scripts\python.exe -m uvicorn main:app --reload --host 127.0.0.1 --port 8001
+  e. 창 4는 아래 커맨드를 순차적으로 입력하고 실행할 것(JWT  로그인을 위한 redis 컨테이너 생성 커맨드)
+    docker run -d --name redis -p 6379:6379 redis:7
+    docker start redis
+  f. 전술한 1-d.까지 실행이 완료되면 브라우저로 넘어가 http://localhost:8090/swagger-ui.html 입력
+     Swagger UI 테스트에 접속이 되며 창 1,2,3을 모두 활성화 해두어야 Fast API 조회 가능
+
+3. Swagger UI 관리자 계정 접속(1,2에서 이어짐)
+  a. 우상단 드롭다운 목록에서 'Spring Boot REST 선택'
+  b. member-rest-controller에서 '[POST] /api/members/login' 선택
+  c. Try it out을 눌러 아래 제시된 json 서식을 다음과 같이 입력 및 Execute로 실행:
+	{
+	  "loginId": "admin",
+	  "password": "1111"
+	}
+  d. 실행 시 200 코드와 함께 accessToken이 주어지고 토큰 값을 복사(토큰 값은 다를 수 있으므로 입력 안함)
+  e. 최상단으로 스크롤하여 오른쪽의 자물쇠 그림과 함께 Authorize 클릭
+  f. 복사한 토큰값을 입력란에 붙여놓고 Authorize 클릭
+  g. close로 창을 닫아주고, 실행 유지시 프론트엔드 등에서 관리자로 자동 로그인 되어 진행 가능
+	(이거 유지 안하면 새로고침 할 때마다 수시로 관리자 로그인 해야 함)
