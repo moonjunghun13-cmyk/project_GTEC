@@ -1,4 +1,5 @@
 import { api } from '../api'
+import { faqPayload } from './adminFaq'
 
 export const backendActions = {
   requestReturn: async (orderId,orderItemId,quantity,reason) => (await api.post(`/api/orders/${Number(orderId)}/returns`,{orderItemId:Number(orderItemId),quantity:Number(quantity),reason})).data,
@@ -9,7 +10,10 @@ export const backendActions = {
   memberRole: async (id,role) => { await api.patch(`/api/admin/${Number(id)}/role`,{role}) },
   deactivate: async () => { await api.post('/api/members/inactive') },
   myReviews: async () => (await api.get('/api/reviews/me')).data,
-  updateReview: async (id,rating,content) => (await api.patch(`/api/reviews/${Number(id)}`,{rating,content})).data,
+  updateReview: async (id,content,existing) => (await api.patch(`/api/reviews/${Number(id)}`,{content,...(Number.isInteger(existing?.rating) ? {rating:existing.rating} : {})})).data,
   deleteReview: async id => { await api.delete(`/api/reviews/${Number(id)}`) },
   faqs: async () => (await api.get('/api/faqs')).data,
+  createFaq: async draft => (await api.post('/api/faqs',faqPayload(draft))).data,
+  updateFaq: async (id,draft) => (await api.put(`/api/faqs/${Number(id)}`,faqPayload(draft))).data,
+  deleteFaq: async id => { await api.delete(`/api/faqs/${Number(id)}`) },
 }

@@ -72,7 +72,7 @@ function checkout() {
         <h2 id="cart-summary-title">주문 요약</h2>
         <dl><div><dt>선택 상품</dt><dd>{{ chosen.length }}종 · {{ selectedQuantity }}개</dd></div><div><dt>상품 금액</dt><dd>{{ money(selectedTotal) }}</dd></div><div><dt>배송비</dt><dd>무료</dd></div></dl>
         <div class="cart-selected-total"><span>총 주문금액</span><strong>{{ money(selectedTotal) }}</strong></div>
-        <button class="button gold" :disabled="!chosen.length || unavailable || store.role === 'ADMIN'" @click="checkout">선택 상품 {{ selectedQuantity }}개 주문하기</button>
+        <button class="button gold" :disabled="!chosen.length || unavailable" @click="checkout">선택 상품 {{ selectedQuantity }}개 주문하기</button>
         <p v-if="!chosen.length">주문할 상품을 선택해 주세요.</p><p v-else-if="unavailable" class="error">선택 상품의 재고를 확인해 주세요.</p><p v-else>선택한 상품만 주문합니다.</p>
       </aside>
     </div>

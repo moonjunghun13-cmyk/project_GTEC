@@ -100,3 +100,59 @@ export function readTossTestResult(result,query) {
   }
   return {status:'authenticated',orderId:attempt.orderId,total:attempt.total,paymentKey:query.paymentKey,items:attempt.items ?? []}
 }
+
+// The same server confirmation API handles card and wallet authorizations.
+export function checkoutMethod(selected) {
+  const method = selected?.method ?? selected?.code
+  const wallet = selected?.card?.easyPay
+  if (method === 'CARD' && !wallet) return {server:'CREDIT_CARD',label:'신용·체크카드'}
+  if (wallet === 'KAKAOPAY' || method === '카카오페이') return {server:'KAKAO_PAY',label:'카카오페이'}
+  if (wallet === 'NAVERPAY' || method === '네이버페이') return {server:'NAVER_PAY',label:'네이버페이'}
+  if ((method === 'CARD' && wallet) || ['토스페이','TOSSPAY','삼성페이','PAYCO','페이코'].includes(method)) return {server:'TOSS',label:'간편결제'}
+  return null
+}
+
+export async function createCheckoutWidget({memberId,total,methodsSelector,agreementSelector,active,onChange}) {
+  if (!tossTestConfigured) throw new Error('테스트 결제 키가 설정되지 않았습니다.')
+  const TossPayments = await loadSdk()
+  if (!active()) return null
+  const widgets = TossPayments(clientKey).widgets({customerKey:customerKeyFor(memberId)})
+  let methods,agreement
+  const destroy = () => { methods?.destroy(); agreement?.destroy() }
+  try {
+    await widgets.setAmount({currency:'KRW',value:total})
+    if (!active()) return null
+    methods = await widgets.renderPaymentMethods({selector:methodsSelector,variantKey:paymentMethodVariant})
+    if (!active()) { destroy(); return null }
+    agreement = await widgets.renderAgreement({selector:agreementSelector,variantKey:agreementVariant})
+    if (!active()) { destroy(); return null }
+    const selection = () => methods.getSelectedPaymentMethod()
+    const update = async () => {
+      try { const selected=await selection();if(active()) onChange(checkoutMethod(selected)) }
+      catch { if(active()) onChange(null) }
+    }
+    methods.on('paymentMethodSelect',update)
+    await update()
+    return {
+      destroy,
+      selection:async () => checkoutMethod(await selection()),
+      agreed:async () => (await agreement.getAgreementStatus()).agreedRequiredTerms,
+      setAmount:value => widgets.setAmount({currency:'KRW',value}),
+      async request({orderId,cancelOrderId,total,orderName,items}) {
+        if (!checkoutMethod(await selection())) throw new Error('신용·체크카드 또는 간편결제를 선택해 주세요.')
+        if (!(await agreement.getAgreementStatus()).agreedRequiredTerms) throw new Error('결제 이용약관에 동의해 주세요.')
+        await widgets.setAmount({currency:'KRW',value:total})
+        if (!active()) return
+        sessionStorage.setItem(attemptKey,JSON.stringify({orderId,cancelOrderId,total,items}))
+        try {
+          await widgets.requestPayment({orderId,orderName,
+            successUrl:new URL('/checkout/toss/success',window.location.origin).href,
+            failUrl:new URL('/checkout/toss/fail',window.location.origin).href})
+        } catch (error) {
+          sessionStorage.removeItem(attemptKey)
+          throw error
+        }
+      },
+    }
+  } catch (error) { destroy(); throw error }
+}

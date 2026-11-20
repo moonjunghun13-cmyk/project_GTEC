@@ -21,7 +21,7 @@ async function load() {
   error.value = ''
   busy.value = true
   try {
-    const rows = await (store.role === 'USER' ? shop.recommendations(store.favorites,store.recentlyViewed) : shop.demoRecommendations())
+    const rows = await (store.canShop ? shop.recommendations(store.favorites,store.recentlyViewed) : shop.demoRecommendations())
     if (current === request) recommended.value = rows
   } catch (e) { if (current === request) error.value = e.message }
   finally { if (current === request) busy.value = false }
@@ -58,9 +58,9 @@ onUnmounted(() => headingObserver?.disconnect())
   <section class="home-section">
     <div class="section-head"><div class="recommend-heading">
       <h2>당신을 위한 추천상품</h2>
-      <p>{{ store.role === 'USER' ? '구매 이력과 카테고리를 바탕으로 AI가 추천합니다.' : '로그인하면 AI 추천상품을 확인할 수 있습니다.' }}</p>
-    </div><RouterLink :to="store.role === 'USER' ? '/products' : '/products?sort=popular'">전체 상품 ›</RouterLink></div>
-    <StatePanel v-if="busy || error || !recommended.length" :busy="busy" :error="error" :empty="store.role === 'USER' ? '추천할 상품이 없습니다.' : '일반 회원으로 로그인하면 AI 추천상품을 확인할 수 있습니다.'" @retry="load"/>
+      <p>{{ store.canShop ? '구매 이력과 카테고리를 바탕으로 AI가 추천합니다.' : '로그인하면 AI 추천상품을 확인할 수 있습니다.' }}</p>
+    </div><RouterLink :to="store.canShop ? '/products' : '/products?sort=popular'">전체 상품 ›</RouterLink></div>
+    <StatePanel v-if="busy || error || !recommended.length" :busy="busy" :error="error" :empty="store.canShop ? '추천할 상품이 없습니다.' : '로그인하면 AI 추천상품을 확인할 수 있습니다.'" @retry="load"/>
     <div v-else class="product-grid"><ProductCard v-for="product in recommended" :key="product.productId" :product="product" :ribbon="badges[product.recommendationReason || 'popular']" :ribbon-tone="product.recommendationReason"/></div>
   </section>
   <section class="home-section">
@@ -75,7 +75,7 @@ onUnmounted(() => headingObserver?.disconnect())
       <article v-for="feature in featured" :key="feature.productId" class="featured-buy-card"><RouterLink :to="{path:'/products/' + feature.productId}">
         <div class="feature-photo-wrap"><img v-if="feature.image" class="feature-photo" :src="feature.image" alt="" loading="lazy"><span v-else class="feature-photo">이미지 없음</span><img class="product-watermark" src="/gt-logo-chrome.png" alt="" aria-hidden="true"></div>
         <strong>{{ feature.name }}</strong>
-      </RouterLink><button class="card-add-button" :aria-label="feature.name+' 장바구니 담기'" :disabled="!feature.stock || store.role === 'ADMIN' || (store.cart.find(row => row.productId === feature.productId)?.quantity ?? 0) >= feature.stock" @click="store.addAndShow(feature.productId)"><CartIcon/></button></article>
+      </RouterLink><button class="card-add-button" :aria-label="feature.name+' 장바구니 담기'" :disabled="!feature.stock || (store.cart.find(row => row.productId === feature.productId)?.quantity ?? 0) >= feature.stock" @click="store.addAndShow(feature.productId)"><CartIcon/></button></article>
     </div>
   </section>
   <section class="home-section">

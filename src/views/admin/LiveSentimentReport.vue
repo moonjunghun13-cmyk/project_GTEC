@@ -3,6 +3,7 @@ import { computed, onBeforeUnmount, ref } from 'vue'
 import StatePanel from '../../components/StatePanel.vue'
 import { analyzeAllReviews, getSentimentStatistics } from '../../services/reviewSentiment'
 
+const emit=defineEmits(['analyzed'])
 const statistics = ref(null)
 const busy = ref(false)
 const analyzing = ref(false)
@@ -11,10 +12,12 @@ const notice = ref('')
 let request
 const metrics = computed(() => statistics.value ? [
   { label:'긍정', count:statistics.value.positive, tone:'sentiment-tone-0' },
-  { label:'분석 대기', count:statistics.value.pending, tone:'sentiment-tone-1' },
   { label:'부정', count:statistics.value.negative, tone:'sentiment-tone-2' },
 ] : [])
-const percent = count => statistics.value.total ? Math.round(count / statistics.value.total * 100) : 0
+const percent = count => {
+  const analyzed=statistics.value.positive+statistics.value.negative
+  return analyzed ? Math.round(count / analyzed * 100) : 0
+}
 
 async function load() {
   if (busy.value) return
@@ -42,6 +45,7 @@ async function analyzeAll() {
   try {
     const result = await analyzeAllReviews(current.signal)
     await load()
+    emit('analyzed')
     notice.value = `리뷰 ${result.total ?? 0}건 · 분석 성공 ${result.success ?? 0}건 · 실패 ${result.failed ?? 0}건`
   } catch {
     if (!current.signal.aborted) error.value = '전체 리뷰 분석을 완료하지 못했어요. 연결 상태를 확인하고 다시 시도해 주세요.'
@@ -64,7 +68,7 @@ onBeforeUnmount(() => request?.abort())
       <StatePanel v-if="busy || error" :busy="busy" :error="error" @retry="load"/>
       <template v-else-if="statistics">
         <p v-if="notice" role="status">{{ notice }}</p>
-        <p class="sentiment-summary-total">전체 {{ statistics.total.toLocaleString('ko-KR') }}건 · 분석 완료 {{ (statistics.positive + statistics.negative).toLocaleString('ko-KR') }}건</p>
+        <p class="sentiment-summary-total">전체 {{ statistics.total.toLocaleString('ko-KR') }}건 · 분석 완료 {{ (statistics.positive + statistics.negative).toLocaleString('ko-KR') }}건 · 비율은 분석 완료 리뷰 기준</p>
         <div class="sentiment-metrics">
           <article v-for="metric in metrics" :key="metric.label" :class="metric.tone">
             <h3>{{ metric.label }}</h3>

@@ -9,6 +9,8 @@ import { checkoutAddresses } from '../mocks/checkoutAddresses'
 import { api, setAccessToken } from '../api'
 import { startSocialLogin } from './socialNavigation'
 import { presentProduct } from './catalogPresentation'
+import { productPayload, imageUrlsFor } from './adminProducts'
+import { canShop } from './memberAccess'
 
 const mode = import.meta.env.VITE_DATA_MODE || 'api'
 const authMode = import.meta.env.VITE_AUTH_MODE || mode
@@ -140,14 +142,15 @@ async function apiCustomerOrders() {
   return orders
 }
 
-async function apiCreatePendingOrder(cart,delivery) {
+async function apiCreatePendingOrder(cart,delivery,paymentMethod='TOSS') {
+  if (!['CREDIT_CARD','KAKAO_PAY','NAVER_PAY','TOSS'].includes(paymentMethod)) throw new Error('지원하지 않는 결제수단입니다.')
   const postcode = String(delivery.postcode ?? '').trim()
   if (!/^\d{5}$/.test(postcode)) throw new Error('결제 전 배송지 우편번호를 확인해 주세요.')
   const body = {
     items:cart.map(item => ({productId:Number(item.productId),quantity:item.quantity})),
     shippingName:delivery.recipient,shippingPhone:delivery.phone.replace(/[-\s]/g,''),
     shippingZipcode:postcode,shippingAddress1:delivery.address,
-    shippingAddress2:delivery.detail || '',paymentMethod:'TOSS',
+    shippingAddress2:delivery.detail || '',paymentMethod,
   }
   const {data:order} = await api.post('/api/orders',body)
   try { await api.post('/api/payments/ready',{orderNumber:order.orderNumber}) }
@@ -155,7 +158,7 @@ async function apiCreatePendingOrder(cart,delivery) {
     await api.patch(`/api/orders/${order.orderId}/cancel`,{reason:'CHANGE_OF_MIND'}).catch(() => {})
     throw error
   }
-  return {...mapOrder(order),orderNumber:order.orderNumber,total:order.totalAmount,paymentMethod:'토스페이먼츠'}
+  return {...mapOrder(order),orderNumber:order.orderNumber,total:order.totalAmount,paymentMethod:paymentMethodLabel[paymentMethod]}
 }
 
 async function apiConfirmPayment(paymentKey,orderNumber,amount) {
@@ -212,9 +215,14 @@ async function apiAdminSnapshot() {
     api.get('/api/admin/products'),api.get('/api/admin'),fetchAllPages('/api/admin/orders'),
     fetchAllPages('/api/admin/reviews'),api.get('/api/notices'),api.get('/api/admin/returns'),
   ])
-  const products = (productResponse.data ?? []).map(row => ({productId:String(row.id),name:row.name,brand:'',
-    category:categoryFromApi[row.category] ?? row.category,price:row.price,stock:row.status === 'SOLD_OUT' ? 0 : row.stock,spec:row.specification ?? '',
-    image:row.thumbnailUrl ?? row.imageUrls?.[0] ?? '',originalImage:row.thumbnailUrl,imageUrls:row.imageUrls ?? [],description:row.description ?? '',selling:row.status !== 'INACTIVE'}))
+  const products = (productResponse.data ?? []).map(row => {
+    const image=row.thumbnailUrl || row.imageUrls?.[0] || ''
+    const urls=[...new Set([image,...(row.imageUrls ?? [])].filter(Boolean))]
+    const product=presentProduct({productId:String(row.id),name:row.name,brand:'',category:categoryFromApi[row.category] ?? row.category,
+      price:row.price,stock:row.stock,spec:row.specification ?? '',image,description:row.description ?? '',
+      gallery:urls.map((image,index)=>({image,color:index ? `사진 ${index+1}` : '대표'})),selling:row.status!=='INACTIVE'})
+    return {...product,backendStatus:row.status,createdAt:row.createdAt,imageUrls:urls,originalImageUrls:[...urls],originalImage:image}
+  })
   const members = (memberResponse.data ?? []).map(row => ({userId:String(row.id),username:row.loginId,name:row.name,email:row.email,
     phone:row.tel,role:row.role,status:{ACTIVE:'정상',INACTIVE:'비활성',KICKED:'강퇴'}[row.status] ?? row.status,createdAt:row.createdAt}))
   const membersById = new Map(members.map(row => [String(row.userId),row]))
@@ -228,8 +236,8 @@ async function apiAdminSnapshot() {
     return mapped
   })
   const reviews = reviewRows.map(row => ({reviewId:String(row.id),userId:String(row.memberId),author:membersById.get(String(row.memberId))?.name ?? `회원 ${row.memberId}`,
-    productId:String(row.productId),rating:row.rating,body:row.content,
-    sentiment:row.sentiment === 'POSITIVE' ? '긍정' : row.sentiment === 'NEGATIVE' ? '부정' : '분석 대기',
+    productId:String(row.productId),productName:productsById.get(String(row.productId))?.name ?? '',date:row.createdAt,body:row.content,
+    sentiment:row.sentiment === 'POSITIVE' ? '긍정' : row.sentiment === 'NEGATIVE' ? '부정' : '',
     sentimentSource:'model',sentiment_score:row.sentimentScore,sentiment_analyzed_at:row.sentimentAnalyzedAt,
     updated_at:row.updatedAt ?? row.createdAt,hidden:false}))
   const notices = (noticeResponse.data ?? []).map(row => ({noticeId:String(row.id),title:row.title,body:row.content,author:row.author,date:row.createdAt}))
@@ -245,23 +253,14 @@ async function apiAdminSnapshot() {
 }
 
 async function apiSaveProduct(fields) {
-  const category = categoryToApi[fields.category]
-  const imageUrl = String(fields.image ?? '').trim()
-  if (!fields.name?.trim() || !category || !fields.spec?.trim() || !fields.description?.trim()
-    || !Number.isSafeInteger(fields.price) || fields.price < 0
-    || !Number.isSafeInteger(fields.stock) || fields.stock < 0) {
-    throw new Error('상품명, 카테고리, 가격, 재고, 사양, 설명을 확인해 주세요.')
-  }
-  if (!imageUrl || imageUrl.length > 255 || imageUrl.startsWith('data:')) {
-    throw new Error('대표 이미지에는 255자 이내의 이미지 URL을 입력해 주세요.')
-  }
-  const payload = {name:fields.name.trim(),category,stock:fields.stock,description:fields.description.trim(),
-    specification:fields.spec.trim(),price:fields.price,thumbnailUrl:imageUrl,images:[...new Set([imageUrl,...(fields.imageUrls ?? []).filter(url=>url!==fields.originalImage)])].map(imageUrl=>({imageUrl}))}
-  const path = '/api/admin/products'
-  let productId = fields.productId
-  if (productId) await api.patch(`${path}/${productId}`,payload)
-  else { const {data:created} = await api.post(path,payload); productId = created.id }
-  await api.patch(`${path}/${productId}/status`,{status:fields.selling ? 'ACTIVE' : 'INACTIVE'})
+  const payload=productPayload(fields)
+  const path='/api/admin/products'
+  let productId=fields.productId
+  if(productId) await api.patch(`${path}/${productId}`,payload)
+  else {const {data:created}=await api.post(path,payload);productId=created.id;fields.productId=String(productId)}
+  try {await api.patch(`${path}/${productId}/status`,{status:fields.selling ? 'ACTIVE' : 'INACTIVE'})}
+  catch {throw new Error('상품 정보는 저장됐지만 판매 상태 변경에 실패했습니다. 목록을 새로고침하고 상태를 다시 변경해 주세요.')}
+  return String(productId)
 }
 
 async function apiSaveNotice({noticeId,title,body}) {
@@ -435,8 +434,8 @@ export const shop = {
     user.password = next
     return publicUser(user)
   }),
-  createPendingOrder: (userId,cart,delivery) => authMode === 'api'
-    ? apiCreatePendingOrder(cart,delivery)
+  createPendingOrder: (userId,cart,delivery,paymentMethod) => authMode === 'api'
+    ? apiCreatePendingOrder(cart,delivery,paymentMethod)
     : Promise.reject(new Error('실제 결제 주문은 API 모드에서만 만들 수 있습니다.')),
   confirmPayment: (paymentKey,orderNumber,amount) => authMode === 'api'
     ? apiConfirmPayment(paymentKey,orderNumber,amount)
@@ -455,7 +454,7 @@ export const shop = {
     ? Promise.reject(new Error('API 모드에서는 토스페이먼츠 테스트 결제를 진행해 주세요.'))
     : mock(() => {
     const buyer = find(state.users,'userId',userId)
-    if (buyer.role !== 'USER' || ['정지','비활성'].includes(buyer.status)) throw new Error('주문할 수 없는 계정입니다.')
+    if (!canShop(buyer.role) || ['정지','비활성'].includes(buyer.status)) throw new Error('주문할 수 없는 계정입니다.')
     if (!delivery.recipient || !delivery.address) throw new Error('배송 정보를 입력해 주세요.')
     if (!cart.length) throw new Error('장바구니가 비어 있습니다.')
     if (!checkoutPaymentGroups.some(group => group.methods.includes(payment.method))) throw new Error('결제 수단을 확인해 주세요.')
@@ -503,25 +502,25 @@ export const shop = {
   }),
   reviews: async productId => authMode === 'api' ? (async () => {
     const rows = await fetchAllPages(`/api/products/${productId}/reviews`)
-    return rows.map(row => ({reviewId:String(row.id),orderItemId:String(row.orderItemId),productId:String(row.productId),author:row.memberName ?? '구매 회원',rating:row.rating,
-      body:row.content,sentiment:row.sentiment === 'POSITIVE' ? '긍정' : row.sentiment === 'NEGATIVE' ? '부정' : '분석 대기',
+    return rows.map(row => ({reviewId:String(row.id),orderItemId:String(row.orderItemId),productId:String(row.productId),author:row.memberName ?? '구매 회원',
+      body:row.content,sentiment:row.sentiment === 'POSITIVE' ? '긍정' : row.sentiment === 'NEGATIVE' ? '부정' : '',
       sentimentSource:'model',sentiment_score:row.sentimentScore,sentiment_analyzed_at:row.sentimentAnalyzedAt,updated_at:row.updatedAt}))
   })() : mock(() => state.reviews.filter(row => row.productId === productId && !row.hidden)),
   myReviews: userId => authMode === 'api'
     ? api.get('/api/reviews/me').then(({data}) => (data ?? []).map(row => ({...row,orderItemId:String(row.orderItemId)})))
     : mock(() => state.reviews.filter(row => row.userId === userId)),
-  review: (user, productId, rating, body, orderItemId) => authMode === 'api'
-    ? api.post(`/api/products/${productId}/reviews`,{orderItemId:Number(orderItemId),rating,content:body}).then(({data}) => ({
-      reviewId:String(data.id),orderItemId:String(data.orderItemId),productId:String(data.productId),author:user.name,rating:data.rating,body:data.content,
-      sentiment:data.sentiment === 'POSITIVE' ? '긍정' : data.sentiment === 'NEGATIVE' ? '부정' : '분석 대기',
+  review: (user, productId, body, orderItemId) => authMode === 'api'
+    ? api.post(`/api/products/${productId}/reviews`,{orderItemId:Number(orderItemId),content:body}).then(({data}) => ({
+      reviewId:String(data.id),orderItemId:String(data.orderItemId),productId:String(data.productId),author:user.name,body:data.content,
+      sentiment:data.sentiment === 'POSITIVE' ? '긍정' : data.sentiment === 'NEGATIVE' ? '부정' : '',
       sentimentSource:'model',sentiment_score:data.sentimentScore,sentiment_analyzed_at:data.sentimentAnalyzedAt,updated_at:data.updatedAt,
     }))
     : mock(() => {
     find(state.products,'productId',productId)
     if (!state.orders.some(order => order.userId === user.userId && !['환불 대기','환불 완료'].includes(order.status) && order.items.some(item => item.productId === productId))) throw new Error('구매한 상품만 리뷰를 작성할 수 있습니다.')
-    if (!body || body.length > 1000 || !Number.isInteger(rating) || rating < 1 || rating > 5) throw new Error('리뷰 내용을 확인해 주세요.')
-    const sentiment = /불량|별로|실망|나쁘|느려/.test(body) ? '부정' : /좋|추천|만족|빠르/.test(body) ? '긍정' : rating >= 3 ? '긍정' : '부정'
-    const review = {reviewId:id(),userId:user.userId,author:user.name,productId,rating,body,sentiment,sentimentSource:'mock'}
+    if (!body || body.length > 1000) throw new Error('리뷰 내용을 확인해 주세요.')
+    const sentiment = /불량|별로|실망|나쁘|느려/.test(body) ? '부정' : /좋|추천|만족|빠르/.test(body) ? '긍정' : ''
+    const review = {reviewId:id(),userId:user.userId,author:user.name,productId,body,sentiment,sentimentSource:'mock'}
     state.reviews.unshift(review)
     return review
   }),
@@ -583,6 +582,7 @@ export const admin = {
       Object.assign(row,data)
     } else state.products.push({...data,productId:id(),popularity:0})
   }),
+  setProductSelling: (actor,productId,selling) => authMode==='api' ? api.patch(`/api/admin/products/${productId}/status`,{status:selling ? 'ACTIVE' : 'INACTIVE'}) : operate(actor,()=>{find(state.products,'productId',productId).selling=selling}),
   removeProduct: (actor, productId) => authMode === 'api' ? api.delete(`/api/admin/products/${productId}`) : operate(actor,() => {
     find(state.products,'productId',productId).deleted = true
   }),

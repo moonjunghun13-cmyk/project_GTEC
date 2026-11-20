@@ -9,7 +9,7 @@ export async function getSentimentStatistics(signal) {
   if (![total, positive, negative].every(count => Number.isSafeInteger(count) && count >= 0) || positive + negative > total) {
     throw new Error('감정분석 통계의 응답 형식이 올바르지 않습니다.')
   }
-  return { total, positive, negative, pending:total - positive - negative }
+  return { total, positive, negative }
 }
 
 export async function analyzeAllReviews(signal) {
@@ -30,7 +30,7 @@ export function readReviewSentiment(review) {
   const updatedAt = Date.parse(review.updated_at)
   const label = Object.hasOwn(labels,review.sentiment) ? labels[review.sentiment] : null
   if (!label || (source !== 'mock' && !Number.isFinite(analyzedAt)) || updatedAt > analyzedAt) {
-    return { label:'분석 대기', score:null, source }
+    return { label:'', score:null, source }
   }
 
   const rawScore = review.sentiment_score
@@ -39,5 +39,6 @@ export function readReviewSentiment(review) {
 }
 export function reviewSentimentLabel(review) {
   const result = readReviewSentiment(review)
+  if(!result.label) return ''
   return result.source === 'mock' ? '감정분석 예시 · ' + result.label : 'AI 감정분석 · ' + result.label
 }

@@ -113,3 +113,10 @@
 @media(max-width:640px) {
   .admin-layout:has(.reference-dashboard) .admin-content { padding:12px; }
 }
+
+/* Explicit search actions inside each existing dashboard preview. */
+.operations-board .board-search-form{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:stretch;gap:6px;min-width:0;margin:0 0 .35rem}
+.operations-board .board-search-form .board-search{margin:0}
+.operations-board .board-search-confirm{display:flex;align-items:center;justify-content:center;min-width:45px;padding:4px 10px;border:1px solid #bcc6d4;border-radius:7px;background:var(--work-surface,#fff);color:var(--admin-text,#26364a);font:inherit;font-size:.75rem;font-weight:650;cursor:pointer;white-space:nowrap}
+.operations-board .board-search-confirm:hover{background:var(--work-tint,#eef2f7)}
+.operations-board .board-search-confirm:focus-visible{outline:2px solid #607b9e;outline-offset:2px}

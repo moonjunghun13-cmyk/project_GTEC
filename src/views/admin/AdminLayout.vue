@@ -6,6 +6,7 @@ import AdminHeader from '../../components/admin/AdminHeader.vue'
 import './admin-common.css'
 import './admin-shell.css'
 import './admin-workpages.css'
+import './admin-readable.css'
 
 const route = useRoute()
 const content = ref(null)
@@ -15,7 +16,7 @@ watch([() => route.path, () => route.query.tab], () => {
 }, {flush:'post'})
 </script>
 <template>
-  <div class="admin-layout">
+  <div class="admin-layout" :class="{'admin-management': route.path.replace(/\/$/,'') !== '/admin'}">
     <AdminSidebar/>
     <div class="admin-main">
       <AdminHeader/>

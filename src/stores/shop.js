@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { shop, restoreSession, logoutSession } from '../services'
 import { cartCompatibilityWarnings } from '../services/cartCompatibility'
+import { canShop,canAccessRole } from '../services/memberAccess'
 
 const cartKey = 'gt-demo-guest-cart'
 const apiAuth = (import.meta.env.VITE_AUTH_MODE || 'api') === 'api'
@@ -15,6 +16,7 @@ export const useShop = defineStore('shop', {
   state: () => ({user:null, products:[], categories:[], purposes:[], cart:guestCart(), cartOpen:false, cartReview:null, checkoutIds:null, lastCheckout:null, deliveryAddresses:{}, cartNotice:'', lastAdded:'', favorites:[], recentlyViewed:[], busy:true, error:'', authMode:'', afterLogin:null, afterLoginRole:'USER'}),
   getters: {
     role: state => state.user?.role ?? 'GUEST',
+    canShop: state => canShop(state.user?.role),
     cartItems: state => state.cart.flatMap(line => {
       const product = state.products.find(row => row.productId === line.productId)
       return product ? [{...product,quantity:line.quantity}] : []
@@ -41,7 +43,7 @@ export const useShop = defineStore('shop', {
         const catalog = await shop.catalog()
         this.products = catalog.products
         this.categories = catalog.categories; this.purposes = catalog.purposes
-        if (this.role === 'USER') {
+        if (this.canShop) {
           try { this.favorites = await shop.wishlist() } catch { this.favorites = [] }
           this.cart = (await shop.cart()).filter(line => this.products.some(row => row.productId === line.productId))
         } else this.cart = this.cart.filter(line => this.products.some(row => row.productId === line.productId))
@@ -83,7 +85,7 @@ export const useShop = defineStore('shop', {
       }
     },
     async completeCheckout(items) {
-      if (apiAuth && this.role === 'USER') {
+      if (apiAuth && this.canShop) {
         await (cartSyncQueues.get(this) ?? Promise.resolve()).catch(() => {})
         this.cart = await shop.cart()
       }
@@ -91,7 +93,7 @@ export const useShop = defineStore('shop', {
         const current = this.cart.find(line => line.productId === item.productId)
         if (!current) continue
         const next = Math.max(0,current.quantity-item.quantity)
-        if (apiAuth && this.role === 'USER' && current.cartItemId) {
+        if (apiAuth && this.canShop && current.cartItemId) {
           if (next === 0) {
             await shop.removeCart(current.cartItemId)
             this.cart = this.cart.filter(line => line.productId !== item.productId)
@@ -104,7 +106,6 @@ export const useShop = defineStore('shop', {
       this.checkoutIds = null
     },
     addAndShow(productId, amount = 1) {
-      if (this.role === 'ADMIN') return
       const product = this.products.find(row => row.productId === productId)
       if (!product) return
       const before = this.cart.find(row => row.productId === productId)?.quantity ?? 0
@@ -123,7 +124,7 @@ export const useShop = defineStore('shop', {
     openAuth(mode='login') { this.authMode = mode },
     closeAuth() { this.authMode = ''; this.afterLogin = null; this.afterLoginRole = 'USER' },
     requireUser(action) {
-      if (this.role === 'USER') return action()
+      if (this.canShop) return action()
       if (this.role === 'GUEST') {
         this.afterLogin = action
         this.openAuth()
@@ -142,9 +143,9 @@ export const useShop = defineStore('shop', {
       await this.finishAuthentication(user)
     },
     async finishAuthentication(user) {
-      const continuation = user.role === this.afterLoginRole ? this.afterLogin : null
+      const continuation = canAccessRole(user.role,this.afterLoginRole) ? this.afterLogin : null
       this.user = user
-      if (user.role === 'USER') {
+      if (canShop(user.role)) {
         try { this.favorites = await shop.wishlist() } catch { this.favorites = [] }
         if (apiAuth) {
           const guestItems = this.cart.map(({productId,quantity}) => ({productId,quantity}))
@@ -157,18 +158,18 @@ export const useShop = defineStore('shop', {
           } catch (error) { this.error = error.message }
         }
       }
-      if (user.role === 'USER') {
+      if (canShop(user.role)) {
         try { sessionStorage.removeItem(cartKey) } catch { /* Storage is optional. */ }
       } else this.cart = []
       this.closeAuth()
       await continuation?.()
     },
     recordView(productId) {
-      if (this.role !== 'USER') return
+      if (!this.canShop) return
       this.recentlyViewed = [productId,...this.recentlyViewed.filter(id => id !== productId)].slice(0,12)
     },
     favorite(productId) {
-      if (this.role !== 'USER') return
+      if (!this.canShop) return
       const enabled = !this.favorites.includes(productId)
       const previous = this.favorites
       this.favorites = enabled ? [...previous,productId] : previous.filter(id => id !== productId)

@@ -5,6 +5,7 @@ import { useShop } from '../../stores/shop'
 import { checkoutPaymentGroups, shop } from '../../services'
 import { openTossTestWindow, tossTestConfigured } from '../../services/tossCheckout'
 import { money } from '../../utils'
+import CheckoutTossMethods from '../../components/CheckoutTossMethods.vue'
 import CheckoutSteps from '../../components/CheckoutSteps.vue'
 import CheckoutPaymentDialog from '../../components/CheckoutPaymentDialog.vue'
 import PaymentBrand from '../../components/PaymentBrand.vue'
@@ -24,6 +25,9 @@ const tossError = ref('')
 let disposeToss
 let tossAttempt = 0
 const paymentMethod = ref('카드')
+const cardMethods = ref(null)
+const methodsReady = ref(false)
+const selectedMethod = ref(null)
 function saveDelivery(delivery) {
   store.deliveryAddresses[store.user.userId] = delivery
   addressOpen.value = false
@@ -37,8 +41,8 @@ const quantity = computed(() => store.checkoutItems.reduce((sum,item) => sum + i
 const unavailable = computed(() => store.checkoutItems.some(item => item.quantity > item.stock))
 
 function openPayment() {
-  if (store.role !== 'USER' || busy.value || unavailable.value || !store.checkoutItems.length) return
-  if (apiPayment) { startTossPayment(); return }
+  if (!store.canShop || busy.value || unavailable.value || !store.checkoutItems.length) return
+  if (apiPayment) { startCardPayment(); return }
   error.value = ''
   paymentNotice.value = ''
   if (!savedDelivery.value) {
@@ -47,8 +51,41 @@ function openPayment() {
   }
   pendingPayment.value = {method:paymentMethod.value,total:store.checkoutTotal}
 }
+async function startCardPayment() {
+  if (!store.canShop || busy.value || tossOpen.value || unavailable.value || !store.checkoutItems.length) return
+  tossError.value='';paymentNotice.value=''
+  if (!savedDelivery.value) { addressOpen.value=true;return }
+  let selected
+  busy.value=true
+  try {
+    selected=await cardMethods.value?.selection()
+    if (!methodsReady.value || !selected) { tossError.value='신용·체크카드 또는 간편결제를 선택해 주세요.';return }
+    if (!(await cardMethods.value.agreed())) { tossError.value='결제 이용약관에 동의해 주세요.';return }
+  } catch(e) { tossError.value=e.message;return }
+  finally { busy.value=false }
+  const attempt=++tossAttempt, memberId=store.user.userId
+  const active=()=>tossAttempt===attempt && store.user?.userId===memberId && route.name==='checkout'
+  let pendingOrderId
+  tossOpen.value=true
+  try {
+    const saved=savedDelivery.value
+    const items=store.checkoutItems.map(({productId,quantity})=>({productId,quantity}))
+    const delivery={recipient:saved.recipient,phone:saved.phone,postcode:saved.postcode,
+      address:[saved.address,saved.detail].filter(Boolean).join(' '),detail:''}
+    const order=await shop.createPendingOrder(memberId,items,delivery,selected.server)
+    pendingOrderId=order.orderId
+    if (!active()) { await shop.cancelPendingOrder(memberId,pendingOrderId);return }
+    const [first,...rest]=store.checkoutItems
+    const suffix=rest.length?' 외 '+rest.length+'종':''
+    await cardMethods.value.request({orderId:order.orderNumber,cancelOrderId:pendingOrderId,
+      total:order.total,orderName:first.name.slice(0,100-suffix.length)+suffix,items})
+  } catch(e) {
+    if(pendingOrderId) await shop.cancelPendingOrder(memberId,pendingOrderId).catch(()=>{})
+    if(active()) tossError.value=['USER_CANCEL','PAY_PROCESS_CANCELED'].includes(e.code)?'결제를 취소했습니다.':e.message
+  } finally { if(active()) tossOpen.value=false }
+}
 async function startTossPayment() {
-  if (!tossTestConfigured || store.role !== 'USER' || busy.value || tossOpen.value || unavailable.value || !store.checkoutItems.length) return
+  if (!tossTestConfigured || !store.canShop || busy.value || tossOpen.value || unavailable.value || !store.checkoutItems.length) return
   tossError.value = ''
   paymentNotice.value = ''
   if (!savedDelivery.value) {
@@ -121,7 +158,7 @@ function cancelPayment() {
 }
 async function pay(outcome) {
   const saved = savedDelivery.value
-  if (store.role !== 'USER' || busy.value || !pendingPayment.value || !saved) return
+  if (!store.canShop || busy.value || !pendingPayment.value || !saved) return
   error.value = ''
   const delivery = {
     recipient:saved.recipient,
@@ -172,7 +209,7 @@ async function pay(outcome) {
       </section>
       <StatePanel v-else empty="이 화면에서 확인할 최근 주문이 없습니다."/>
       <div class="actions checkout-links">
-        <RouterLink v-if="store.role === 'USER'" class="button" to="/orders">주문 내역 보기</RouterLink>
+        <RouterLink v-if="store.canShop" class="button" to="/orders">주문 내역 보기</RouterLink>
         <RouterLink class="button" to="/products">쇼핑 계속하기</RouterLink>
       </div>
     </template>
@@ -208,6 +245,8 @@ async function pay(outcome) {
           </ul>
         </section>
 
+        <CheckoutTossMethods v-if="apiPayment" ref="cardMethods" :member-id="store.user.userId" :total="store.checkoutTotal" :disabled="tossOpen || busy"
+          @ready="methodsReady=$event" @change="selectedMethod=$event"/>
         <fieldset v-if="!apiPayment" class="checkout-methods" :disabled="busy">
           <legend>결제수단</legend>
           <div v-for="group in checkoutPaymentGroups" :key="group.label" class="checkout-method-group">
@@ -235,7 +274,7 @@ async function pay(outcome) {
         <p v-if="paymentNotice" class="checkout-note" role="status">{{ paymentNotice }}</p>
         <p v-if="tossError" class="error" role="alert">{{ tossError }}</p>
         <button v-if="!apiPayment" type="submit" class="button" :disabled="busy || unavailable || tossOpen">{{ busy ? '처리 중…' : '모의 결제하기' }}</button>
-        <button v-if="apiPayment" type="submit" class="button toss-test-button" :disabled="!tossTestConfigured || busy || unavailable || tossOpen" :aria-describedby="tossTestConfigured ? undefined : 'toss-test-status'"><PaymentBrand method="토스페이먼츠"/>{{ tossOpen ? '토스 결제창 열림…' : '토스페이먼츠 테스트 결제' }}</button>
+        <button v-if="apiPayment" type="submit" class="button toss-test-button" :disabled="!methodsReady || !selectedMethod || busy || unavailable || tossOpen">{{ tossOpen ? '결제 진행 중…' : (selectedMethod?.label || '카드·간편결제') + '로 결제하기' }}</button>
         <button v-else type="button" class="button toss-test-button" :disabled="!tossTestConfigured || busy || unavailable || tossOpen" :aria-describedby="tossTestConfigured ? undefined : 'toss-test-status'" @click="startTossPayment"><PaymentBrand method="토스페이먼츠"/>{{ tossOpen ? '토스 결제창 열림…' : '토스페이먼츠 테스트 결제' }}</button>
         <p v-if="!tossTestConfigured" id="toss-test-status" class="checkout-note toss-test-status">테스트 키를 설정하면 토스페이먼츠 결제창을 열 수 있어요.</p>
       </aside>

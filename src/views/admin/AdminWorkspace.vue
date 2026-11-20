@@ -2,6 +2,7 @@
 import { computed, nextTick, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { admin } from '../../services'
+import { adminFaq } from '../../services/adminFaq'
 import { useShop } from '../../stores/shop'
 import { money,dateLabel } from '../../utils'
 import AdminIcon from '../../components/admin/AdminIcon.vue'
@@ -16,6 +17,10 @@ import './workspace.css'
 import './dashboard-reference.css'
 import './operations-board.css'
 import './admin-common.css'
+import './admin-readable.css'
+import ProductImagesEditor from '../../components/admin/ProductImagesEditor.vue'
+import { filterAdminRows } from '../../services/adminRecords'
+import { productStatusLabel, imageUrlsFor } from '../../services/adminProducts'
 
 const store = useShop()
 const route = useRoute()
@@ -27,6 +32,9 @@ function openDashboardCard(event, path) {
   router.push(path)
 }
 const dashboardSearch = reactive({products:'',orders:'',members:'',reviews:''})
+const dashboardSearchDraft = reactive({products:'',orders:'',members:'',reviews:''})
+function confirmDashboardSearch(section){dashboardSearch[section]=dashboardSearchDraft[section].trim()}
+function clearDashboardSearch(section){if(!dashboardSearchDraft[section].trim())dashboardSearch[section]=''}
 const dashboardRows = computed(() => {
   if (!data.value) return {products:[],orders:[],members:[],reviews:[]}
   const matches = (term, fields) => !term || fields.some(value => String(value ?? '').toLocaleLowerCase().includes(term))
@@ -50,8 +58,15 @@ const error = ref('')
 const loadError = ref('')
 const notice = ref('')
 const search = ref('')
+const searchDraft=ref('')
+function applySearch(){search.value=searchDraft.value.trim();selected.value=''}
+watch(searchDraft,value=>{if(!value.trim())search.value=''})
 const categoryFilter = ref('')
 const orderStatusFilter=ref('')
+const productStatusFilter=ref('')
+const recordSort=ref('newest')
+const reviewSentimentFilter=ref('')
+const analysisRevision=ref(0)
 const selected = ref('')
 const period = ref('day')
 const rangeDays = ref(7)
@@ -79,12 +94,7 @@ const stockCounts = computed(() => [
   data.value.products.filter(row => row.stock > 0 && row.stock < 10).length,
   data.value.products.filter(row => row.stock === 0).length,
 ])
-const adminFaq = [
-  ['환불은 어떻게 하나요?','배송 관리의 취소·반품·환불 탭에서 요청을 확인하고 승인한 뒤 실제 환불 여부를 확인해 환불 완료 상태를 기록합니다. 결제 취소는 별도 처리입니다.'],
-  ['배송 처리는 어디서 하나요?','주문·배송에서 주문을 선택하고 배송 준비, 운송장 입력, 발송 순서로 진행합니다.'],
-  ['상품 이미지 변경은 어떻게 하나요?','상품 관리에서 상품을 선택하고 대표 이미지 파일을 추가한 뒤 저장해 주세요.'],
-  ['재고는 어디서 수정하나요?','상품 관리에서 상품을 선택하고 재고 수량을 변경한 뒤 저장합니다.'],
-]
+// Shared with the FAQ management page; the dashboard layout stays unchanged.
 const form = reactive({})
 const shippingPath = '/admin/shipping'
 const isShipping = computed(() => route.path === shippingPath || route.path === shippingPath + '/')
@@ -106,6 +116,15 @@ const workspacePages = {
 const recordPage = computed(() => workspacePages[isShipping.value && page.value === 'orders' ? 'shipping' : page.value])
 const pageIcon = computed(() => isShipping.value && page.value === 'orders' ? 'truck' : pageIcons[page.value])
 const detailPanel = ref(null)
+const listPanel=ref(null)
+const productListScroll=ref(0)
+async function returnToProductList(){
+  if(busy.value || readingImage.value)return
+  selected.value='';error.value=''
+  await nextTick()
+  listPanel.value?.scrollTo({top:productListScroll.value})
+  listPanel.value?.focus({preventScroll:true})
+}
 const detailHeading = ref(null)
 function markRefunded(id){if(!window.confirm('이 기능은 결제 취소를 실행하지 않고 반품을 환불 완료 상태로 기록합니다. 실제 환불이 완료된 경우에만 진행하세요.'))return;mutate(()=>backendActions.markReturnRefunded(id))}
 const actor = () => store.user?.userId
@@ -196,17 +215,11 @@ const sourceRows = computed(() => {
     : data.value.orders.filter(row => row.request || row.refundedAt || ['환불 대기','환불 완료'].includes(row.status))
   return data.value[page.value] ?? []
 })
-const rows = computed(() => {
-  const term = search.value.trim().toLowerCase()
-  return sourceRows.value.filter(row => {
-    if(page.value === 'orders' && orderStatusFilter.value && row.status!==orderStatusFilter.value)return false
-    if (page.value === 'products' && categoryFilter.value && row.category !== categoryFilter.value) return false
-    return !term || Object.values(row).some(value =>
-      typeof value === 'string' && !value.startsWith('data:image/') && value.toLowerCase().includes(term))
-  })
-})
+const rows = computed(() => filterAdminRows(sourceRows.value,{page:page.value,search:search.value,
+  category:categoryFilter.value,status:page.value==='products' ? productStatusFilter.value : orderStatusFilter.value,
+  sort:recordSort.value,sentiment:reviewSentimentFilter.value}))
 const rowGroups = computed(() => {
-  if (page.value !== 'products') return [{label:'',items:rows.value}]
+  if (page.value !== 'products' || recordSort.value!=='category') return [{label:'',items:rows.value}]
   return (data.value?.categories ?? []).map(label => ({
     label,
     items:rows.value.filter(row => row.category === label),
@@ -243,7 +256,7 @@ const detailSentimentScore = computed(() => page.value === 'reviews' && detail.v
 const titleFor = row => row.name ?? row.title ?? row.orderId ?? row.author
 function productName(id) { return data.value.products.find(row => row.productId === id)?.name ?? id }
 function recordStatus(row) {
-  if (page.value === 'products') return row.selling === false ? '판매중지' : row.stock === 0 ? '품절' : '판매중'
+  if (page.value === 'products') return productStatusLabel(row)
   if (page.value === 'refunds' && apiMode) return ({REQUESTED:'반품 요청',APPROVED:'반품 승인',REJECTED:'반품 거절',REFUNDED:'처리 완료'})[row.returnStatus] ?? row.returnStatus
   if (page.value === 'orders' || page.value === 'refunds') return row.request || row.status
   if (page.value === 'reviews') return row.hidden ? '숨김' : readReviewSentiment(row).label
@@ -252,7 +265,7 @@ function recordStatus(row) {
   return ''
 }
 function recordSummary(row) {
-  if (page.value === 'reviews') return productName(row.productId)+' · '+row.rating+'점'
+  if (page.value === 'reviews') return productName(row.productId)
   if (page.value === 'products') return row.category+' · '+money(row.price)+' · 재고 '+row.stock+'개'
   if (page.value === 'inquiries') return row.author
   if (page.value === 'members') return row.email
@@ -260,6 +273,7 @@ function recordSummary(row) {
   return row.date ? dateLabel(row.date) : ''
 }
 async function openRecord(row) {
+  if(page.value==='products')productListScroll.value=listPanel.value?.scrollTop ?? 0
   select(row)
   await nextTick()
   detailPanel.value?.scrollTo({top:0})
@@ -272,14 +286,14 @@ async function load() {
   catch (e) { loadError.value = e.message }
   finally { loading.value = false }
 }
-watch(() => [page.value,route.query.q], () => { search.value = String(route.query.q || ''); categoryFilter.value = ''; selected.value = ''; error.value = ''; notice.value = ''; period.value = 'day' },{immediate:true})
+watch(() => [page.value,route.query.q], () => { search.value = String(route.query.q || ''); searchDraft.value=search.value; categoryFilter.value = ''; orderStatusFilter.value='';productStatusFilter.value='';recordSort.value='newest';reviewSentimentFilter.value=''; selected.value = ''; error.value = ''; notice.value = ''; period.value = 'day' },{immediate:true})
 load()
 function select(row) {
   error.value = ''
   notice.value = ''
   selected.value = row?.[keyField.value] ?? 'new'
   for (const key of Object.keys(form)) delete form[key]
-  if (page.value === 'products') Object.assign(form,{name:'',category:data.value.categories[0],brand:'',price:0,stock:0,spec:'',image:'',description:'',...row,selling:row?.selling !== false})
+  if (page.value === 'products') Object.assign(form,{name:'',category:data.value.categories[0],brand:'',price:0,stock:0,spec:'',image:'',description:'',...row,imageUrls:imageUrlsFor(row ?? {}),selling:row?.selling !== false})
   if (page.value === 'notices') Object.assign(form,{title:'',body:'',...row})
   if (page.value === 'orders') form.tracking = row.tracking ?? ''
   if (page.value === 'refunds' && apiMode) form.refundAmount = row.refundAmount || row.items?.[0]?.price * row.items?.[0]?.quantity || row.total || 0
@@ -294,15 +308,33 @@ async function mutate(action, close = false) {
   try {
     await action()
     if (close) selected.value = ''
-    data.value = await admin.snapshot(actor())
     notice.value = '변경사항을 저장했습니다.'
+    try {
+      data.value = await admin.snapshot(actor())
+      if(page.value==='products') {
+        const current=data.value.products.find(row=>row.productId===form.productId)
+        if(current)Object.assign(form,JSON.parse(JSON.stringify(current)))
+        const catalog=await import('../../services').then(({shop})=>shop.catalog())
+        store.products=catalog.products
+      }
+      analysisRevision.value++
+      if(selected.value && selected.value!=='new' && !rows.value.some(row=>row[keyField.value]===selected.value))selected.value=''
+    }catch(e){error.value='저장은 완료됐지만 목록 새로고침에 실패했습니다. '+e.message}
   } catch (e) { error.value = e.message }
   finally { busy.value = false }
 }
 function remove() {
   if (!window.confirm('선택한 항목을 삭제할까요?')) return
-  if (page.value === 'products') mutate(() => admin.removeProduct(actor(),detail.value.productId),true)
-  else mutate(() => admin.removeNotice(actor(),detail.value.noticeId),true)
+  mutate(() => admin.removeNotice(actor(),detail.value.noticeId),true)
+}
+function toggleSelling() {
+  const product=detail.value
+  const selling=product.selling===false
+  if(!window.confirm(selling ? '이 상품의 판매를 재개할까요?' : '이 상품의 판매를 중지할까요? 상품 정보는 유지됩니다.'))return
+  mutate(()=>admin.setProductSelling(actor(),product.productId,selling))
+}
+async function refreshReviews(){
+  try{data.value=await admin.snapshot(actor())}catch(e){error.value=e.message}
 }
 </script>
 <template>
@@ -326,6 +358,8 @@ function remove() {
   <LiveSentimentReport v-if="page === 'sentiment' && sentimentApiConfigured"/>
   <StatePanel v-else-if="loading || loadError" :busy="loading" :error="loadError" @retry="load"/>
   <template v-else-if="data">
+    <p v-if="error" class="error admin-feedback" role="alert">{{ error }}</p>
+    <p v-if="notice" class="admin-feedback" role="status">{{ notice }}</p>
     <section v-if="page === 'dashboard'" class="ops-dashboard reference-dashboard" aria-label="운영 현황">
       <RecommendationModelPanel/>
       <div class="reference-kpis">
@@ -344,24 +378,24 @@ function remove() {
         </article>
         <article class="reference-panel board-products">
           <header><h2><AdminIcon name="products"/>상품 관리</h2><div><RouterLink to="/admin/products">전체보기 ›</RouterLink><RouterLink class="board-add" to="/admin/products?create=1">+ 상품 등록</RouterLink></div></header>
-          <label class="board-search"><AdminIcon name="search"/><input v-model="dashboardSearch.products" type="search" aria-label="대시보드 상품 검색" placeholder="상품명 · 카테고리 · ID"></label>
+          <form class="board-search-form" role="search" @submit.prevent="confirmDashboardSearch('products')"><label class="board-search"><AdminIcon name="search"/><input v-model="dashboardSearchDraft.products" type="search" @input="clearDashboardSearch('products')" aria-label="대시보드 상품 검색" placeholder="상품명 · 카테고리 · ID"></label><button type="submit" class="board-search-confirm">확인</button></form>
           <div class="board-table" tabindex="0" role="region" aria-label="상품 목록"><table><thead><tr><th>상품명</th><th>카테고리</th><th>재고</th><th>가격</th><th>상태</th><th>관리</th></tr></thead><tbody>
             <tr v-for="row in dashboardRows.products" :key="row.productId"><th scope="row"><RouterLink :to="{path:'/admin/products',query:{q:row.productId}}"><img v-if="row.image" :src="row.image" loading="lazy" alt="">{{ row.name }}</RouterLink></th><td>{{ row.category }}</td><td>{{ row.stock }}개</td><td>{{ money(row.price) }}</td><td><span class="board-status" :data-status="row.stock === 0 ? '품절' : '판매중'">{{ row.selling === false ? '중지' : row.stock === 0 ? '품절' : '판매중' }}</span></td><td><RouterLink :to="{path:'/admin/products',query:{q:row.productId}}" :aria-label="row.name+' 수정'">수정</RouterLink></td></tr>
           <tr v-if="!dashboardRows.products.length"><td class="board-search-empty" colspan="6">{{ dashboardSearch.products.trim() ? '검색 결과가 없습니다.' : '등록된 상품이 없습니다.' }}</td></tr></tbody></table></div>
         </article>
         <article class="reference-panel board-orders">
           <header><h2><AdminIcon name="orders"/>주문 관리</h2><RouterLink to="/admin/orders">전체보기 ›</RouterLink></header>
-          <label class="board-search"><AdminIcon name="search"/><input v-model="dashboardSearch.orders" type="search" aria-label="대시보드 주문 검색" placeholder="주문번호 · 주문자 · 상품명"></label>
+          <form class="board-search-form" role="search" @submit.prevent="confirmDashboardSearch('orders')"><label class="board-search"><AdminIcon name="search"/><input v-model="dashboardSearchDraft.orders" type="search" @input="clearDashboardSearch('orders')" aria-label="대시보드 주문 검색" placeholder="주문번호 · 주문자 · 상품명"></label><button type="submit" class="board-search-confirm">확인</button></form>
           <div class="board-table" tabindex="0" role="region" aria-label="주문 목록"><table><thead><tr><th>주문번호</th><th>주문자</th><th>주문금액</th><th>상태</th><th>관리</th></tr></thead><tbody><tr v-for="row in dashboardRows.orders" :key="row.orderId"><th scope="row"><RouterLink :to="{path:'/admin/orders',query:{q:row.orderId}}" :title="row.orderId">{{ row.orderId.slice(-12) }}</RouterLink></th><td>{{ row.delivery.recipient }}</td><td>{{ money(row.total) }}</td><td><span class="board-status" :data-status="row.status">{{ row.status }}</span></td><td><RouterLink :to="{path:'/admin/orders',query:{q:row.orderId}}">상세</RouterLink></td></tr><tr v-if="!dashboardRows.orders.length"><td class="board-search-empty" colspan="5">{{ dashboardSearch.orders.trim() ? '검색 결과가 없습니다.' : '등록된 주문이 없습니다.' }}</td></tr></tbody></table></div>
           <p class="board-help">운송장과 배송 상태는 배송 관리에서 변경할 수 있습니다.</p>
         </article>
         <article class="reference-panel board-members"><header><h2><AdminIcon name="members"/>회원 관리</h2><RouterLink to="/admin/members">전체보기 ›</RouterLink></header>
-          <label class="board-search"><AdminIcon name="search"/><input v-model="dashboardSearch.members" type="search" aria-label="대시보드 회원 검색" placeholder="이름 · 이메일 · 회원 ID"></label>
+          <form class="board-search-form" role="search" @submit.prevent="confirmDashboardSearch('members')"><label class="board-search"><AdminIcon name="search"/><input v-model="dashboardSearchDraft.members" type="search" @input="clearDashboardSearch('members')" aria-label="대시보드 회원 검색" placeholder="이름 · 이메일 · 회원 ID"></label><button type="submit" class="board-search-confirm">확인</button></form>
           <div class="board-table" tabindex="0" role="region" aria-label="회원 목록"><table><thead><tr><th>회원 ID</th><th>이름</th><th>권한</th><th>상태</th><th>관리</th></tr></thead><tbody><tr v-for="row in dashboardRows.members" :key="row.userId"><th scope="row">{{ row.username || row.userId }}</th><td>{{ row.name }}</td><td>{{ row.role }}</td><td><span class="board-status" :data-status="row.status || '정상'">{{ row.status || '정상' }}</span></td><td><RouterLink :to="{path:'/admin/members',query:{q:row.userId}}">상세</RouterLink></td></tr><tr v-if="!dashboardRows.members.length"><td class="board-search-empty" colspan="5">{{ dashboardSearch.members.trim() ? '검색 결과가 없습니다.' : '등록된 회원이 없습니다.' }}</td></tr></tbody></table></div>
         </article>
         <article class="reference-panel board-reviews"><header><h2><AdminIcon name="reviews"/>리뷰 관리</h2><RouterLink to="/admin/reviews">전체보기 ›</RouterLink></header>
-          <label class="board-search"><AdminIcon name="search"/><input v-model="dashboardSearch.reviews" type="search" aria-label="대시보드 리뷰 검색" placeholder="상품명 · 작성자 · 리뷰 내용"></label>
-          <div class="board-table" tabindex="0" role="region" aria-label="리뷰 목록"><table><thead><tr><th>상품명</th><th>별점</th><th>감정분석</th><th>관리</th></tr></thead><tbody><tr v-for="row in dashboardRows.reviews" :key="row.reviewId"><th scope="row">{{ productName(row.productId) }}</th><td class="board-stars"><span aria-hidden="true">★</span> {{ row.rating.toFixed(1) }}</td><td><span class="board-status" :data-status="readReviewSentiment(row).label">{{ readReviewSentiment(row).label }}</span></td><td><RouterLink :to="{path:'/admin/reviews',query:{q:row.reviewId}}">상세</RouterLink></td></tr><tr v-if="!dashboardRows.reviews.length"><td class="board-search-empty" colspan="4">{{ dashboardSearch.reviews.trim() ? '검색 결과가 없습니다.' : '등록된 리뷰가 없습니다.' }}</td></tr></tbody></table></div>
+          <form class="board-search-form" role="search" @submit.prevent="confirmDashboardSearch('reviews')"><label class="board-search"><AdminIcon name="search"/><input v-model="dashboardSearchDraft.reviews" type="search" @input="clearDashboardSearch('reviews')" aria-label="대시보드 리뷰 검색" placeholder="상품명 · 작성자 · 리뷰 내용"></label><button type="submit" class="board-search-confirm">확인</button></form>
+          <div class="board-table" tabindex="0" role="region" aria-label="리뷰 목록"><table><thead><tr><th>상품명</th><th>감정분석</th><th>관리</th></tr></thead><tbody><tr v-for="row in dashboardRows.reviews" :key="row.reviewId"><th scope="row">{{ productName(row.productId) }}</th><td><span v-if="readReviewSentiment(row).label" class="board-status" :data-status="readReviewSentiment(row).label">{{ readReviewSentiment(row).label }}</span></td><td><RouterLink :to="{path:'/admin/reviews',query:{q:row.reviewId}}">상세</RouterLink></td></tr><tr v-if="!dashboardRows.reviews.length"><td class="board-search-empty" colspan="3">{{ dashboardSearch.reviews.trim() ? '검색 결과가 없습니다.' : '등록된 리뷰가 없습니다.' }}</td></tr></tbody></table></div>
         </article>
         <article class="reference-panel board-notices"><header><h2><AdminIcon name="notices"/>공지사항</h2><RouterLink to="/admin/notices">전체보기 ›</RouterLink></header>
           <ul><li v-for="row in data.notices.slice(0,5)" :key="row.noticeId"><RouterLink :to="{path:'/admin/notices',query:{q:row.noticeId}}"><strong>{{ row.title }}</strong><span>{{ row.body }}</span></RouterLink></li></ul><p v-if="!data.notices.length" class="muted">등록된 공지가 없습니다.</p>
@@ -374,56 +408,58 @@ function remove() {
     <CustomerAnalysis v-else-if="page === 'customers'" :data="data"/>
     <LiveSentimentReport v-else-if="page === 'sentiment'"/>
     <template v-else>
-      <div class="ops-toolbar"><label v-if="page === 'orders'">주문 상태<select v-model="orderStatusFilter"><option value="">전체</option><option v-for="status in ['결제 대기','결제 완료','배송 준비','배송 중','배송 완료','구매 확정','취소 완료','환불 완료']" :key="status">{{ status }}</option></select></label>
+      <LiveSentimentReport v-if="page==='reviews' && apiMode" :key="analysisRevision" @analyzed="refreshReviews"/>
+      <div class="ops-toolbar" :class="'toolbar-'+page"><label v-if="page === 'orders'">주문 상태<select v-model="orderStatusFilter" aria-label="주문 상태 필터"><option value="">전체</option><option v-for="[value,label] in [['PENDING','결제 대기'],['PAID','결제 완료'],['PREPARING','배송 준비'],['SHIPPED','배송 중'],['DELIVERED','배송 완료'],['COMPLETED','구매 확정'],['CANCELLED','취소 완료'],['REFUNDED','환불 완료']]" :key="value" :value="value">{{ label }}</option></select></label>
         <label v-if="page === 'products'">카테고리
-          <select v-model="categoryFilter">
+          <select v-model="categoryFilter" aria-label="카테고리 필터">
             <option value="">전체 카테고리</option>
             <option v-for="category in data.categories" :key="category">{{ category }}</option>
           </select>
         </label>
-        <label class="ops-search-label">목록 검색
-          <span class="ops-search-input"><AdminIcon name="search"/><input v-model="search" type="search" :placeholder="recordPage[1]"></span>
-        </label>
+        <label v-if="page==='products'">판매 상태<select v-model="productStatusFilter" aria-label="판매 상태 필터"><option value="">전체 상태</option><option value="ACTIVE">판매중</option><option value="SOLD_OUT">품절</option><option value="INACTIVE">판매 중지</option></select></label>
+        <label v-if="page==='reviews'">감정분석<select v-model="reviewSentimentFilter" aria-label="감정 필터"><option value="">전체 감정</option><option>긍정</option><option>부정</option></select></label>
+        <label v-if="['products','orders','reviews'].includes(page)">정렬<select v-model="recordSort" aria-label="목록 정렬"><option value="newest">최신순</option><option value="oldest">오래된순</option><template v-if="page==='products'"><option value="category">카테고리순</option><option value="name">상품명순</option><option value="price-low">가격 낮은순</option><option value="price-high">가격 높은순</option></template><option v-if="page!=='reviews'" value="status">상태순</option></select></label>
+        <form class="ops-search-form" role="search" @submit.prevent="applySearch">
+          <label class="ops-search-label">목록 검색<span class="ops-search-input"><AdminIcon name="search"/><input v-model="searchDraft" type="search" :placeholder="recordPage[1]"></span></label>
+          <button type="submit" class="button">검색</button>
+        </form>
         <button v-if="['products','notices'].includes(page)" class="button gold" :disabled="busy || readingImage" @click="openRecord()">새 {{ page === 'products' ? '상품' : '공지' }} 등록</button>
       </div>
-      <div class="ops-split ops-records">
-        <section class="ops-record-list" aria-labelledby="admin-records-title">
+      <div class="ops-split ops-records" :class="{'product-gallery-mode':page==='products','showing-product-detail':page==='products' && selected}">
+        <section v-show="page!=='products' || !selected" class="ops-record-list" aria-labelledby="admin-records-title">
           <header class="ops-records-heading"><h2 id="admin-records-title">{{ recordPage[0] }}</h2><span>{{ rows.length.toLocaleString('ko-KR') }}건</span></header>
-          <div class="ops-panel ops-list" tabindex="0" role="region" :aria-label="recordPage[0] + ' 스크롤'">
+          <div ref="listPanel" class="ops-panel ops-list" tabindex="0" role="region" :aria-label="recordPage[0] + ' 스크롤'">
             <StatePanel v-if="!rows.length" empty="표시할 항목이 없습니다."/>
-            <div v-for="group in rowGroups" :key="group.label" class="ops-list-group">
+            <div v-for="group in rowGroups" :key="group.label" class="ops-list-group" :class="{'is-product-grid':page==='products'}">
               <h3 v-if="group.label">{{ group.label }} <small>{{ group.items.length }}개</small></h3>
               <button v-for="row in group.items" :key="row[keyField]" :class="{'ops-product-row':page === 'products'}" :aria-pressed="selected === row[keyField]" :disabled="busy || readingImage" @click="openRecord(row)">
                 <template v-if="page === 'products'">
                   <img v-if="row.image" :src="row.image" alt="" loading="lazy">
                   <span v-else class="ops-thumb-empty">이미지 없음</span>
                 </template>
-                <div class="ops-row-copy"><strong>{{ titleFor(row) }}</strong><span>{{ recordSummary(row) }}</span></div>
+                <div class="ops-row-copy"><strong>{{ titleFor(row) }}</strong><template v-if="page==='products'"><span class="product-card-category">{{ row.category }}</span><span class="product-card-price">{{ money(row.price) }}</span><span class="product-card-stock">재고 {{ row.stock }}개</span></template><span v-else>{{ recordSummary(row) }}</span></div>
                 <span v-if="recordStatus(row)" class="ops-status" :data-status="recordStatus(row)">{{ recordStatus(row) }}</span>
                 <AdminIcon v-else name="arrow" class="ops-row-arrow"/>
               </button>
             </div>
           </div>
         </section>
-        <article ref="detailPanel" class="ops-panel ops-record-detail" aria-labelledby="admin-record-title">
-          <h2 id="admin-record-title" ref="detailHeading" tabindex="-1">{{ selected === 'new' ? '신규 등록' : detail ? titleFor(detail) : '항목 상세' }}</h2>
+        <article v-show="page!=='products' || selected" ref="detailPanel" class="ops-panel ops-record-detail" aria-labelledby="admin-record-title">
+          <header v-if="page==='products' && selected" class="product-editor-heading"><div><span>{{ selected==='new' ? '상품 등록' : '상품 상세 편집' }}</span><h2 id="admin-record-title" ref="detailHeading" tabindex="-1">{{ selected==='new' ? '새 상품 등록' : detail ? titleFor(detail) : '상품 상세' }}</h2></div><button type="button" class="button" :disabled="busy || readingImage" @click="returnToProductList">← 상품 목록으로</button></header>
+          <h2 v-else id="admin-record-title" ref="detailHeading" tabindex="-1">{{ selected === 'new' ? '신규 등록' : detail ? titleFor(detail) : '항목 상세' }}</h2>
           <div v-if="!selected" class="ops-detail-empty"><AdminIcon :name="pageIcon"/><p>목록에서 항목을 선택해 주세요.</p></div>
           <form v-else-if="page === 'products'" class="stack ops-product-form" @submit.prevent="!readingImage && mutate(() => admin.saveProduct(actor(),form),selected === 'new')">
-            <label>상품명<input v-model="form.name" required></label><label v-if="!apiMode">브랜드<input v-model="form.brand" required></label>
-            <label>카테고리<select v-model="form.category"><option v-for="category in data.categories" :key="category">{{ category }}</option></select></label>
-            <label>가격 (원)<input v-model.number="form.price" type="number" min="1" required></label><label>재고 수량<input v-model.number="form.stock" type="number" min="0" required></label>
-            <label>상세 스펙<input v-model="form.spec" required></label>
-            <div class="ops-image-editor">
-              <div class="ops-image-preview"><img v-if="form.image" :src="form.image" alt="상품 이미지 미리보기"><span v-else>등록된 이미지 없음</span></div>
-              <label v-if="apiMode">대표 이미지 URL<input v-model="form.image" type="text" maxlength="500" placeholder="/images/product.jpg 또는 https://..." :disabled="busy"></label>
-              <label v-else>대표 이미지 추가 또는 변경<input type="file" accept="image/png,image/jpeg,image/webp" :disabled="busy || readingImage" @change="chooseImage"></label>
-              <small v-if="apiMode">백엔드는 이미지 URL을 저장합니다. 로컬 파일 업로드는 연결되지 않았습니다.</small>
-              <small v-else>PNG, JPG, WebP · 최대 5MB</small>
-              <button v-if="form.image" type="button" class="button" :disabled="busy || readingImage" @click="form.image = ''">대표 이미지 제거</button>
+            <div class="product-edit-fields">
+              <label class="product-name-field">상품명<input v-model="form.name" required></label><label v-if="!apiMode">브랜드<input v-model="form.brand" required></label>
+              <label class="product-category-field">카테고리<select v-model="form.category"><option v-for="category in data.categories" :key="category">{{ category }}</option></select></label>
+              <label>가격 (원)<input v-model.number="form.price" type="number" min="0" required></label><label>재고 수량<input v-model.number="form.stock" type="number" min="0" required></label>
+              <label class="product-spec-field">상세 스펙<textarea v-model="form.spec" rows="3" required></textarea></label>
+              <label class="product-description-field">상품 설명<textarea v-model="form.description" rows="4" :required="apiMode"></textarea></label>
+              <label class="check"><input v-model="form.selling" type="checkbox"> 판매 중</label>
             </div>
-            <label>상품 설명<textarea v-model="form.description" rows="3" :required="apiMode"></textarea></label>
-            <label class="check"><input v-model="form.selling" type="checkbox"> 판매 중</label>
-            <div class="actions"><button class="button gold" :disabled="busy || readingImage">저장</button><button v-if="detail" type="button" class="button" :disabled="busy" @click="remove">상품 삭제</button></div>
+            <ProductImagesEditor :key="selected" :model="form" :disabled="busy" @busy="readingImage=$event"/>
+            <details v-if="detail?.details" class="product-detail-preview"><summary>기존 상세 스펙과 안내 확인</summary><dl><template v-for="[label,value] in detail.details.specifications" :key="label"><dt>{{ label }}</dt><dd>{{ value }}</dd></template></dl><p>{{ detail.details.description }}</p></details>
+            <div class="actions product-editor-actions"><button class="button gold" :disabled="busy || readingImage">저장</button><button v-if="detail" type="button" class="button" :class="{'product-stop-selling':detail.selling!==false}" :disabled="busy" @click="toggleSelling">{{ detail.selling===false ? '판매 재개' : '판매 중지' }}</button></div>
           </form>
           <template v-else-if="detail && ['orders','refunds'].includes(page)">
             <dl class="ops-detail-facts">
@@ -466,13 +502,13 @@ function remove() {
             </form>
           </template>
           <template v-else-if="detail && page === 'reviews'">
-            <div class="ops-review-meta"><strong>{{ productName(detail.productId) }}</strong><span>별점 {{ detail.rating }}/5</span><span class="ops-status" :data-status="recordStatus(detail)">{{ recordStatus(detail) }}</span></div>
+            <div class="ops-review-meta"><strong>{{ productName(detail.productId) }}</strong><span v-if="recordStatus(detail)" class="ops-status" :data-status="recordStatus(detail)">{{ recordStatus(detail) }}</span></div>
             <p v-if="detailSentimentScore !== null">분석 신뢰도 {{ (detailSentimentScore * 100).toFixed(1) }}%</p>
             <blockquote class="ops-body ops-review-body">{{ detail.body }}</blockquote><button class="button" :disabled="busy" @click="mutate(() => backendActions.analyzeReview(detail.reviewId))">이 리뷰 AI 분석</button>
             <button class="button" :disabled="busy" @click="mutate(() => admin.reviewVisibility(actor(),detail.reviewId,apiMode ? true : !detail.hidden))">{{ apiMode ? '리뷰 삭제' : detail.hidden ? '다시 공개' : '리뷰 숨기기' }}</button></template>
           <template v-else-if="detail && page === 'inquiries'"><p class="ops-body">{{ detail.body }}</p><form class="stack" @submit.prevent="mutate(() => admin.answer(actor(),detail.inquiryId,form.answer))"><label>관리자 답변<textarea v-model="form.answer" rows="5" required></textarea></label><button class="button gold" :disabled="busy">답변 저장</button></form></template>
           <form v-else-if="page === 'notices' && selected" class="stack" @submit.prevent="mutate(() => admin.saveNotice(actor(),form),selected === 'new')"><label>제목<input v-model="form.title" required></label><label>내용<textarea v-model="form.body" rows="6" required></textarea></label><div class="actions"><button class="button gold" :disabled="busy">저장</button><button v-if="detail" class="button" type="button" :disabled="busy" @click="remove">공지 삭제</button></div></form>
-          <p v-if="error" class="error" role="alert">{{ error }}</p><p v-if="notice" role="status">{{ notice }}</p>
+
         </article>
       </div>
     </template>

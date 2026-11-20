@@ -3,3 +3,7 @@ dist/
 .env
 .env.*
 !.env.example
+
+# Runtime administrator uploads and temporary nested checkout
+/public/storefront/uploads/
+/GTEC-frontend-upload/

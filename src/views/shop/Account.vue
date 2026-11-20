@@ -27,7 +27,6 @@ const email = ref(store.user?.email ?? '')
 const returnTarget=ref(''),returnItem=ref(''),returnQuantity=ref(1),returnReason=ref('')
 const reviewTarget = ref('')
 const reviewedOrderItemIds = ref([])
-const rating = ref(null)
 const body = ref('')
 const favorites = computed(() => store.products.filter(row => store.favorites.includes(row.productId)))
 const orderItems = computed(() => orders.value.filter(order => !['환불 대기','환불 완료'].includes(order.status)).flatMap(order => order.items.map(item => ({...item,orderId:order.orderId}))))
@@ -84,15 +83,14 @@ function completeOrder(orderId) {
 }
 function write(item) {
   reviewTarget.value = item.orderId + item.productId
-  rating.value = null
   body.value = ''
 }
 function saveReview(item) {
   submit(async () => {
-    const row = await shop.review(store.user,item.productId,rating.value,body.value.trim(),item.orderItemId)
+    const row = await shop.review(store.user,item.productId,body.value.trim(),item.orderItemId)
     reviewTarget.value = ''
     if (apiMode) reviewedOrderItemIds.value = [...reviewedOrderItemIds.value,String(item.orderItemId)]
-    notice.value = '리뷰 등록 완료 · ' + reviewSentimentLabel(row)
+    notice.value = ['리뷰 등록 완료',reviewSentimentLabel(row)].filter(Boolean).join(' · ')
   })
 }
 </script>
@@ -129,16 +127,6 @@ function saveReview(item) {
         <article v-for="item in reviewItems" :key="item.orderId+item.productId" class="review">
           <RouterLink :to="'/products/'+item.productId">{{ item.name }}</RouterLink>
           <form v-if="reviewTarget === item.orderId+item.productId" class="stack" @submit.prevent="saveReview(item)">
-            <fieldset class="review-rating" :disabled="busy">
-              <legend>별점</legend>
-              <div class="review-rating-options">
-                <label v-for="score in 5" :key="score">
-                  <input v-model="rating" type="radio" name="review-rating" :value="score" :aria-label="score + '점'" required>
-                  <span :class="{filled:score <= rating}" aria-hidden="true">{{ score <= rating ? '★' : '☆' }}</span>
-                </label>
-              </div>
-              <p aria-live="polite">{{ rating ? rating + ' / 5점' : '별점을 선택해 주세요.' }}</p>
-            </fieldset>
             <label>리뷰<textarea v-model="body" required maxlength="1000" rows="4"></textarea></label>
             <button class="button gold" :disabled="busy">등록</button>
           </form>
@@ -150,15 +138,3 @@ function saveReview(item) {
     <p v-if="notice" role="status">{{ notice }}</p>
   </section>
 </template>
-
-<style scoped>
-.review-rating { min-width:0; margin:0; padding:0; border:0; }
-.review-rating legend { padding:0; font-size:.9rem; }
-.review-rating-options { display:flex; flex-wrap:wrap; gap:2px; }
-.review-rating-options label { position:relative; display:grid; place-items:center; width:44px; height:44px; cursor:pointer; }
-.review-rating-options input { position:absolute; inset:0; width:100%; height:100%; margin:0; opacity:0; cursor:inherit; }
-.review-rating-options span { padding:0 5px; border-radius:5px; color:var(--ui-muted); font-size:1.65rem; line-height:1.3; }
-.review-rating-options .filled { color:var(--ui-text); }
-.review-rating-options input:focus-visible + span { outline:2px solid currentColor; outline-offset:2px; }
-.review-rating p { margin:0; color:var(--ui-muted); font-size:.78rem; }
-</style>

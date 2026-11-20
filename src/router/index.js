@@ -8,6 +8,7 @@ import Account from '../views/shop/Account.vue'
 import AdminLayout from '../views/admin/AdminLayout.vue'
 const AdminWorkspace = () => import('../views/admin/AdminWorkspace.vue')
 import { adminMenu } from './adminMenu'
+import { canAccessRole } from '../services/memberAccess'
 
 export function makeRouter(pinia) {
   const router = createRouter({history:createWebHistory(), scrollBehavior: () => ({top:0}), routes:[
@@ -24,15 +25,14 @@ export function makeRouter(pinia) {
     {path:'/checkout/complete',name:'checkout-complete',component:() => import('../views/shop/Checkout.vue'),meta:{role:'USER',checkout:true}},
     ...[['orders','주문 내역'],['account','마이페이지'],['favorites','찜한 상품']].map(([path,title]) =>
       ({path:'/'+path, name:path, component:Account, meta:{role:'USER',title}})),
-    {path:'/admin',component:AdminLayout,meta:{role:'ADMIN'},children:[{path:'faqs',component:()=>import('../views/admin/FaqManagement.vue'),meta:{title:'FAQ 조회',section:'faqs'}},{path:'sales',redirect:'/admin/customers'},
+    {path:'/admin',component:AdminLayout,meta:{role:'ADMIN'},children:[{path:'sentiment',redirect:to=>({path:'/admin/reviews',query:to.query})},{path:'inquiries',redirect:'/admin/faqs'},{path:'faqs',component:()=>import('../views/admin/FaqManagement.vue'),meta:{title:'FAQ 관리',section:'faqs'}},{path:'sales',redirect:'/admin/customers'},
       {path:'refunds',redirect:to => ({path:'/admin/shipping',query:{...to.query,tab:'refunds'}})},{path:'shipping/:orderId',component:() => import('../views/admin/DeliveryDetail.vue'),meta:{title:'배송 상세'}},...adminMenu.filter(([path])=>path!=='faqs').map(([path,title]) =>
       ({path,component:AdminWorkspace,meta:{title,section:path === 'shipping' ? 'orders' : path}}))]},
     {path:'/:rest(.*)*',redirect:'/'},
   ]})
   router.beforeEach(to => {
     const store = useShop(pinia)
-    if (to.meta.checkout && store.role === 'ADMIN') return '/cart'
-    if (!to.meta.role || store.role === to.meta.role) return true
+    if (canAccessRole(store.role,to.meta.role)) return true
     if (store.role === 'GUEST') {
       if (to.meta.role === 'USER') store.requireUser(() => router.push(to.fullPath))
       else {

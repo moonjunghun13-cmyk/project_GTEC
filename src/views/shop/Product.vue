@@ -74,7 +74,7 @@ async function load() {
 }
 watch(() => route.params.id, () => {notice.value = ''; added.value = null; selected.value = 1; activeTab.value = tabs[0].id; load()},{immediate:true})
 watch(() => [store.role,product.value?.productId], ([role,productId]) => {
-  if (role === 'USER' && productId) store.recordView(productId)
+  if (store.canShop && productId) store.recordView(productId)
 },{immediate:true})
 function buy() {
   const productId = product.value.productId
@@ -104,8 +104,8 @@ function buy() {
       </p>
       <div class="actions">
         <button class="button" :disabled="!product.stock || selected > remaining" @click="addSelected">장바구니 담기</button>
-        <button class="button gold" :disabled="!product.stock || store.role === 'ADMIN'" @click="buy">구매하기</button>
-        <button class="button" :disabled="store.role === 'ADMIN'" @click="store.requireUser(() => store.favorite(product.productId))">{{ store.favorites.includes(product.productId) ? '♥ 찜 해제' : '♡ 찜하기' }}</button>
+        <button class="button gold" :disabled="!product.stock" @click="buy">구매하기</button>
+        <button class="button"  @click="store.requireUser(() => store.favorite(product.productId))">{{ store.favorites.includes(product.productId) ? '♥ 찜 해제' : '♡ 찜하기' }}</button>
       </div><p role="status">{{ notice }}</p></div>
     </div>
     <div class="product-section-nav" role="tablist" aria-label="상품 상세 안내">
@@ -142,13 +142,9 @@ function buy() {
       <article v-for="review in busy || error ? [] : reviews" :key="review.reviewId" class="review">
         <div class="review-heading">
           <strong>{{ review.author }}</strong>
-          <span class="review-score" aria-hidden="true">
-            <span v-for="star in 5" :key="star">{{ star <= review.rating ? '★' : '☆' }}</span>
-          </span>
-          <span class="review-score-value">{{ review.rating }}/5점</span>
         </div>
         <p>{{ review.body }}</p>
-        <span class="badge">{{ reviewSentimentLabel(review) }}</span>
+        <span v-if="reviewSentimentLabel(review)" class="badge">{{ reviewSentimentLabel(review) }}</span>
       </article>
     </section>
   </section>
