@@ -11,6 +11,7 @@ from app.core.database import engine, get_db
 from app.repositories.recommendation_repository import RecommendationRepository
 from app.services.recommendation_service import load_recommendation_model
 from app.services.recommendation_training_service import RecommendationTrainingService
+from scripts.generate_demo_data import generate_batch
 
 CATEGORIES = {
     "GPU", "CASE", "CPU", "KEYBOARD", "MOUSE", "SSD",
@@ -84,6 +85,15 @@ def retrain_model(req: RetrainRequest, db: Session = Depends(get_db)):
             raise HTTPException(status_code=422, detail=str(e)) from e
     finally:
         _model_write_lock.release()
+
+
+@router.post("/demo/batches/append")
+def generate_demo_append():
+    """Create a synthetic CSV batch under generated_demo."""
+    try:
+        return generate_batch("append")
+    except ValueError as error:
+        raise HTTPException(status_code=409, detail=str(error)) from error
 
 
 @router.post("/demo/seed")

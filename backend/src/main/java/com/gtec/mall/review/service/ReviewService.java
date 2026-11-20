@@ -109,7 +109,7 @@ public class ReviewService {
                 .member(orderItem.getOrder().getMember())
                 .product(orderItem.getProduct())
                 .orderItem(orderItem)
-                .rating(request.rating())
+//                .rating(request.rating())
                 .content(request.content())
                 .build();
 
@@ -134,7 +134,7 @@ public class ReviewService {
                         )
                 );
 
-        review.setRating(request.rating());
+//        review.setRating(request.rating());
         review.setContent(request.content());
 
         return toResponse(review);
@@ -216,7 +216,7 @@ public class ReviewService {
                 product.getId(),
                 product.getName(),
                 productImage,
-                review.getRating(),
+//                review.getRating(),
                 review.getContent(),
                 review.getSentiment(),
                 review.getSentimentScore(),
@@ -249,7 +249,7 @@ public class ReviewService {
                 product.getId(),
                 product.getName(),
                 productImage,
-                review.getRating(),
+//                review.getRating(),
                 review.getContent(),
                 review.getSentiment(),
                 review.getSentimentScore(),

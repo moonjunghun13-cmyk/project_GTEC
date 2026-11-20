@@ -87,6 +87,11 @@ public class AiGatewayController {
     }
 
     // 추천 모델 관리자 API
+    @PostMapping("/admin/ai/demo-data/append")
+    public JsonNode generateDemoAppend() {
+        return aiGatewayService.generateDemoAppend();
+    }
+
     @GetMapping("/admin/ai/recommendations/status")
     public JsonNode recommendationTrainingStatus() {
         return aiGatewayService.recommendationTrainingStatus();

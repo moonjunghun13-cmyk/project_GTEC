@@ -136,3 +136,13 @@ class RecommendationRepository:
             }
             for row in rows
         ]
+
+    # 별도 호환성 점검 API가 사용할 상품 정보 (기존 추천 API는 변경 없음)
+    def find_products_for_compatibility(self, product_ids):
+        if not product_ids:
+            return []
+        rows = self.db.query(
+            Product.id, Product.name, Product.category, Product.specification
+        ).filter(Product.id.in_(product_ids)).all()
+        return [dict(id=r.id, name=r.name, category=r.category,
+                     specification=r.specification or '') for r in rows]

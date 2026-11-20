@@ -2,8 +2,12 @@ package com.gtec.mall.ai.service;
 
 import tools.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Map;
 
@@ -70,6 +74,29 @@ public class AiGatewayService {
                 .uri("/api/ai/customers/model-refresh")
                 .retrieve()
                 .body(JsonNode.class);
+    }
+
+    public JsonNode generateDemoAppend() {
+        try {
+            return recommendClient.post()
+                    .uri("/api/internal/recommendations/demo/batches/append")
+                    .header("X-AI-Internal-Key", internalKey)
+                    .retrieve()
+                    .body(JsonNode.class);
+        } catch (HttpClientErrorException.Conflict error) {
+            JsonNode response = error.getResponseBodyAs(JsonNode.class);
+            String detail = response == null ? null : response.path("detail").stringValue();
+            if (detail == null || detail.isBlank()) {
+                detail = "더미 데이터 배치를 생성할 수 없습니다.";
+            }
+            throw new ResponseStatusException(HttpStatus.CONFLICT, detail, error);
+        } catch (HttpClientErrorException.NotFound error) {
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "추천 AI 서버를 최신 코드로 다시 실행해 주세요.", error);
+        } catch (HttpClientErrorException.Forbidden error) {
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Spring과 추천 AI 서버의 AI_INTERNAL_KEY 설정을 확인해 주세요.", error);
+        } catch (ResourceAccessException error) {
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "추천 AI 서버에 연결할 수 없습니다.", error);
+        }
     }
 
     public JsonNode recommendationTrainingStatus() {

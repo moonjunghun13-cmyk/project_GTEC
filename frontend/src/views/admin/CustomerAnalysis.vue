@@ -4,12 +4,24 @@ import AdminChart from '../../components/admin/AdminChart.vue'
 import AdminIcon from '../../components/admin/AdminIcon.vue'
 import StatePanel from '../../components/StatePanel.vue'
 import { money } from '../../utils'
-import { getCustomerInsights } from '../../services'
+import { generateDemoAppend, getCustomerInsights } from '../../services'
 const props = defineProps({data:{type:Object,required:true}})
 const apiMode = import.meta.env.VITE_AUTH_MODE === 'api'
 const insights = ref(null)
 const insightBusy = ref(false)
 const insightError = ref('')
+const demoBusy = ref(false)
+const demoError = ref('')
+const demoBatch = ref(null)
+async function appendDemoData() {
+  if (demoBusy.value) return
+  demoBusy.value = true
+  demoError.value = ''
+  demoBatch.value = null
+  try { demoBatch.value = await generateDemoAppend() }
+  catch (error) { demoError.value = error.response?.data?.message || error.message }
+  finally { demoBusy.value = false }
+}
 async function loadInsights() {
   insightBusy.value = true
   insightError.value = ''
@@ -44,6 +56,15 @@ const attentionCandidates = computed(() => (insights.value?.predictions?.predict
   <section class="customer-analysis" aria-label="고객분석 보고서">
     <template v-if="apiMode">
       <header class="customer-insights-heading"><div><p class="customer-analysis-note">AI 고객 분석 서비스 · 기준일 {{ insights?.summary?.as_of || '—' }}</p><p v-if="insights?.summary?.note" class="customer-analysis-note">{{ insights.summary.note }}</p></div><button class="button" :disabled="insightBusy" @click="loadInsights">{{ insightBusy ? '불러오는 중…' : '새로고침' }}</button></header>
+      <section class="customer-demo-batch" aria-label="AI 학습용 더미 데이터">
+        <div>
+          <h2>AI 학습용 더미 데이터</h2>
+          <p class="customer-analysis-note">회원 100명, 주문 1,000건, 리뷰 500건의 CSV를 한 배치로 생성합니다.</p>
+        </div>
+        <button type="button" class="button" :disabled="demoBusy" @click="appendDemoData">{{ demoBusy ? '생성 중…' : '증분 데이터 생성' }}</button>
+        <p v-if="demoBatch" class="customer-analysis-note" role="status">{{ demoBatch.batch }} {{ demoBatch.reused ? '복구 완료' : '생성 완료' }} · 회원 {{ demoBatch.member_count }}명 · 주문 {{ demoBatch.order_count }}건 · 리뷰 {{ demoBatch.review_count }}건 · DB 반영 대기</p>
+        <p v-if="demoError" class="error" role="alert">{{ demoError }}</p>
+      </section>
       <StatePanel v-if="insightBusy || insightError" :busy="insightBusy" :error="insightError" @retry="loadInsights"/>
       <template v-else-if="insights">
         <div class="customer-metrics"><article><span>전체 회원</span><strong>{{ insights.summary.registered_user_count }}<small>명</small></strong><p>USER 회원</p></article><article><span>구매 고객</span><strong>{{ insights.summary.purchasing_customer_count }}<small>명</small></strong><p>정상 결제 주문 기준</p></article><article><span>총 주문</span><strong>{{ insights.summary.order_count }}<small>건</small></strong><p>{{ money(insights.summary.total_order_amount) }}</p></article><article><span>재구매율</span><strong>{{ insights.repurchase.repurchase_rate_percent ?? 0 }}<small>%</small></strong><p>{{ insights.repurchase.repeat_customer_count }}명 재구매</p></article></div>
@@ -61,6 +82,9 @@ const attentionCandidates = computed(() => (insights.value?.predictions?.predict
 </template>
 <style scoped>
 .customer-analysis { display:grid; gap:12px; min-width:0; }
+.customer-demo-batch { display:flex; gap:8px 16px; flex-wrap:wrap; align-items:center; justify-content:space-between; padding:12px 16px; border:1px solid var(--admin-border); border-radius:10px; background:var(--ui-surface); }
+.customer-demo-batch h2 { margin:0 0 4px; font-size:1rem; }
+.customer-demo-batch > p { flex-basis:100%; margin:0; }
 .customer-analysis-note { margin:0; color:var(--admin-muted); font-size:.74rem; line-height:1.45; }
 .customer-metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
 .customer-metrics article { min-width:0; padding:12px 16px; border:1px solid var(--admin-border); border-radius:10px; background:var(--ui-surface); }

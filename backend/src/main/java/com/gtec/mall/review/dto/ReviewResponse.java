@@ -11,7 +11,6 @@ public record ReviewResponse(
         Long productId,
         String productName,
         String productImage,
-        int rating,
         String content,
         Sentiment sentiment,
         BigDecimal sentimentScore,

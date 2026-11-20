@@ -184,6 +184,11 @@ export async function getCustomerInsights() {
     predictions:predictions.data,training:training.data}
 }
 
+export async function generateDemoAppend() {
+  const {data} = await api.post('/api/admin/ai/demo-data/append')
+  return data
+}
+
 export async function refreshCustomerModel() {
   if (authMode !== 'api') throw new Error('API 인증 모드가 설정되지 않았습니다.')
   const {data} = await api.post('/api/admin/ai/customers/model-refresh')

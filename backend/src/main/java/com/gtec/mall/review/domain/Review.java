@@ -37,10 +37,10 @@ public class Review {
     @JoinColumn(name = "order_item_id", nullable = false)
     private OrderItem orderItem;
 
-    @Min(1)
-    @Max(5)
-    @Column(nullable = false)
-    private int rating;
+//    @Min(1)
+//    @Max(5)
+//    @Column(nullable = false)
+//    private int rating;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;

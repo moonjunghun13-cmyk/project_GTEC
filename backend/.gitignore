@@ -36,3 +36,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# Python 가상환경
+.venv/
+venv/
+env/

@@ -1,117 +1,127 @@
-"""CSV에 가격·재고·검증된 규격까지 채워진 '실제 상품'만 신규 INSERT.
+"""실제 엑셀에서 변환한 120개 상품과 이미지 등록기.
 
-미리보기: python scripts/import_real_catalog.py
-실제 등록: python scripts/import_real_catalog.py --apply
-기존 상품은 변경하지 않음. 미완성 CSV는 전체 등록을 거절함.
+실행 (프로젝트 ROOT에서):
+  python -m scripts.import_real_catalog                   # 미리보기, 읽기 전용
+  python -m scripts.import_real_catalog --apply --confirm-db gtec
+  python -m scripts.import_real_catalog --apply --confirm-db gtec --update-existing
+
+호환성 데이터 중 제조사 확인되지 않은 항목을 생성하지 않습니다.
+기존 상품 수정은 --update-existing를 명시할 때만 수행합니다.
+반드시 개발 DB 백업 후 실행하세요.
 """
+from __future__ import annotations
 import argparse
 import csv
-import re
+from collections import Counter
 from datetime import datetime
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
-from collections import Counter
 
-from sqlalchemy import MetaData, Table, select, insert
+from sqlalchemy import MetaData, Table, and_, insert, select, update, text
 from app.core.database import engine
 
-CATALOG = Path(__file__).resolve().parents[1] / 'data' / 'real_products_120.csv'
+ROOT = Path(__file__).resolve().parents[1]
+CATALOG = ROOT / 'data' / 'real_products_120.csv'
 CATEGORIES = {'GPU','CASE','CPU','KEYBOARD','MOUSE','SSD','SPEAKER','HDD','POWER','RAM','MONITOR','MAINBOARD'}
 TIERS = {'LOW','MID','HIGH'}
-# 프로젝트에서 합의한 기본 호환 검사 양식입니다. 제조사 규격 검증은 사용자가 해야 합니다.
-REQUIRED_SPECS = {
-    'CPU': ('CPU_SOCKET','CPU_POWER_W'),
-    'MAINBOARD': ('CPU_SOCKET','RAM_TYPE','RAM_SLOTS','MAX_RAM_GB','FORM_FACTOR',
-                  'PCIE_X16_SLOTS','M2_NVME_2280_SLOTS','SATA_PORTS','CPU_EPS_8PIN_REQUIRED'),
-    'RAM': ('RAM_TYPE','RAM_MODULE_GB','RAM_MODULE_COUNT'),
-    'GPU': ('GPU_LENGTH_MM','GPU_POWER_W','GPU_POWER_CONNECTOR'),
-    'CASE': ('MAINBOARD_SUPPORT','MAX_GPU_LENGTH_MM','PSU_SUPPORT','MAX_PSU_LENGTH_MM',
-             'HDD_3_5_BAYS','SSD_2_5_BAYS'),
-    'POWER': ('PSU_WATT','PSU_FORM_FACTOR','PSU_LENGTH_MM','MAINBOARD_24PIN_COUNT',
-              'CPU_EPS_8PIN_COUNT','PCIE_8PIN_COUNT','PCIE_16PIN_COUNT','SATA_POWER_COUNT'),
-    'SSD': ('STORAGE_INTERFACE','STORAGE_FORM_FACTOR'),
-    'HDD': ('STORAGE_INTERFACE','STORAGE_FORM_FACTOR'),
-}
+REQUIRED = {'name','category','stock','price','description','specification','thumbnail_url','status','created_at'}
 
 
-def check_row(row, n):
-    issues=[]
-    cat=(row.get('category') or '').strip().upper()
-    tier=(row.get('tier') or '').strip().upper()
-    name=(row.get('name') or '').strip()
-    if cat not in CATEGORIES: issues.append('category 미확인')
-    if tier not in TIERS: issues.append('tier는 LOW/MID/HIGH 중 하나')
-    if not name: issues.append('상품명 누락')
-    if name.startswith(('AI-DEMO-RETRAIN-', 'AI 테스트')): issues.append('시연용 이름 사용 불가')
-    try:
-        price=Decimal((row.get('price') or '').replace(',','').strip())
-        if not price.is_finite() or price <= 0 or price != price.to_integral_value():
-            raise InvalidOperation
-    except (InvalidOperation, ValueError):
-        price=None;issues.append('price: 유효한 양의 원화 정수 필요')
-    try:
-        stock=int((row.get('stock') or '').strip())
-        if stock <= 0: raise ValueError
-    except ValueError:
-        stock=None;issues.append('stock: 1 이상의 정수 필요')
-    spec=(row.get('specification') or '').strip()
-    spec_map={k.strip().upper():v.strip() for k,v in re.findall(r'^([A-Z][A-Z0-9_]*):\s*([^\n\r]*)$',spec,flags=re.M)}
-    for key in REQUIRED_SPECS.get(cat,()):
-        if not spec_map.get(key): issues.append(f'specification 필수 규격 누락: {key}')
-    return issues, {'name':name,'category':cat,'price':price,'stock':stock,
-                    'description':(row.get('description') or '').strip(),
-                    'specification':f'GRADE: {tier}\n{spec}' if spec else f'GRADE: {tier}',
-                    'thumbnail_url':(row.get('thumbnail_url') or '').strip() or None}
-
-
-def main():
-    parser=argparse.ArgumentParser()
-    parser.add_argument('--apply',action='store_true',help='검증 성공 시 DB 신규 상품만 INSERT')
-    args=parser.parse_args()
+def load_catalog():
     with CATALOG.open(encoding='utf-8-sig',newline='') as file:
         rows=list(csv.DictReader(file))
-    issues=[]; prepared=[]; keys=set(); counts=Counter()
-    for n,row in enumerate(rows,start=2):
-        errs, item=check_row(row,n)
-        key=(item['category'],item['name'].casefold())
-        if key in keys: errs.append('CSV 내 상품명/카테고리 중복')
-        keys.add(key)
-        if errs: issues.append((n,item['name'],errs))
-        prepared.append(item); counts[item['category']]+=1
-    if len(rows)!=120 or set(counts.values())!={10}:
-        issues.append((0,'목록 전체', ['12개 카테고리 × 10개씩 총 120개인지 확인']))
-    print(f'CSV {len(rows)}건 읽음. 미완성/오류 {len(issues)}건')
-    if issues:
-        for n,name,errs in issues[:12]:
-            print(f'  행 {n} [{name}]: {" / ".join(errs[:5])}')
-        if len(issues)>12: print(f'  ... 이외 {len(issues)-12}건')
-        print('등록하지 않았습니다. 가격·재고·실제 제품 규격을 확인한 뒤 다시 실행하세요.')
-        return 1
-    products=Table('products',MetaData(),autoload_with=engine)
-    with engine.connect() as con:
-        existing=list(con.execute(select(products.c.name, products.c.category)).mappings())
-    by_key={(str(x['category']).upper(),str(x['name']).strip().casefold()) for x in existing}
-    conflicts={x['name'].strip().casefold():str(x['category']).upper() for x in existing}
-    new=[]
-    for item in prepared:
-        key=(item['category'],item['name'].casefold())
-        if item['name'].casefold() in conflicts and conflicts[item['name'].casefold()]!=item['category']:
-            print('DB에 같은 상품명으로 다른 카테고리 기록:',item['name']);return 1
-        if key not in by_key: new.append(item)
-    print(f'기존에 이미 등록된 상품 {len(prepared)-len(new)}개 / 신규 등록 대상 {len(new)}개')
-    if not args.apply:
-        print('[미리보기] DB 변경 없음. --apply 실행 시 신규 상품만 등록합니다.')
-        return 0
-    now=datetime.now()
-    # 트랜잭션: 실패 시 전체 롤백. 없는 DB 컬럼은 사용하지 않음.
-    columns=set(products.c.keys())
-    with engine.begin() as con:
-        for item in new:
-            obj={k:v for k,v in item.items() if k in columns}
-            obj.update({k: v for k,v in {'status':'ACTIVE','created_at':now,'updated_at':now}.items() if k in columns})
-            con.execute(insert(products).values(**obj))
-    print(f'등록 완료: {len(new)}개. 기존 상품은 변경하지 않았습니다.')
-    return 0
+    errors=[]; prepared=[];count=Counter();seen=set()
+    for n,row in enumerate(rows,2):
+        cat=(row.get('category') or '').strip().upper()
+        name=(row.get('name') or '').strip()
+        tier=(row.get('tier') or '').strip().upper()
+        code=(row.get('product_code') or '').strip()
+        if cat not in CATEGORIES or tier not in TIERS or not name or not code:
+            errors.append(f'행 {n}: 카테고리·등급·이름·코드 확인');continue
+        key=(cat,name.casefold())
+        if key in seen:errors.append(f'행 {n}: 중복 이름 {name}')
+        seen.add(key)
+        try:
+            price=Decimal(str(row.get('price','')).replace(',',''))
+            stock=int(row.get('stock','0'))
+            assert price>0 and price==int(price) and stock>0
+        except (AssertionError,InvalidOperation,ValueError):
+            errors.append(f'행 {n}: 가격/재고 이상');continue
+        spec=(row.get('specification') or '').strip()
+        if not spec or f'GRADE: {tier}' not in spec or 'COMPATIBILITY_VERIFIED:' not in spec:
+            errors.append(f'행 {n}: 규격/검증 상태 누락')
+        urls=(row.get('image_urls') or '').split('|')
+        thumb=(row.get('thumbnail_url') or '').strip()
+        if not thumb or thumb not in urls or len(urls)!=len(set(urls)):
+            errors.append(f'행 {n}: 썸네일/상세이미지 매핑 오류')
+        prepared.append({'name':name,'category':cat,'price':int(price),'stock':stock,
+                         'description':(row.get('description') or '').strip(),
+                         'specification':spec,'thumbnail_url':thumb,'image_urls':urls})
+        count[cat]+=1
+    if len(rows)!=120 or set(count)!=(CATEGORIES) or any(count[x]!=10 for x in CATEGORIES):
+        errors.append('목록이 12카테고리 x 10개 = 120개가 아닙니다')
+    if errors:raise ValueError('\n'.join(errors[:25]))
+    return prepared
+
+
+def run(*,apply=False,confirm_db=None,update_existing=False):
+    catalog=load_catalog()
+    if apply and not confirm_db:
+        raise ValueError('DB 수정 시 반드시 --confirm-db gtec 같은 실제 DB명 확인이 필요합니다.')
+    metadata=MetaData()
+    products=Table('products',metadata,autoload_with=engine)
+    images=Table('images',metadata,autoload_with=engine)
+    missing=REQUIRED-set(products.c.keys())
+    if missing:raise ValueError('products 테이블 필수 컬럼 누락: '+str(sorted(missing)))
+    image_req={'product_id','image_url','is_primary','sort_order'}
+    if image_req-set(images.c.keys()):
+        raise ValueError('images 컬럼 확인 필요: '+str(sorted(image_req-set(images.c.keys()))))
+    with engine.connect() as c:
+        db=c.execute(text('SELECT current_database()')).scalar_one() if engine.dialect.name=='postgresql' else 'TEST_DB'
+        existing=c.execute(select(products.c.id,products.c.name,products.c.category)).mappings().all()
+    if apply and db!=confirm_db:
+        raise ValueError(f'연결된 DB는 {db!r}이고 확인된 이름은 {confirm_db!r}입니다. 수정 중단.')
+    by_key={(str(x['category']).upper(),x['name'].strip().casefold()):x['id'] for x in existing}
+    by_name={x['name'].strip().casefold():str(x['category']).upper() for x in existing}
+    new=[x for x in catalog if (x['category'],x['name'].casefold()) not in by_key]
+    old=[x for x in catalog if (x['category'],x['name'].casefold()) in by_key]
+    for x in catalog:
+        if x['name'].casefold() in by_name and by_name[x['name'].casefold()]!=x['category']:
+            raise ValueError(f'동일한 이름이 다른 카테고리에 존재: {x["name"]}')
+    print(f'현재 DB={db}, CSV={len(catalog)}건, 신규={len(new)}건, 기존={len(old)}건')
+    print(f'기존 상품 정보 갱신: {"예" if update_existing else "아니요"}')
+    print('주의: 미확인 규격은 만들어 넣지 않으며, 기존 추천 모델 자체는 변경하지 않습니다.')
+    if not apply:
+        print('[DRY RUN] DB 수정 없음');return
+    # Transaction commits only if all rows + images succeed.
+    with engine.begin() as conn:
+        now=datetime.now()
+        for x in catalog:
+            key=(x['category'],x['name'].casefold())
+            common={k:x[k] for k in ('name','category','price','description','specification','thumbnail_url')}
+            if key not in by_key:
+                row={**common,'stock':x['stock'],'status':'ACTIVE','created_at':now}
+                if 'updated_at' in products.c:row['updated_at']=now
+                result=conn.execute(insert(products).values(**row).returning(products.c.id))
+                product_id=result.scalar_one()
+            elif update_existing:
+                product_id=by_key[key]
+                fields={k:v for k,v in common.items() if k not in ('name','category')}
+                if 'updated_at' in products.c:fields['updated_at']=now
+                conn.execute(update(products).where(products.c.id==product_id).values(**fields))
+            else:
+                continue
+            existing_urls=set(conn.execute(select(images.c.image_url).where(images.c.product_id==product_id)).scalars())
+            for idx,url in enumerate(x['image_urls']):
+                if url in existing_urls:continue
+                conn.execute(insert(images).values(product_id=product_id,image_url=url,
+                                  is_primary=(idx==0),sort_order=idx))
+    print('[SUCCESS] 하나의 트랜잭션으로 반영 완료. 기존 상품 재고는 덮어쓰지 않았습니다.')
 
 if __name__=='__main__':
-    raise SystemExit(main())
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--apply',action='store_true')
+    p.add_argument('--confirm-db',help='실제 PostgreSQL DB명 (예: gtec)')
+    p.add_argument('--update-existing',action='store_true',help='일치하는 기존 상품 가격/설명/규격/이미지 추가')
+    args=p.parse_args()
+    run(apply=args.apply,confirm_db=args.confirm_db,update_existing=args.update_existing)
