@@ -8,9 +8,10 @@ const store = useShop()
 const router = useRouter()
 const search = ref('')
 const scope = ref('products')
-function logout() {
-  store.signOut()
-  router.replace('/')
+async function logout() {
+  await store.signOut()
+  await router.replace('/')
+  window.scrollTo({top:0,left:0,behavior:'instant'})
 }
 function submit() {
   router.push({path:'/admin/'+scope.value,query:{q:search.value.trim() || undefined}})

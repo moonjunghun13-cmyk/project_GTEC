@@ -50,9 +50,10 @@ function reviewCartLink(event, navigate) {
     return router.push('/cart')
   })
 }
-function signOut() {
-  store.signOut()
-  if (route.meta.role) router.push('/')
+async function signOut() {
+  await store.signOut()
+  await router.replace('/')
+  window.scrollTo({top:0,left:0,behavior:'instant'})
 }
 </script>
 
