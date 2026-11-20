@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onBeforeUnmount, ref } from 'vue'
 import StatePanel from '../../components/StatePanel.vue'
+import SentimentRatio from '../../components/admin/SentimentRatio.vue'
 import { analyzeAllReviews, getSentimentStatistics } from '../../services/reviewSentiment'
 
 const emit=defineEmits(['analyzed'])
@@ -69,17 +70,8 @@ onBeforeUnmount(() => request?.abort())
       <template v-else-if="statistics">
         <p v-if="notice" role="status">{{ notice }}</p>
         <p class="sentiment-summary-total">전체 {{ statistics.total.toLocaleString('ko-KR') }}건 · 분석 완료 {{ (statistics.positive + statistics.negative).toLocaleString('ko-KR') }}건 · 비율은 분석 완료 리뷰 기준</p>
-        <div class="sentiment-metrics">
-          <article v-for="metric in metrics" :key="metric.label" :class="metric.tone">
-            <h3>{{ metric.label }}</h3>
-            <strong>{{ percent(metric.count) }}%</strong>
-            <span>{{ metric.count.toLocaleString('ko-KR') }}건</span>
-          </article>
-        </div>
-        <div v-if="statistics.total" class="sentiment-distribution" aria-hidden="true">
-          <span v-for="metric in metrics" :key="metric.label" :class="metric.tone" :style="{flexGrow:metric.count}"></span>
-        </div>
-        <p v-else class="sentiment-empty">분석할 리뷰가 없습니다.</p>
+        <SentimentRatio :positive="statistics.positive" :negative="statistics.negative"/>
+
       </template>
     </div>
   </section>

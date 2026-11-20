@@ -11,6 +11,9 @@ import { startSocialLogin } from './socialNavigation'
 import { presentProduct } from './catalogPresentation'
 import { productPayload, imageUrlsFor } from './adminProducts'
 import { canShop } from './memberAccess'
+import { createAdminReader } from './adminPaging'
+const adminReader = createAdminReader((...args) => api.get(...args))
+const adminOrderCache = new Map()
 
 const mode = import.meta.env.VITE_DATA_MODE || 'api'
 const authMode = import.meta.env.VITE_AUTH_MODE || mode
@@ -92,6 +95,7 @@ export async function restoreSession() {
 }
 
 export async function logoutSession() {
+  adminReader.clear(); adminOrderCache.clear()
   if (authMode !== 'api') return
   try { await api.post('/api/members/logout') }
   finally { setAccessToken(null) }
@@ -210,11 +214,21 @@ async function apiRemoveCart(cartItemId) {
   await api.delete(`/api/cart/items/${cartItemId}`)
 }
 
-async function apiAdminSnapshot() {
-  const [productResponse,memberResponse,orderRows,reviewRows,noticeResponse,returnResponse] = await Promise.all([
-    api.get('/api/admin/products'),api.get('/api/admin'),fetchAllPages('/api/admin/orders'),
-    fetchAllPages('/api/admin/reviews'),api.get('/api/notices'),api.get('/api/admin/returns'),
+async function apiAdminSnapshot(options = {}) {
+  const {section='dashboard',page=0,size=20,status='',sort='newest',dashboardPages={},force=false,signal} = options
+  if(force) adminReader.clear()
+  const dashboard=section==='dashboard'
+  const needed=(...sections)=>dashboard || sections.includes(section)
+  const [productRows,memberRows,orderPage,reviewPage,noticeRows,returnRows] = await Promise.all([
+    needed('products','orders','refunds','delivery') ? adminReader.array('/api/admin/products') : [],
+    needed('members','customers') ? adminReader.array('/api/admin') : [],
+    needed('orders','delivery') ? adminReader.page('/api/admin/orders',{page:dashboard ? dashboardPages.orders ?? 0 : page,size,sort,status,signal}) : null,
+    needed('reviews') ? adminReader.page('/api/admin/reviews',{page:dashboard ? dashboardPages.reviews ?? 0 : page,size,sort,signal}) : null,
+    needed('notices') ? adminReader.array('/api/notices') : [],
+    section==='refunds' ? adminReader.array('/api/admin/returns') : [],
   ])
+  const productResponse={data:productRows},memberResponse={data:memberRows},noticeResponse={data:noticeRows},returnResponse={data:returnRows}
+  const orderRows=orderPage?.rows ?? [],reviewRows=reviewPage?.rows ?? []
   const products = (productResponse.data ?? []).map(row => {
     const image=row.thumbnailUrl || row.imageUrls?.[0] || ''
     const urls=[...new Set([image,...(row.imageUrls ?? [])].filter(Boolean))]
@@ -235,21 +249,24 @@ async function apiAdminSnapshot() {
     mapped.author = membersById.get(mapped.memberId)?.name ?? ''
     return mapped
   })
+  for(const order of orders) adminOrderCache.set(order.orderId,order)
+  while(adminOrderCache.size>500)adminOrderCache.delete(adminOrderCache.keys().next().value)
+  if(options.orderId && !orders.some(row=>row.orderId===String(options.orderId)) && adminOrderCache.has(String(options.orderId))) orders.push(adminOrderCache.get(String(options.orderId)))
   const reviews = reviewRows.map(row => ({reviewId:String(row.id),userId:String(row.memberId),author:membersById.get(String(row.memberId))?.name ?? `회원 ${row.memberId}`,
-    productId:String(row.productId),productName:productsById.get(String(row.productId))?.name ?? '',date:row.createdAt,body:row.content,
+    productId:String(row.productId),productName:row.productName ?? productsById.get(String(row.productId))?.name ?? '',productImage:row.productImage ?? '',date:row.createdAt,body:row.content,
     sentiment:row.sentiment === 'POSITIVE' ? '긍정' : row.sentiment === 'NEGATIVE' ? '부정' : '',
     sentimentSource:'model',sentiment_score:row.sentimentScore,sentiment_analyzed_at:row.sentimentAnalyzedAt,
     updated_at:row.updatedAt ?? row.createdAt,hidden:false}))
   const notices = (noticeResponse.data ?? []).map(row => ({noticeId:String(row.id),title:row.title,body:row.content,author:row.author,date:row.createdAt}))
   const returns = (returnResponse.data ?? []).map(row => {
-    const order = orders.find(item => item.orderId === String(row.orderId))
+    const order = adminOrderCache.get(String(row.orderId))
     const item = order?.items.find(candidate => candidate.orderItemId === String(row.orderItemId))
-    return {...order,orderId:String(row.orderId),returnId:String(row.id),returnStatus:row.status,
+    return {total:null,date:row.requestedAt,delivery:{recipient:'',address:''},...order,orderId:String(row.orderId),returnId:String(row.id),returnStatus:row.status,
       request:row.status === 'REQUESTED' ? '반품 요청' : `반품 ${row.status}`,
       returnReason:row.reason,refundAmount:row.refundAmount ?? 0,requestedAt:row.requestedAt,
-      refundedAt:row.refundedAt,items:item ? [{...item,quantity:row.quantity}] : order?.items ?? []}
+      refundedAt:row.refundedAt,items:item ? [{...item,quantity:row.quantity}] : [{orderItemId:String(row.orderItemId),name:row.productName,quantity:row.quantity,price:null}]}
   })
-  return {categories,products,orders,members,reviews,notices,inquiries:[],returns}
+  return {categories,products,orders,members,reviews,notices,inquiries:[],returns,paging:{orders:orderPage && {...orderPage,rows:undefined},reviews:reviewPage && {...reviewPage,rows:undefined}}}
 }
 
 async function apiSaveProduct(fields) {
@@ -563,7 +580,7 @@ function operate(actorId, operation) {
 }
 const orderStages = ['결제 완료','배송 준비','배송 중','배송 완료']
 export const admin = {
-  snapshot: actor => authMode === 'api' ? apiAdminSnapshot() : operate(actor,() => ({
+  snapshot: (actor,options) => authMode === 'api' ? apiAdminSnapshot(options) : operate(actor,() => ({
     categories,products:state.products.filter(row => !row.deleted),orders:state.orders,
     members:state.users.map(publicUser),reviews:state.reviews,inquiries:state.inquiries,notices:state.notices,
   })),

@@ -82,3 +82,14 @@
 }
 @media(max-width:640px){.admin-layout{--sidebar:116px}.admin-brand{white-space:normal;flex-wrap:wrap;gap:4px}.admin-brand small{margin:0}.admin-sidebar nav a{gap:5px;padding:.5rem .3rem;font-size:.75rem}.admin-sidebar nav svg{width:17px;height:17px}.admin-sidebar nav .sidebar-chevron{display:none}.admin-header{padding:.65rem .8rem}.admin-global-search{width:100%;order:2}.admin-header>nav{margin-left:auto}.admin-profile svg{width:22px;height:22px}}
 
+
+/* Legible navigation without splitting Korean words. */
+@media(min-width:901px){.admin-layout.admin-layout{--sidebar:260px}}
+.admin-layout .admin-sidebar nav a{font-size:16px;gap:8px;padding:11px 10px;line-height:1.45}
+.admin-layout .admin-sidebar nav a>span{white-space:nowrap;word-break:keep-all}
+.admin-layout .admin-sidebar nav a>svg{flex-shrink:0}
+.admin-page-scope{margin:0 0 8px;color:var(--admin-muted,#657388);font-size:13px}
+
+.admin-header .admin-dummy-button{padding:8px 12px;border:1px solid #d6deea;border-radius:7px;background:#fff;color:#36516f;font:inherit;font-size:14px;font-weight:650;cursor:pointer;white-space:nowrap}
+.admin-header .admin-dummy-button[aria-pressed=true]{background:#edf3fa;border-color:#b7cadf}
+.admin-header .admin-profile button{white-space:nowrap}

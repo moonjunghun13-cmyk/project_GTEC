@@ -5,6 +5,8 @@ export function filterAdminRows(source,{page,search='',category='',status='',sor
   const term=search.trim().toLocaleLowerCase()
   const rows=source.filter(row=>{
     if(page==='products' && ((category && row.category!==category) || (status && productStatus(row)!==status)))return false
+    if(page==='members' && status && (row.status || '정상')!==status)return false
+    if(page==='refunds' && status && row.returnStatus!==status)return false
     if(page==='orders' && status && row.backendStatus!==status)return false
     if(page==='reviews' && (sentiment && readReviewSentiment(row).label!==sentiment))return false
     const text=page==='reviews' ? [row.reviewId,row.author,row.body,row.productName] : Object.values(row)
@@ -18,6 +20,8 @@ export function filterAdminRows(source,{page,search='',category='',status='',sor
     if(sort==='price-low')return a.price-b.price || byId(a,b)
     if(sort==='price-high')return b.price-a.price || byId(a,b)
     if(sort==='oldest')return -newest(a,b)
+    if(sort==='status' && page==='refunds')return (({REQUESTED:0,APPROVED:1,REJECTED:2,REFUNDED:3}[a.returnStatus]??99)-({REQUESTED:0,APPROVED:1,REJECTED:2,REFUNDED:3}[b.returnStatus]??99)) || newest(a,b)
+    if(sort==='status' && page==='members')return (({'정상':0,'비활성':1,'강퇴':2}[a.status]??99)-({'정상':0,'비활성':1,'강퇴':2}[b.status]??99)) || newest(a,b)
     if(sort==='status')return (page==='products' ? ({ACTIVE:0,SOLD_OUT:1,INACTIVE:2}[productStatus(a)]-({ACTIVE:0,SOLD_OUT:1,INACTIVE:2}[productStatus(b)]))
       : (orderRank[a.backendStatus]??99)-(orderRank[b.backendStatus]??99)) || newest(a,b)
     return newest(a,b)
