@@ -1,15 +1,18 @@
 <script setup>
-import {computed,nextTick,reactive,ref} from 'vue'
+import {computed,nextTick,reactive,ref,watch} from 'vue'
 import {admin} from '../../services'
 import {useShop} from '../../stores/shop'
 import {dateLabel} from '../../utils'
 import AdminPagination from '../../components/admin/AdminPagination.vue'
 import AdminIcon from '../../components/admin/AdminIcon.vue'
+import AdminConfirmDialog from '../../components/admin/AdminConfirmDialog.vue'
+const confirmDelete=ref(false)
 const props=defineProps({initialRows:{type:Array,default:()=>[]},preview:Boolean})
 const store=useShop(),rows=ref([...props.initialRows]),query=ref(''),draft=ref(''),page=ref(0),busy=ref(false),error=ref(''),notice=ref('')
 const dialog=ref(null),titleInput=ref(null),form=reactive({noticeId:'',title:'',body:''})
 const filtered=computed(()=>rows.value.filter(r=>(r.title+' '+r.body+' '+(r.author||'')).toLowerCase().includes(query.value.toLowerCase())))
 const visible=computed(()=>filtered.value.slice(page.value*10,(page.value+1)*10))
+watch(()=>props.initialRows,value=>{rows.value=[...value];page.value=Math.min(page.value,Math.max(0,Math.ceil(filtered.value.length/10)-1))})
 function search(){query.value=draft.value.trim();page.value=0}
 async function open(row){error.value='';Object.assign(form,{noticeId:'',title:'',body:'',...row});dialog.value.showModal();await nextTick();titleInput.value?.focus()}
 function close(){if(!busy.value)dialog.value.close()}
@@ -19,16 +22,15 @@ async function save(){
  if(!title || !body){error.value='제목과 내용을 입력해 주세요.';return}
  busy.value=true;error.value=''
  try{
-  if(props.preview){const row={...form,title,body,noticeId:form.noticeId || 'PREVIEW-LOCAL-'+Date.now(),author:'관리자',date:new Date().toISOString()};rows.value=form.noticeId ? rows.value.map(r=>r.noticeId===form.noticeId ? row : r) : [row,...rows.value]}
-  else{await admin.saveNotice(store.user.userId,{...form,title,body});rows.value=(await admin.snapshot(store.user.userId,{section:'notices',force:true})).notices}
+  await admin.saveNotice(store.user.userId,{...form,title,body});rows.value=(await admin.snapshot(store.user.userId,{section:'notices',force:true})).notices
   notice.value=props.preview ? '확인용 공지를 저장했습니다. 실제 DB에는 반영되지 않습니다.' : '공지사항을 저장했습니다.'
   query.value='';draft.value='';page.value=0;dialog.value.close()
  }catch(e){error.value=e.message}finally{busy.value=false}
 }
 async function remove(){
- if(!form.noticeId || busy.value || !window.confirm('이 공지를 삭제할까요?'))return
+ if(!form.noticeId || busy.value)return
  busy.value=true;error.value=''
- try{if(!props.preview)await admin.removeNotice(store.user.userId,form.noticeId);rows.value=rows.value.filter(r=>r.noticeId!==form.noticeId);page.value=Math.min(page.value,Math.max(0,Math.ceil(filtered.value.length/10)-1));notice.value='공지를 삭제했습니다.';dialog.value.close()}catch(e){error.value=e.message}finally{busy.value=false}
+ try{await admin.removeNotice(store.user.userId,form.noticeId);rows.value=rows.value.filter(r=>r.noticeId!==form.noticeId);page.value=Math.min(page.value,Math.max(0,Math.ceil(filtered.value.length/10)-1));notice.value='공지를 삭제했습니다.';dialog.value.close()}catch(e){error.value=e.message}finally{busy.value=false}
 }
 </script>
 <template>
@@ -40,7 +42,8 @@ async function remove(){
    <AdminPagination :page="page" :pages="Math.ceil(filtered.length/10)" :total="filtered.length" label="공지 목록" @change="page=$event"/>
   </div>
  </section>
- <dialog ref="dialog" class="notice-dialog" aria-labelledby="notice-dialog-title" @cancel="busy && $event.preventDefault()"><form @submit.prevent="save"><header><div><span>공지사항</span><h2 id="notice-dialog-title">{{ form.noticeId ? '공지 수정' : '새 공지 등록' }}</h2></div><button type="button" class="notice-dialog-close" aria-label="공지 팝업 닫기" :disabled="busy" @click="close">×</button></header><p v-if="preview" class="notice-preview-note">확인용 데이터입니다. 이 팝업의 변경은 실제 DB에 저장되지 않습니다.</p><label>제목<input ref="titleInput" v-model="form.title" required maxlength="200" placeholder="공지 제목을 입력하세요"></label><label>내용<textarea v-model="form.body" required rows="10" placeholder="공지 내용을 입력하세요"></textarea></label><p v-if="error" class="error" role="alert">{{ error }}</p><footer><button v-if="form.noticeId" class="button notice-delete" type="button" :disabled="busy" @click="remove">삭제</button><div><button class="button" type="button" :disabled="busy" @click="close">취소</button><button class="button gold" type="submit" :disabled="busy">{{ busy ? '저장 중…' : '저장' }}</button></div></footer></form></dialog>
+ <dialog ref="dialog" class="notice-dialog" aria-labelledby="notice-dialog-title" @cancel="busy && $event.preventDefault()"><form @submit.prevent="save"><header><div><span>공지사항</span><h2 id="notice-dialog-title">{{ form.noticeId ? '공지 수정' : '새 공지 등록' }}</h2></div><button type="button" class="notice-dialog-close" aria-label="공지 팝업 닫기" :disabled="busy" @click="close">×</button></header><p v-if="preview" class="notice-preview-note">확인용 데이터입니다. 이 팝업의 변경은 실제 DB에 저장되지 않습니다.</p><label>제목<input ref="titleInput" v-model="form.title" required maxlength="200" placeholder="공지 제목을 입력하세요"></label><label>내용<textarea v-model="form.body" required rows="10" placeholder="공지 내용을 입력하세요"></textarea></label><p v-if="error" class="error" role="alert">{{ error }}</p><footer><button v-if="form.noticeId" class="button notice-delete" type="button" :disabled="busy" @click="confirmDelete=true">삭제</button><div><button class="button" type="button" :disabled="busy" @click="close">취소</button><button class="button gold" type="submit" :disabled="busy">{{ busy ? '저장 중…' : '저장' }}</button></div></footer></form></dialog>
+ <AdminConfirmDialog v-if="confirmDelete" title="공지 삭제" message="선택한 공지를 삭제할까요?" confirm-text="삭제" danger @cancel="confirmDelete=false" @confirm="confirmDelete=false;remove()"/>
 </template>
 <style>
 .notice-management{display:flex;flex:1!important;flex-direction:column;gap:16px;min-height:0;font-size:17px}

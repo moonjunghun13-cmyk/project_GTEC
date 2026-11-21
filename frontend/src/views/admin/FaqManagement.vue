@@ -1,8 +1,8 @@
 <script setup>
-import { computed,onMounted,ref,watch } from 'vue'
+import { computed,onBeforeUnmount,onMounted,ref,watch } from 'vue'
 import { adminFaqList,faqWriteError } from '../../services/adminFaq'
 import AdminPagination from '../../components/admin/AdminPagination.vue'
-import {isAdminPreview} from '../../services/adminPreview'
+import {isAdminPreview,adminPreviewSnapshot,applyAdminPreviewAction,adminPreviewEvent} from '../../services/adminPreview'
 const previewMode=isAdminPreview(),currentPage=ref(0),pageSize=10
 import { backendActions } from '../../services/backendActions'
 import FaqEditorDialog from '../../components/admin/FaqEditorDialog.vue'
@@ -12,16 +12,16 @@ import AdminIcon from '../../components/admin/AdminIcon.vue'
 const serverRows=ref([]),busy=ref(false),error=ref(''),query=ref(''),queryDraft=ref('')
 const rows=computed(()=>adminFaqList(serverRows.value))
 const filtered=computed(()=>rows.value.filter(row=>(row.title+' '+row.content).toLowerCase().includes(query.value.trim().toLowerCase())))
-async function load(){if(previewMode){serverRows.value=Array.from({length:12},(_,i)=>({id:'PREVIEW-FAQ'+i,title:['배송 기간은 얼마나 걸리나요?','제품 호환성은 어떻게 확인하나요?','교환 및 반품은 어떻게 신청하나요?','결제 수단을 변경할 수 있나요?'][i%4]+' '+(Math.floor(i/4)+1),content:'화면 확인용 FAQ입니다. 실제 데이터 모드에서 고객 FAQ를 확인하고 수정할 수 있습니다.'}));return}busy.value=true;error.value='';try{serverRows.value=await backendActions.faqs()}catch(e){error.value=e.message}finally{busy.value=false}}
+async function load(){if(previewMode){serverRows.value=adminPreviewSnapshot().faqs;return}busy.value=true;error.value='';try{serverRows.value=await backendActions.faqs()}catch(e){error.value=e.message}finally{busy.value=false}}
 const editor=ref(null),deleting=ref(null),saving=ref(false),writeError=ref(''),notice=ref('')
-function edit(row=null){if(previewMode){notice.value='확인용 데이터입니다. 실제 데이터 모드에서 수정할 수 있습니다.';return}notice.value='';writeError.value='';editor.value=row?{...row,guide:!row.serverId}:{title:'',content:''}}
-function confirmDelete(row){if(previewMode)return;notice.value='';writeError.value='';deleting.value=row}
+function edit(row=null){notice.value='';writeError.value='';editor.value=row?{...row,guide:!row.serverId}:{title:'',content:''}}
+function confirmDelete(row){notice.value='';writeError.value='';deleting.value=row}
 async function save(draft){
  if(saving.value)return
  saving.value=true;writeError.value=''
  try{
   const current=editor.value
-  const saved=current.serverId?await backendActions.updateFaq(current.serverId,draft):await backendActions.createFaq(draft)
+  const saved=previewMode ? applyAdminPreviewAction('saveFaq',[current.serverId,draft]) : current.serverId?await backendActions.updateFaq(current.serverId,draft):await backendActions.createFaq(draft)
   serverRows.value=current.serverId?serverRows.value.map(row=>row.id===current.serverId?saved:row):[saved,...serverRows.value]
   editor.value=null;query.value='';queryDraft.value='';notice.value=current.serverId?'FAQ를 수정했습니다.':'FAQ를 등록했습니다.'
  }catch(e){writeError.value=faqWriteError(e)}finally{saving.value=false}
@@ -29,13 +29,14 @@ async function save(draft){
 async function remove(){
  if(saving.value || !deleting.value?.serverId)return
  saving.value=true;writeError.value=''
- try{await backendActions.deleteFaq(deleting.value.serverId);serverRows.value=serverRows.value.filter(row=>row.id!==deleting.value.serverId);deleting.value=null;notice.value='FAQ를 삭제했습니다.'}
+ try{if(previewMode)applyAdminPreviewAction('removeFaq',[deleting.value.serverId]);else await backendActions.deleteFaq(deleting.value.serverId);serverRows.value=serverRows.value.filter(row=>row.id!==deleting.value.serverId);deleting.value=null;notice.value='FAQ를 삭제했습니다.'}
  catch(e){writeError.value=faqWriteError(e)}finally{saving.value=false}
 }
 function search(){query.value=queryDraft.value.trim();currentPage.value=0}
 const paged=computed(()=>filtered.value.slice(currentPage.value*pageSize,(currentPage.value+1)*pageSize))
 watch(()=>filtered.value.length,()=>{currentPage.value=Math.min(currentPage.value,Math.max(0,Math.ceil(filtered.value.length/pageSize)-1))})
-onMounted(load)
+onMounted(()=>{load();window.addEventListener(adminPreviewEvent,load)})
+onBeforeUnmount(()=>window.removeEventListener(adminPreviewEvent,load))
 </script>
 <template>
  <header class="ops-page-title admin-page-heading"><span class="admin-page-symbol"><AdminIcon name="inquiries"/></span><h1>FAQ 관리</h1></header>

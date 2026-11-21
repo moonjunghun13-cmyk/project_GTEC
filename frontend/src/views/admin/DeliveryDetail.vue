@@ -1,8 +1,8 @@
 <script setup>
-import { computed, reactive, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { admin } from '../../services'
-import {isAdminPreview,adminPreviewSnapshot} from '../../services/adminPreview'
+import {isAdminPreview,adminPreviewSnapshot,adminPreviewEvent} from '../../services/adminPreview'
 const previewMode=isAdminPreview()
 import { useShop } from '../../stores/shop'
 import { money } from '../../utils'
@@ -34,6 +34,8 @@ function reset() {
   error.value = ''
   notice.value = ''
 }
+onMounted(()=>window.addEventListener(adminPreviewEvent,load))
+onBeforeUnmount(()=>window.removeEventListener(adminPreviewEvent,load))
 let request = 0
 async function load() {
   const current = ++request
@@ -57,7 +59,7 @@ async function load() {
 }
 watch(() => route.params.orderId,load,{immediate:true})
 async function save() {
-  if (busy.value || locked.value || previewMode) return
+  if (busy.value || locked.value) return
   busy.value = true
   error.value = ''
   notice.value = ''
@@ -73,7 +75,7 @@ async function save() {
 <template>
   <StatePanel v-if="loading || loadError" :busy="loading" :error="loadError" @retry="load"/>
   <section v-else-if="order" class="delivery-page">
-    <header class="delivery-title admin-page-heading"><div class="admin-page-label"><span class="admin-page-symbol"><AdminIcon name="truck"/></span><h1>배송 상세</h1></div><div class="actions"><RouterLink class="button" to="/admin/shipping">← 목록으로</RouterLink><button class="button gold" :disabled="busy || locked || previewMode" @click="save">배송 정보 저장</button></div></header>
+    <header class="delivery-title admin-page-heading"><div class="admin-page-label"><span class="admin-page-symbol"><AdminIcon name="truck"/></span><h1>배송 상세</h1></div><div class="actions"><RouterLink class="button" to="/admin/shipping">← 목록으로</RouterLink><button class="button gold" :disabled="busy || locked" @click="save">배송 정보 저장</button></div></header>
     <div class="delivery-summary">
       <div><AdminIcon name="orders"/><span>주문번호<strong>{{ order.orderId }}</strong></span></div>
       <div><AdminIcon name="truck"/><span>배송번호<strong>{{ order.shipmentId || '미배정' }}</strong></span></div>
@@ -99,14 +101,14 @@ async function save() {
         </article>
         <article class="delivery-panel"><h2><AdminIcon name="products"/>택배 정보 관리</h2>
           <form class="stack" @submit.prevent="save">
-            <fieldset :disabled="busy || locked || previewMode" class="delivery-form">
+            <fieldset :disabled="busy || locked" class="delivery-form">
               <label>택배사<select v-model="form.carrier"><option value="">택배사 선택</option><option>CJ대한통운</option><option>한진택배</option><option>롯데택배</option><option>우체국택배</option><option>로젠택배</option><option>기타</option></select></label>
               <label>운송장번호<input v-model.trim="form.tracking" maxlength="40" placeholder="운송장 번호를 입력하세요"></label>
               <label>배송 상태<select v-model="form.status"><option v-for="(step,index) in steps" :key="step" :disabled="index < currentStep || index > currentStep+1">{{ step }}</option><option v-if="locked">{{ order.status }}</option></select></label>
               <label>발송예정일<input v-model="form.dispatchDate" type="date"></label>
               <label>관리 메모<textarea v-model="form.memo" rows="3" maxlength="1000" placeholder="포장 및 발송 관련 메모"></textarea></label>
             </fieldset>
-            <div class="delivery-form-actions"><button class="button" type="button" :disabled="busy" @click="reset">입력 초기화</button><button class="button gold" :disabled="busy || locked || previewMode">{{ busy ? '저장 중…' : '배송 정보 저장' }}</button></div>
+            <div class="delivery-form-actions"><button class="button" type="button" :disabled="busy" @click="reset">입력 초기화</button><button class="button gold" :disabled="busy || locked">{{ busy ? '저장 중…' : '배송 정보 저장' }}</button></div>
           </form>
           <p v-if="error" class="error" role="alert">{{ error }}</p><p v-if="notice" class="delivery-success" role="status">{{ notice }}</p>
         </article>

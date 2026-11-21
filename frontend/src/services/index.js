@@ -12,6 +12,7 @@ import { presentProduct } from './catalogPresentation'
 import { productPayload, imageUrlsFor } from './adminProducts'
 import { canShop } from './memberAccess'
 import { createAdminReader } from './adminPaging'
+import {isAdminPreview,applyAdminPreviewAction} from './adminPreview'
 const adminReader = createAdminReader((...args) => api.get(...args))
 const adminOrderCache = new Map()
 
@@ -181,16 +182,18 @@ async function apiSetFavorite(productId,enabled) {
 }
 
 export async function getCustomerInsights() {
-  if (authMode !== 'api') throw new Error('API 인증 모드가 설정되지 않았습니다.')
-  const [summary,repurchase,retention,predictions,training] = await Promise.all([
-    api.get('/api/admin/ai/customers/summary'),
-    api.get('/api/admin/ai/customers/repurchase-summary'),
-    api.get('/api/admin/ai/customers/monthly-retention'),
-    api.get('/api/admin/ai/customers/repurchase-predictions'),
-    api.get('/api/admin/ai/customers/model-training-status'),
-  ])
-  return {summary:summary.data,repurchase:repurchase.data,retention:retention.data,
-    predictions:predictions.data,training:training.data}
+  if(authMode!=='api')throw new Error('API 인증 모드가 설정되지 않았습니다.')
+  const endpoints={summary:'summary',repurchase:'repurchase-summary',retention:'monthly-retention',predictions:'repurchase-predictions'}
+  const entries=Object.entries(endpoints)
+  const responses=await Promise.allSettled(entries.map(([,path])=>api.get('/api/admin/ai/customers/'+path)))
+  const result={errors:{}}
+  responses.forEach((response,index)=>{const key=entries[index][0];if(response.status==='fulfilled')result[key]=response.value.data;else result.errors[key]=response.reason?.message || '분석 데이터를 불러오지 못했습니다.'})
+  if(Object.keys(result.errors).length===entries.length)throw new Error('고객 분석 서버에 연결하지 못했습니다. 잠시 후 다시 시도해 주세요.')
+  return result
+}
+export async function getCustomerModelStatus(){
+  if(authMode!=='api')throw new Error('API 인증 모드가 설정되지 않았습니다.')
+  return (await api.get('/api/admin/ai/customers/model-training-status')).data
 }
 
 export async function refreshCustomerModel() {
@@ -703,3 +706,9 @@ export const admin = {
 }
 
 
+
+// Local dummy IDs stay in the browser; live mode keeps the existing API adapter.
+for(const name of Object.keys(admin)){
+  const original=admin[name]
+  admin[name]=(...args)=>isAdminPreview() ? applyAdminPreviewAction(name,args) : original(...args)
+}

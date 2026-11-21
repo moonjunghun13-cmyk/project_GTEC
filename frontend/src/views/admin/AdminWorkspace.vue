@@ -1,8 +1,8 @@
 <script setup>
-import { computed, nextTick, onBeforeUnmount, reactive, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { admin } from '../../services'
-import { isAdminPreview,adminPreviewSnapshot } from '../../services/adminPreview'
+import { isAdminPreview,adminPreviewSnapshot,applyAdminPreviewAction,adminPreviewEvent } from '../../services/adminPreview'
 import { adminFaq } from '../../services/adminFaq'
 import { useShop } from '../../stores/shop'
 import { money,dateLabel } from '../../utils'
@@ -13,6 +13,7 @@ import StatePanel from '../../components/StatePanel.vue'
 import CustomerAnalysis from './CustomerAnalysis.vue'
 import NoticeManagement from './NoticeManagement.vue'
 import AdminRecordDialog from '../../components/admin/AdminRecordDialog.vue'
+import AdminConfirmDialog from '../../components/admin/AdminConfirmDialog.vue'
 import SentimentRatio from '../../components/admin/SentimentRatio.vue'
 import RecommendationModelPanel from '../../components/admin/RecommendationModelPanel.vue'
 import { backendActions } from '../../services/backendActions'
@@ -50,6 +51,9 @@ const currentPage=ref(0)
 const memberStatusFilter=ref('')
 const refundStatusFilter=ref('')
 const popupRecord=ref(null)
+const pendingConfirmation=ref(null)
+function confirmAdminAction(title,message,confirmText,action,danger=false){pendingConfirmation.value={title,message,confirmText,action,danger}}
+async function runConfirmedAction(){const action=pendingConfirmation.value?.action;pendingConfirmation.value=null;if(action)await action()}
 const dashboardFiltered = computed(() => {
   if (!data.value) return {products:[],orders:[],members:[],reviews:[]}
   const matches = (term, fields) => !term || fields.some(value => String(value ?? '').toLocaleLowerCase().includes(term))
@@ -162,7 +166,7 @@ async function returnToProductList(){
   listPanel.value?.focus({preventScroll:true})
 }
 const detailHeading = ref(null)
-function markRefunded(id){if(!window.confirm('이 기능은 결제 취소를 실행하지 않고 반품을 환불 완료 상태로 기록합니다. 실제 환불이 완료된 경우에만 진행하세요.'))return;mutate(()=>backendActions.markReturnRefunded(id))}
+function markRefunded(id){confirmAdminAction('환불 완료 상태 기록','결제 취소를 실행하지 않고 환불 완료 상태로 기록합니다. 실제 데이터 모드에서는 실제 환불이 완료된 경우에만 진행하세요.','완료 상태 기록',()=>mutate(()=>previewMode ? applyAdminPreviewAction('markReturnRefunded',[id]) : backendActions.markReturnRefunded(id)))}
 const actor = () => store.user?.userId
 const pending = row => apiMode && page.value === 'refunds'
   ? row.returnStatus === 'REQUESTED'
@@ -320,6 +324,9 @@ async function openRecord(row) {
   detailPanel.value?.scrollTo({top:0})
   if (window.matchMedia('(max-width:1000px)').matches) detailHeading.value?.focus()
 }
+function onDummyGenerated(event){if(previewMode && !event.detail?.error)load()}
+onMounted(()=>window.addEventListener(adminPreviewEvent,onDummyGenerated))
+onBeforeUnmount(()=>window.removeEventListener(adminPreviewEvent,onDummyGenerated))
 let loadSequence=0,loadController
 onBeforeUnmount(()=>{loadSequence++;loadController?.abort()})
 function snapshotOptions(force=false){return {section:page.value,page:currentPage.value,size:page.value==='dashboard' ? previewSize : pageSize.value,status:page.value==='orders' ? orderStatusFilter.value : '',sort:recordSort.value,dashboardPages:{...dashboardPages},force,signal:loadController?.signal}}
@@ -374,7 +381,6 @@ function select(row) {
   if (page.value === 'inquiries') form.answer = row.answer ?? ''
 }
 async function mutate(action, close = false) {
-  if(previewMode){error.value='확인용 데이터입니다. 실제 데이터 모드에서 수정할 수 있습니다.';return}
   if (busy.value) return
   busy.value = true
   error.value = ''
@@ -388,8 +394,7 @@ async function mutate(action, close = false) {
       if(page.value==='products') {
         const current=data.value.products.find(row=>row.productId===form.productId)
         if(current)Object.assign(form,JSON.parse(JSON.stringify(current)))
-        const catalog=await import('../../services').then(({shop})=>shop.catalog())
-        store.products=catalog.products
+        if(!previewMode){const catalog=await import('../../services').then(({shop})=>shop.catalog());store.products=catalog.products}
       }
       analysisRevision.value++
       if(selected.value && selected.value!=='new' && !rows.value.some(row=>row[keyField.value]===selected.value))selected.value=''
@@ -402,10 +407,8 @@ function remove() {
   mutate(() => admin.removeNotice(actor(),detail.value.noticeId),true)
 }
 function toggleSelling() {
-  const product=detail.value
-  const selling=product.selling===false
-  if(!window.confirm(selling ? '이 상품의 판매를 재개할까요?' : '이 상품의 판매를 중지할까요? 상품 정보는 유지됩니다.'))return
-  mutate(()=>admin.setProductSelling(actor(),product.productId,selling))
+ const product=detail.value,selling=product.selling===false
+ confirmAdminAction(selling ? '상품 판매 재개' : '상품 판매 중지',`${product.name}\n${selling ? '이 상품의 판매를 재개할까요?' : '상품 정보는 유지하고 판매를 중지할까요?'}`,selling ? '판매 재개' : '판매 중지',()=>mutate(()=>admin.setProductSelling(actor(),product.productId,selling)),!selling)
 }
 async function refreshReviews(){
   try{data.value=await admin.snapshot(actor(),snapshotOptions(true))}catch(e){error.value=e.message}
@@ -413,7 +416,7 @@ async function refreshReviews(){
 async function savePopupMember(fields){
   const row=popupRecord.value
   if(!row)return
-  if(previewMode){Object.assign(row,fields);popupRecord.value=null;notice.value='확인용 회원 정보를 저장했습니다.';return}
+  if(previewMode){try{applyAdminPreviewAction('memberUpdate',[row.userId,fields]);data.value=adminPreviewSnapshot();popupRecord.value=null;notice.value='더미 회원 정보를 저장했습니다.'}catch(e){error.value=e.message}return}
   await mutate(async()=>{
     if(fields.role!==row.role && row.userId!==store.user.userId)await backendActions.memberRole(row.userId,fields.role)
     if(fields.role!=='ADMIN' && fields.status!==row.status)await admin.memberStatus(actor(),row.userId,fields.status)
@@ -422,10 +425,15 @@ async function savePopupMember(fields){
 }
 async function popupReviewAction(remove=false){
   const row=popupRecord.value
-  if(!row || previewMode)return
-  if(remove && !window.confirm('이 리뷰를 삭제할까요?'))return
+  if(!row)return
+  if(remove){confirmAdminAction('리뷰 삭제','선택한 리뷰를 삭제할까요?','리뷰 삭제',async()=>{await mutate(()=>admin.reviewVisibility(actor(),row.reviewId,true));if(!error.value)popupRecord.value=null},true);return}
+  if(previewMode && !remove)return
   await mutate(()=>remove ? admin.reviewVisibility(actor(),row.reviewId,true) : backendActions.analyzeReview(row.reviewId))
   if(!error.value)popupRecord.value=remove ? null : data.value.reviews.find(r=>r.reviewId===row.reviewId) ?? null
+}
+function savePreviewSentiment(label){
+ if(!previewMode || !popupRecord.value)return
+ try{applyAdminPreviewAction('reviewSentiment',[popupRecord.value.reviewId,label]);data.value=adminPreviewSnapshot();popupRecord.value=null;notice.value='더미 리뷰의 감정 표시를 저장했습니다.'}catch(e){error.value=e.message}
 }
 </script>
 <template>
@@ -441,7 +449,7 @@ async function popupReviewAction(remove=false){
   <header v-else class="ops-page-title admin-page-heading">
     <span class="admin-page-symbol"><AdminIcon :name="pageIcon"/></span>
     <h1>{{ route.meta.title }}</h1>
-    <div v-if="page==='customers'" class="customer-title-actions"><button class="button" :disabled="previewMode || !customerAnalysis || customerAnalysis.refreshing || customerAnalysis.insightBusy" @click="customerAnalysis?.refreshModel()">{{ customerAnalysis?.refreshing ? '모델 최신화 중…' : '모델 최신화' }}</button></div>
+    <div v-if="page==='customers'" class="customer-title-actions"><button class="button" :disabled="!customerAnalysis || customerAnalysis.refreshing || customerAnalysis.insightBusy" @click="customerAnalysis?.refreshModel()">{{ customerAnalysis?.refreshing ? '모델 최신화 중…' : '모델 최신화' }}</button></div>
   </header>
   <nav v-if="isShipping" class="shipping-management-tabs" aria-label="배송 관리 메뉴">
     <RouterLink :to="shippingPath" :aria-current="page === 'orders' ? 'page' : undefined"><AdminIcon name="shipping"/>배송 목록</RouterLink>
@@ -562,9 +570,9 @@ async function popupReviewAction(remove=false){
               <label class="product-description-field">상품 설명<textarea v-model="form.description" rows="4" :required="apiMode"></textarea></label>
               <label class="check"><input v-model="form.selling" type="checkbox"> 판매 중</label>
             </div>
-            <ProductImagesEditor :key="selected" :model="form" :disabled="busy || previewMode" @busy="readingImage=$event"/>
+            <ProductImagesEditor :key="selected" :model="form" :disabled="busy" @busy="readingImage=$event"/>
             <details v-if="detail?.details" class="product-detail-preview"><summary>기존 상세 스펙과 안내 확인</summary><dl><template v-for="[label,value] in detail.details.specifications" :key="label"><dt>{{ label }}</dt><dd>{{ value }}</dd></template></dl><p>{{ detail.details.description }}</p></details>
-            <div class="actions product-editor-actions"><button class="button gold" :disabled="busy || readingImage">저장</button><button v-if="detail" type="button" class="button" :class="{'product-stop-selling':detail.selling!==false}" :disabled="busy || previewMode" @click="toggleSelling">{{ detail.selling===false ? '판매 재개' : '판매 중지' }}</button></div>
+            <div class="actions product-editor-actions"><button class="button gold" :disabled="busy || readingImage">저장</button><button v-if="detail" type="button" class="button" :class="{'product-stop-selling':detail.selling!==false}" :disabled="busy" @click="toggleSelling">{{ detail.selling===false ? '판매 재개' : '판매 중지' }}</button></div>
           </form>
           <template v-else-if="detail && ['orders','refunds'].includes(page)">
             <dl class="ops-detail-facts">
@@ -581,17 +589,17 @@ async function popupReviewAction(remove=false){
               <p v-if="detail.requestedAt">요청일 · {{ dateLabel(detail.requestedAt) }}</p>
               <form v-if="pending(detail)" class="stack" @submit.prevent="mutate(() => admin.resolveReturn(actor(),detail.returnId,true,form.refundAmount))">
                 <label>승인할 환불 금액 (원)<input v-model.number="form.refundAmount" type="number" min="1" :max="detail.total ?? undefined" required></label>
-                <div class="actions"><button class="button gold" :disabled="busy || previewMode">반품 승인</button><button type="button" class="button" :disabled="busy || previewMode" @click="mutate(() => admin.resolveReturn(actor(),detail.returnId,false,0))">요청 거절</button></div>
+                <div class="actions"><button class="button gold" :disabled="busy">반품 승인</button><button type="button" class="button" :disabled="busy" @click="mutate(() => admin.resolveReturn(actor(),detail.returnId,false,0))">요청 거절</button></div>
               </form>
-              <button v-else-if="detail.returnStatus === 'APPROVED'" class="button" :disabled="busy || previewMode" @click="markRefunded(detail.returnId)">환불 완료 상태 기록</button><p v-else>반품 요청 상태: {{ recordStatus(detail) }}. 승인 처리는 반품 상태 변경이며 실제 결제 취소는 별도 연결이 필요합니다.</p>
+              <button v-else-if="detail.returnStatus === 'APPROVED'" class="button" :disabled="busy" @click="markRefunded(detail.returnId)">환불 완료 상태 기록</button><p v-else>반품 요청 상태: {{ recordStatus(detail) }}. 승인 처리는 반품 상태 변경이며 실제 결제 취소는 별도 연결이 필요합니다.</p>
             </template>
             <RouterLink class="button gold" :to="{path:'/admin/shipping/'+encodeURIComponent(detail.orderId),query:{p:currentPage,status:orderStatusFilter}}">배송 상세 보기 →</RouterLink>
             <form v-if="page === 'orders' && !pending(detail) && ['결제 완료','배송 준비','배송 중'].includes(detail.status)" class="stack" @submit.prevent="mutate(() => admin.advanceOrder(actor(),detail.orderId,form.tracking,detail.status))">
               <label v-if="detail.status === '배송 준비'">운송장 번호<input v-model="form.tracking" required></label>
-              <button class="button gold" :disabled="busy || previewMode">{{ {'결제 완료':'배송 준비 처리','배송 준비':'발송 처리','배송 중':'배송 완료 처리'}[detail.status] }}</button>
+              <button class="button gold" :disabled="busy">{{ {'결제 완료':'배송 준비 처리','배송 준비':'발송 처리','배송 중':'배송 완료 처리'}[detail.status] }}</button>
             </form>
-            <div v-if="page === 'refunds' && !apiMode && pending(detail)" class="actions"><button class="button gold" :disabled="busy || previewMode" @click="mutate(() => admin.resolveOrder(actor(),detail.orderId,true))">요청 승인</button><button class="button" :disabled="busy || previewMode" @click="mutate(() => admin.resolveOrder(actor(),detail.orderId,false))">요청 거절</button></div>
-            <button v-if="page === 'refunds' && !apiMode && detail.status === '환불 대기'" class="button gold" :disabled="busy || previewMode" @click="mutate(() => admin.refund(actor(),detail.orderId))">Mock 환불 완료 처리</button>
+            <div v-if="page === 'refunds' && !apiMode && pending(detail)" class="actions"><button class="button gold" :disabled="busy" @click="mutate(() => admin.resolveOrder(actor(),detail.orderId,true))">요청 승인</button><button class="button" :disabled="busy" @click="mutate(() => admin.resolveOrder(actor(),detail.orderId,false))">요청 거절</button></div>
+            <button v-if="page === 'refunds' && !apiMode && detail.status === '환불 대기'" class="button gold" :disabled="busy" @click="mutate(() => admin.refund(actor(),detail.orderId))">Mock 환불 완료 처리</button>
             <p v-if="detail.refundedAt">환불 완료일 {{ dateLabel(detail.refundedAt) }}</p>
           </template>
           <template v-else-if="detail && page === 'members'">
@@ -603,20 +611,21 @@ async function popupReviewAction(remove=false){
             </dl>
             <form class="stack" @submit.prevent="mutate(() => backendActions.memberRole(detail.userId,form.role))"><label>회원 권한<select v-model="form.role"><option value="USER">일반 회원</option><option value="ADMIN">관리자</option></select></label><button class="button" :disabled="busy || detail.userId===store.user.userId">권한 저장</button><p v-if="detail.userId===store.user.userId" class="muted">현재 로그인한 계정의 권한은 이 화면에서 변경할 수 없습니다.</p></form>
             <form v-if="detail.role !== 'ADMIN'" class="stack" @submit.prevent="mutate(() => admin.memberStatus(actor(),detail.userId,form.status))">
-              <label>계정 상태<select v-model="form.status"><option>정상</option><option v-if="!apiMode">정지</option><option>비활성</option><option v-if="apiMode">강퇴</option></select></label><button class="button gold" :disabled="busy || previewMode">저장</button>
+              <label>계정 상태<select v-model="form.status"><option>정상</option><option v-if="!apiMode">정지</option><option>비활성</option><option v-if="apiMode">강퇴</option></select></label><button class="button gold" :disabled="busy">저장</button>
             </form>
           </template>
           <template v-else-if="detail && page === 'reviews'">
             <div class="ops-review-meta"><strong>{{ productName(detail.productId) }}</strong><span v-if="recordStatus(detail)" class="ops-status" :data-status="recordStatus(detail)">{{ recordStatus(detail) }}</span></div>
             <p v-if="detailSentimentScore !== null">분석 신뢰도 {{ (detailSentimentScore * 100).toFixed(1) }}%</p>
-            <blockquote class="ops-body ops-review-body">{{ detail.body }}</blockquote><button class="button" :disabled="busy || previewMode" @click="mutate(() => backendActions.analyzeReview(detail.reviewId))">이 리뷰 AI 분석</button>
-            <button class="button" :disabled="busy || previewMode" @click="mutate(() => admin.reviewVisibility(actor(),detail.reviewId,apiMode ? true : !detail.hidden))">{{ apiMode ? '리뷰 삭제' : detail.hidden ? '다시 공개' : '리뷰 숨기기' }}</button></template>
-          <template v-else-if="detail && page === 'inquiries'"><p class="ops-body">{{ detail.body }}</p><form class="stack" @submit.prevent="mutate(() => admin.answer(actor(),detail.inquiryId,form.answer))"><label>관리자 답변<textarea v-model="form.answer" rows="5" required></textarea></label><button class="button gold" :disabled="busy || previewMode">답변 저장</button></form></template>
-          <form v-else-if="page === 'notices' && selected" class="stack" @submit.prevent="mutate(() => admin.saveNotice(actor(),form),selected === 'new')"><label>제목<input v-model="form.title" required></label><label>내용<textarea v-model="form.body" rows="6" required></textarea></label><div class="actions"><button class="button gold" :disabled="busy || previewMode">저장</button><button v-if="detail" class="button" type="button" :disabled="busy || previewMode" @click="remove">공지 삭제</button></div></form>
+            <blockquote class="ops-body ops-review-body">{{ detail.body }}</blockquote><button class="button" :disabled="busy" @click="mutate(() => backendActions.analyzeReview(detail.reviewId))">이 리뷰 AI 분석</button>
+            <button class="button" :disabled="busy" @click="mutate(() => admin.reviewVisibility(actor(),detail.reviewId,apiMode ? true : !detail.hidden))">{{ apiMode ? '리뷰 삭제' : detail.hidden ? '다시 공개' : '리뷰 숨기기' }}</button></template>
+          <template v-else-if="detail && page === 'inquiries'"><p class="ops-body">{{ detail.body }}</p><form class="stack" @submit.prevent="mutate(() => admin.answer(actor(),detail.inquiryId,form.answer))"><label>관리자 답변<textarea v-model="form.answer" rows="5" required></textarea></label><button class="button gold" :disabled="busy">답변 저장</button></form></template>
+          <form v-else-if="page === 'notices' && selected" class="stack" @submit.prevent="mutate(() => admin.saveNotice(actor(),form),selected === 'new')"><label>제목<input v-model="form.title" required></label><label>내용<textarea v-model="form.body" rows="6" required></textarea></label><div class="actions"><button class="button gold" :disabled="busy">저장</button><button v-if="detail" class="button" type="button" :disabled="busy" @click="remove">공지 삭제</button></div></form>
 
         </article>
       </div>
     </template>
   </template>
-  <AdminRecordDialog v-if="popupRecord" :kind="page" :row="popupRecord" :busy="busy" :error="error" :preview="previewMode" :self-id="store.user?.userId" @close="popupRecord=null;error=''" @save-member="savePopupMember" @analyze="popupReviewAction()" @delete-review="popupReviewAction(true)"/>
+  <AdminRecordDialog v-if="popupRecord" :kind="page" :row="popupRecord" :busy="busy" :error="error" :preview="previewMode" :self-id="store.user?.userId" @close="popupRecord=null;error=''" @save-member="savePopupMember" @analyze="popupReviewAction()" @delete-review="popupReviewAction(true)" @set-sentiment="savePreviewSentiment"/>
+  <AdminConfirmDialog v-if="pendingConfirmation" :title="pendingConfirmation.title" :message="pendingConfirmation.message" :confirm-text="pendingConfirmation.confirmText" :danger="pendingConfirmation.danger" @cancel="pendingConfirmation=null" @confirm="runConfirmedAction"/>
 </template>
