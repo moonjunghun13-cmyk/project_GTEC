@@ -1,0 +1,122 @@
+name: gtec
+
+x-ai-common: &ai-common
+  image: gtec-ai:local
+  build:
+    context: ./backend/ai-services
+  networks:
+    - services
+  depends_on:
+    db:
+      condition: service_healthy
+
+x-ai-env: &ai-env
+  DATABASE_URL: postgresql+psycopg2://db:5432/gtec
+  USER_NAME: "${USER_NAME:?Set USER_NAME}"
+  PASSWORD: "${PASSWORD:?Set PASSWORD}"
+
+services:
+  web:
+    build:
+      context: ./frontend
+      args:
+        VITE_TOSS_WIDGET_CLIENT_KEY: "${VITE_TOSS_WIDGET_CLIENT_KEY:-}"
+    ports:
+      - "127.0.0.1:5173:80"
+    networks:
+      - web
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/gtec
+      USER_NAME: "${USER_NAME:?Set USER_NAME}"
+      PASSWORD: "${PASSWORD:?Set PASSWORD}"
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: "6379"
+      JWT_SECRET: "${JWT_SECRET:?Set JWT_SECRET}"
+      GOOGLE_CLIENT_ID: "${GOOGLE_CLIENT_ID:?Set GOOGLE_CLIENT_ID}"
+      GOOGLE_CLIENT_SECRET: "${GOOGLE_CLIENT_SECRET:?Set GOOGLE_CLIENT_SECRET}"
+      KAKAO_CLIENT_ID: "${KAKAO_CLIENT_ID:?Set KAKAO_CLIENT_ID}"
+      KAKAO_CLIENT_SECRET: "${KAKAO_CLIENT_SECRET:?Set KAKAO_CLIENT_SECRET}"
+      NAVER_CLIENT_ID: "${NAVER_CLIENT_ID:?Set NAVER_CLIENT_ID}"
+      NAVER_CLIENT_SECRET: "${NAVER_CLIENT_SECRET:?Set NAVER_CLIENT_SECRET}"
+      TOSS_SECRET_KEY: "${TOSS_SECRET_KEY:?Set TOSS_SECRET_KEY}"
+      AI_INTERNAL_KEY: "${AI_INTERNAL_KEY:-}"
+      AI_CUSTOMER_URL: http://customer-ai:8001
+      AI_RECOMMEND_URL: http://recommend-ai:8002
+      AI_REVIEW_URL: http://review-ai:8003
+      APP_FRONTEND_URL: http://localhost:5173
+      SERVER_FORWARD_HEADERS_STRATEGY: framework
+    networks:
+      - web
+      - services
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  customer-ai:
+    <<: *ai-common
+    environment: *ai-env
+    command: ["main:app", "--host", "0.0.0.0", "--port", "8001"]
+    volumes:
+      - ./backend/ai-services/customer_analyze:/app
+
+  recommend-ai:
+    <<: *ai-common
+    environment:
+      <<: *ai-env
+      AI_INTERNAL_KEY: "${AI_INTERNAL_KEY:-}"
+      AI_DEMO_SEED_ENABLED: "${AI_DEMO_SEED_ENABLED:-false}"
+    command: ["main:app", "--host", "0.0.0.0", "--port", "8002"]
+    volumes:
+      - ./backend/ai-services/recommend:/app
+
+  review-ai:
+    <<: *ai-common
+    environment: *ai-env
+    command: ["main:app", "--host", "0.0.0.0", "--port", "8003"]
+    volumes:
+      - ./backend/ai-services/review_analyze:/app
+
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_DB: gtec
+      POSTGRES_USER: "${USER_NAME:?Set USER_NAME}"
+      POSTGRES_PASSWORD: "${PASSWORD:?Set PASSWORD}"
+    volumes:
+      - postgres-data:/var/lib/postgresql
+    networks:
+      - services
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    networks:
+      - services
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+networks:
+  web:
+  services:
+
+volumes:
+  postgres-data:
+  redis-data:

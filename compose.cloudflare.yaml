@@ -1,0 +1,9 @@
+services:
+  backend:
+    environment:
+      APP_FRONTEND_URL: "${PUBLIC_APP_URL:?Set PUBLIC_APP_URL}"
+      SPRING_APPLICATION_JSON: '{"app":{"cookie-secure":true}}'
+
+  web:
+    volumes:
+      - ./frontend/nginx.cloudflare.conf:/etc/nginx/conf.d/default.conf:ro

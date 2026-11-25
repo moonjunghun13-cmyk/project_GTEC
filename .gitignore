@@ -1,0 +1,14 @@
+.env
+.env.*
+!.env.example
+/frontend/node_modules/
+/frontend/dist/
+/backend/.gradle/
+/backend/.idea/
+/backend/build/
+.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+/backend/ai-services/recommend/generated_demo/
+/backend/ai-services/recommend/generated_demo_before_catalog_update/

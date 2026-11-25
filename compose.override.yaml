@@ -1,0 +1,23 @@
+services:
+  customer-ai:
+    working_dir: /opt/gtec/backend/ai-services/customer_analyze
+    volumes: !override
+      - ./backend/ai-services/customer_analyze:/opt/gtec/backend/ai-services/customer_analyze
+
+  recommend-ai:
+    working_dir: /opt/gtec/backend/ai-services/recommend
+    volumes: !override
+      - ./backend/ai-services/recommend:/opt/gtec/backend/ai-services/recommend
+      - type: volume
+        source: demo-batches
+        target: /opt/gtec/backend/ai-services/recommend/generated_demo
+        volume:
+          nocopy: true
+
+  review-ai:
+    working_dir: /opt/gtec/backend/ai-services/review_analyze
+    volumes: !override
+      - ./backend/ai-services/review_analyze:/opt/gtec/backend/ai-services/review_analyze
+
+volumes:
+  demo-batches:
