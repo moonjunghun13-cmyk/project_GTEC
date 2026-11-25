@@ -1,0 +1,126 @@
+/* Member search never creates implicit columns or clips its confirmation button. */
+:root[data-theme] .admin-layout.admin-management .admin-content .toolbar-members{grid-template-columns:minmax(0,520px) 155px 155px;max-width:100%;width:100%;gap:12px}
+.admin-layout.admin-management .toolbar-members>.ops-search-form{display:grid;grid-template-columns:minmax(0,1fr) auto;min-width:0;width:100%;max-width:100%;align-items:end}
+.admin-layout.admin-management .toolbar-members .ops-search-form>.ops-search-label{grid-column:1;min-width:0;width:auto;max-width:none}
+.admin-layout.admin-management .toolbar-members .ops-search-form>.button{grid-column:2;width:auto;min-width:70px;flex:none;margin:0}
+.admin-layout.admin-management .toolbar-members .ops-search-input{width:100%;min-width:0;height:46px}
+.admin-layout.admin-management .toolbar-members .ops-search-input input{height:44px;min-height:44px;min-width:0;width:100%}
+:root[data-theme] .admin-layout.admin-management .admin-content .toolbar-refunds{grid-template-columns:180px 170px minmax(0,600px);justify-content:start}
+.admin-layout.admin-management .ops-member-row{display:flex;align-items:center;gap:18px;padding:22px!important;min-height:108px!important}
+.admin-layout.admin-management .ops-member-row .ops-row-copy{flex:1;min-width:0;gap:8px}
+.admin-layout.admin-management .ops-member-row .ops-row-copy>strong{font-size:23px;line-height:1.4;font-weight:750;color:#24364c}
+.admin-layout.admin-management .ops-member-row .ops-row-copy>span{font-size:17px;line-height:1.5}
+.member-list-avatar{display:grid;place-items:center;width:52px;height:52px;flex:none;border-radius:15px;background:#edf1fb;color:#5874aa;font-size:23px;font-weight:750}
+.admin-layout.admin-management .ops-member-row .ops-status{font-size:17px;padding:8px 13px}
+:root[data-theme] .admin-layout .ops-status[data-status='긍정'],:root[data-theme] .admin-layout .board-status[data-status='긍정']{background:#e2f4e9;color:#168354;border:1px solid #c2e8d1;font-weight:750}
+:root[data-theme] .admin-layout .ops-status[data-status='부정'],:root[data-theme] .admin-layout .board-status[data-status='부정']{background:#ffedeb;color:#c74443;border:1px solid #f5c9c5;font-weight:750}
+.admin-layout.admin-management .ops-list .ops-status[data-status='긍정'],.admin-layout.admin-management .ops-list .ops-status[data-status='부정']{font-size:18px;padding:8px 14px}
+.admin-layout.admin-management .preview-review-summary{display:block;border:1px solid #dce3ec;border-radius:12px;background:#fff;padding:20px 24px}
+.preview-review-summary>h2{font-size:22px;margin:0 0 16px}
+.admin-layout.admin-management .sentiment-overview{padding:20px 24px;border-radius:12px}
+.admin-layout.admin-management .sentiment-overview h2{font-size:23px}
+.admin-layout.admin-management .sentiment-overview .sentiment-summary-total,.admin-layout.admin-management .sentiment-overview .sentiment-summary-note{font-size:16px;line-height:1.6}
+/* Shipping detail is a reading page rather than a dense control panel. */
+.admin-layout.admin-management .admin-content:has(.delivery-page){display:block;overflow:auto;padding:22px 26px}
+.admin-layout .delivery-page .delivery-title h1{font-size:32px}
+.admin-layout .delivery-page .delivery-summary{padding:20px 14px;margin-bottom:22px;gap:10px;border-radius:12px}
+.admin-layout .delivery-page .delivery-summary span{font-size:16px;color:#738297}
+.admin-layout .delivery-page .delivery-summary strong{font-size:19px;line-height:1.5;margin-top:8px;color:#24364c}
+.admin-layout .delivery-page .delivery-summary svg{width:30px;height:30px}
+.admin-layout .delivery-page .delivery-columns{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(380px,1fr);gap:22px;min-height:0;height:auto;flex:none}
+.admin-layout .delivery-page .delivery-columns>div{gap:22px;overflow:visible}
+.admin-layout .delivery-page .delivery-panel{padding:24px;border-radius:12px}
+.admin-layout .delivery-page .delivery-panel h2{font-size:23px;padding-bottom:16px;margin-bottom:18px;gap:10px}
+.admin-layout .delivery-page .delivery-table table{font-size:18px}
+.admin-layout .delivery-page .delivery-table :is(th,td){padding:16px 10px;line-height:1.55}
+.admin-layout .delivery-page .delivery-table thead{font-size:15px;color:#718096}
+.admin-layout .delivery-page .delivery-table img{width:88px;height:88px;flex:none;margin-right:8px}
+.admin-layout .delivery-page .delivery-totals{padding:18px;gap:12px;margin-top:20px}
+.admin-layout .delivery-page .delivery-totals span{font-size:16px;padding:10px}
+.admin-layout .delivery-page .delivery-totals strong{font-size:24px;line-height:1.4;margin-top:9px}
+.admin-layout .delivery-page .delivery-totals span:last-child{background:#263b58}
+.admin-layout .delivery-page .delivery-fields>div{font-size:18px;grid-template-columns:120px minmax(0,1fr);line-height:1.6}
+.admin-layout .delivery-page .delivery-fields :is(dt,dd){padding:12px}
+.admin-layout .delivery-page .delivery-form{gap:15px}
+.admin-layout .delivery-page .delivery-form label{grid-template-columns:110px minmax(0,1fr);font-size:17px;gap:12px}
+.admin-layout .delivery-page .delivery-form :is(input,select,textarea){font-size:18px;min-height:48px}
+.admin-layout .delivery-page .delivery-steps{margin:12px 0 24px}
+.admin-layout .delivery-page .delivery-steps li{font-size:16px;gap:12px}
+.admin-layout .delivery-page .delivery-steps span{width:38px;height:38px;font-size:16px}
+.admin-layout .delivery-page .delivery-steps li:not(:last-child)::after{top:18px;left:calc(50% + 20px);width:calc(100% - 40px)}
+.admin-layout .delivery-page .delivery-history li{font-size:16px;padding:14px 4px;line-height:1.6}
+.admin-layout .delivery-page :is(.delivery-note,.delivery-alert,.delivery-success){font-size:16px;line-height:1.6;padding:14px 18px}
+/* Customer charts share a clean blue / teal visual system and reveal once on scroll. */
+.admin-layout.admin-management .customer-analysis{gap:22px}
+.admin-layout.admin-management .customer-analysis .customer-charts{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:22px;align-items:stretch}
+.admin-layout.admin-management .customer-analysis .customer-charts>article{min-height:450px;padding:26px;border-radius:16px;border-color:#e2e8f1;box-shadow:0 4px 20px #31446504;background:#fff}
+.admin-layout.admin-management .customer-analysis .customer-charts header{align-items:center;margin-bottom:20px}
+.admin-layout.admin-management .customer-analysis .customer-charts h2{font-size:22px;letter-spacing:-.4px}
+.admin-layout.admin-management .customer-analysis .customer-charts header svg{color:#637eed;background:#eff2ff;border-radius:8px;padding:5px;width:32px;height:32px}
+.admin-layout.admin-management .customer-analysis .customer-charts .admin-chart{height:330px;min-height:330px;margin-top:auto}
+.admin-layout.admin-management .customer-analysis .customer-metrics article{border-radius:15px;border-color:#e2e8f1;box-shadow:none}
+.admin-layout.admin-management .customer-analysis .customer-metrics article:first-child{background:#263d61}
+.customer-analysis .reveal-pending{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .65s cubic-bezier(.2,.75,.25,1)}
+.customer-analysis .reveal-pending.is-visible{opacity:1;transform:translateY(0)}
+@media(prefers-reduced-motion:reduce){.customer-analysis .reveal-pending{opacity:1;transform:none;transition:none}}
+@media(max-width:1200px){.admin-layout .delivery-page .delivery-columns{grid-template-columns:minmax(0,1fr)}.admin-layout.admin-management .customer-analysis .customer-charts{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:850px){:root[data-theme] .admin-layout.admin-management .admin-content .toolbar-members{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-layout.admin-management .toolbar-members>.ops-search-form{grid-column:1/-1;grid-row:1}.admin-layout.admin-management .toolbar-members>label:nth-of-type(1){grid-column:1;grid-row:2}.admin-layout.admin-management .toolbar-members>label:nth-of-type(2){grid-column:2;grid-row:2}:root[data-theme] .admin-layout.admin-management .admin-content .toolbar-refunds{grid-template-columns:repeat(2,minmax(0,1fr))}.toolbar-refunds .ops-search-form{grid-column:1/-1}}
+@media(max-width:600px){.admin-layout .delivery-page .delivery-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-layout .delivery-page .delivery-panel{padding:18px}.admin-layout .delivery-page .delivery-form label{grid-template-columns:1fr}.admin-layout .delivery-page .delivery-totals{grid-template-columns:1fr}.admin-layout .delivery-page .delivery-totals strong{font-size:24px}.admin-layout .delivery-page .delivery-fields>div{grid-template-columns:90px minmax(0,1fr);font-size:16px}.admin-layout .delivery-page .delivery-table table{font-size:16px}.admin-layout .delivery-page .delivery-table img{width:60px;height:60px}.admin-layout.admin-management .customer-analysis .customer-charts>article{padding:18px}.admin-layout.admin-management .ops-member-row{padding:18px!important;gap:12px}.admin-layout.admin-management .ops-member-row .ops-row-copy>strong{font-size:21px}.admin-layout.admin-management .ops-member-row .ops-row-copy>span{font-size:15px}}
+
+/* Search fills the row remaining beside the filters and action button. */
+:root[data-theme] .admin-layout.admin-management .admin-content .ops-toolbar.toolbar-members{grid-template-columns:155px 155px minmax(0,1fr);justify-content:start}
+:root[data-theme] .admin-layout.admin-management .admin-content .ops-toolbar.toolbar-orders{grid-template-columns:170px 170px minmax(0,1fr);justify-content:start}
+:root[data-theme] .admin-layout.admin-management .admin-content .ops-toolbar.toolbar-reviews{grid-template-columns:150px 160px minmax(0,1fr);justify-content:start}
+:root[data-theme] .admin-layout.admin-management .admin-content .ops-toolbar.toolbar-refunds{grid-template-columns:180px 170px minmax(0,1fr);justify-content:start}
+:root[data-theme] .admin-layout.admin-management .admin-content .ops-toolbar.toolbar-products{grid-template-columns:145px 145px 145px minmax(0,1fr) auto;justify-content:start}
+.admin-layout.admin-management .ops-toolbar .ops-search-form{width:100%;max-width:none;min-width:0;grid-template-columns:minmax(0,1fr) 72px;gap:8px}
+.admin-layout.admin-management .ops-toolbar .ops-search-form>.ops-search-label{grid-column:1;min-width:0;max-width:none}
+.admin-layout.admin-management .ops-toolbar .ops-search-form>.button{grid-column:2;min-width:0;width:72px;padding-inline:10px;margin:0}
+.admin-layout.admin-management .notice-toolbar form,.admin-layout.admin-management .faq-search-group{width:100%;max-width:none;flex:1 1 auto;min-width:0}
+.admin-layout.admin-management .notice-toolbar form>button,.admin-layout.admin-management .faq-search-group>button{width:72px;min-width:72px;padding-inline:10px}
+@media(max-width:1100px){:root[data-theme] .admin-layout.admin-management .admin-content .ops-toolbar:is(.toolbar-orders,.toolbar-reviews,.toolbar-refunds,.toolbar-products){display:flex;flex-wrap:wrap;align-items:end}.admin-layout.admin-management .ops-toolbar:is(.toolbar-orders,.toolbar-reviews,.toolbar-refunds,.toolbar-products)>label{width:150px;flex:none}.admin-layout.admin-management .ops-toolbar .ops-search-form{flex:1 1 320px}}
+@media(max-width:850px){:root[data-theme] .admin-layout.admin-management .admin-content .ops-toolbar.toolbar-members{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-layout.admin-management .toolbar-members>.ops-search-form{grid-column:1/-1;grid-row:1;max-width:none}}
+@media(max-width:600px){.admin-layout.admin-management .ops-toolbar .ops-search-form{width:100%;max-width:none;flex-basis:100%}.admin-layout.admin-management .notice-toolbar form,.admin-layout.admin-management .faq-search-group{width:100%;flex-basis:100%}}
+
+.admin-layout.admin-management .admin-content>.delivery-page{display:block;flex:none;height:auto;max-height:none;overflow:visible;width:100%}
+.admin-layout.admin-management .admin-content>.customer-analysis{overflow:visible}
+
+.admin-layout.admin-management .customer-analysis .customer-charts .admin-chart{flex:1;margin-top:0}
+
+/* Filters consistently precede the wide search field. */
+.admin-layout.admin-management .toolbar-members>label:nth-of-type(1){grid-column:1;grid-row:1}
+.admin-layout.admin-management .toolbar-members>label:nth-of-type(2){grid-column:2;grid-row:1}
+.admin-layout.admin-management .toolbar-members>.ops-search-form{grid-column:3;grid-row:1}
+@media(max-width:850px){
+ .admin-layout.admin-management .toolbar-members>label:nth-of-type(1){grid-column:1;grid-row:1}
+ .admin-layout.admin-management .toolbar-members>label:nth-of-type(2){grid-column:2;grid-row:1}
+ .admin-layout.admin-management .toolbar-members>.ops-search-form{grid-column:1/-1;grid-row:2}
+}
+
+/* Pair the overview cards, then use the full row for editing and history. */
+.admin-layout .delivery-page .delivery-columns.delivery-detail-grid {
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ grid-template-areas:"items recipient" "shipping shipping" "progress progress" "links links";
+ gap:18px;align-items:stretch;
+}
+.delivery-detail-grid .delivery-items-panel{grid-area:items}
+.delivery-detail-grid .delivery-recipient-panel{grid-area:recipient}
+.delivery-detail-grid .delivery-shipping-panel{grid-area:shipping}
+.delivery-detail-grid .delivery-progress-panel{grid-area:progress}
+.delivery-detail-grid .delivery-links-panel{grid-area:links}
+.admin-layout .delivery-detail-grid .delivery-form{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 28px}
+.delivery-detail-grid .delivery-form label:last-child{grid-column:1/-1}
+.admin-layout .delivery-detail-grid .delivery-form textarea{min-height:88px}
+.delivery-detail-grid .delivery-form-actions{display:flex;justify-content:flex-end;gap:12px}
+.delivery-detail-grid .delivery-form-actions .button{min-width:160px}
+.admin-layout .delivery-detail-grid .delivery-links-panel{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.admin-layout .delivery-detail-grid .delivery-links-panel h2{border:0;margin:0;padding:0}
+.delivery-detail-grid .delivery-links-panel .actions{margin:0;flex-wrap:wrap}
+@media(max-width:1200px){
+ .admin-layout .delivery-page .delivery-columns.delivery-detail-grid{grid-template-columns:minmax(0,1fr);grid-template-areas:"items" "recipient" "shipping" "progress" "links"}
+}
+@media(max-width:700px){
+ .admin-layout .delivery-detail-grid .delivery-form{grid-template-columns:minmax(0,1fr)}
+ .delivery-detail-grid .delivery-form-actions{display:grid;grid-template-columns:1fr 1fr}
+ .delivery-detail-grid .delivery-form-actions .button{min-width:0}
+}

@@ -1,0 +1,2 @@
+.support-page > .support-entry { width:100%; border-radius:10px; padding:20px 24px; }
+@media(max-width:650px) { .support-page > .support-entry { padding:18px; } }

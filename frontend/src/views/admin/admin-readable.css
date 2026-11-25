@@ -1,0 +1,334 @@
+/* The dashboard keeps its original styles. These rules only apply to management pages. */
+.admin-layout.admin-management .admin-content {
+  display:flex!important;flex-direction:column;gap:12px;
+  width:100%;max-width:none;height:100%;min-height:0;
+  padding:18px 20px;overflow:hidden;font-size:16px;
+}
+.admin-management .admin-content > :not(.ops-records,.faq-workspace,.customer-analysis,.delivery-page){flex:0 0 auto}
+.admin-management .admin-content > .admin-page-heading{margin:0;min-height:42px;gap:10px}
+.admin-management .admin-page-heading h1{font-size:28px;line-height:1.25;margin:0}
+.admin-management .admin-page-symbol{width:42px;height:42px;border-radius:10px}
+.admin-management .admin-page-symbol svg{width:22px;height:22px}
+.admin-management .admin-content :is(input,select,textarea,.button){font-size:16px}
+.admin-management .admin-content :is(input,select){height:40px;min-height:40px}
+.admin-management .admin-content input[type=checkbox]{height:auto;min-height:0}
+.admin-management .admin-content .button{min-height:40px;padding:8px 14px;line-height:1.4;white-space:nowrap}
+.admin-management .shipping-management-tabs{margin:0;min-height:36px;gap:16px}
+.admin-management .shipping-management-tabs a{font-size:15px;min-height:36px;padding:6px 10px}
+
+/* Filters share a single baseline. Search uses the remaining row width. */
+:root[data-theme] .admin-management .admin-content .ops-toolbar{
+  display:grid;grid-template-columns:minmax(220px,1fr) auto;gap:12px;
+  align-items:end;padding:0 0 12px;margin:0;border:0;border-bottom:1px solid var(--work-line);border-radius:0;background:transparent;
+}
+:root[data-theme] .admin-management .ops-toolbar.toolbar-products{grid-template-columns:150px 150px 150px minmax(180px,1fr) auto}
+:root[data-theme] .admin-management .ops-toolbar.toolbar-reviews{grid-template-columns:150px 160px minmax(200px,1fr)}
+:root[data-theme] .admin-management .ops-toolbar.toolbar-orders{grid-template-columns:170px 170px minmax(220px,1fr)}
+.admin-management .ops-toolbar>label{display:grid;gap:6px;min-width:0;font-size:14px;line-height:1.35;font-weight:650}
+.admin-management .ops-toolbar .ops-search-label{max-width:none;min-width:0}
+.admin-management .ops-toolbar>.button{margin:0}
+.admin-management .ops-toolbar :is(input,select){width:100%;height:40px;min-height:40px;max-width:none;margin:0;padding-block:7px}
+.admin-management .ops-search-input{height:40px}
+
+/* The frame fills the available viewport; its two panes scroll independently. */
+:root[data-theme] .admin-management .admin-content .ops-records{
+  display:grid;grid-template-columns:minmax(300px,1fr) minmax(360px,1fr);grid-template-rows:minmax(0,1fr);
+  flex:1 1 0;align-items:stretch;gap:0;width:100%;min-height:0;max-height:none;height:auto;
+  margin:0;padding:0;overflow:hidden;border:1px solid var(--work-line);border-radius:12px;
+  background:var(--work-surface);box-shadow:0 2px 8px #213b6005;
+}
+.admin-management .ops-record-list{display:grid;grid-template-rows:auto minmax(0,1fr);height:100%;min-width:0;min-height:0;overflow:hidden}
+.admin-management .ops-records-heading{min-height:52px;padding:12px 16px;margin:0}
+.admin-management .ops-records-heading h2{font-size:18px;line-height:1.4;margin:0}
+.admin-management .ops-records-heading>span{font-size:14px}
+:root[data-theme] .admin-management .admin-content .ops-records .ops-list{
+  display:block;flex:initial;height:100%;min-height:0;max-height:none;margin:0;padding:0 8px;
+  overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;
+}
+:root[data-theme] .admin-management .admin-content .ops-records .ops-record-detail{
+  display:flex;flex-direction:column;min-width:0;min-height:0;height:100%;max-height:none;
+  margin:0;padding:12px 18px 16px;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;
+  border-left:1px solid var(--work-line);border-radius:0;box-shadow:none;
+}
+.admin-management .ops-record-detail>*{flex:0 0 auto}
+.admin-management .ops-records>.ops-record-detail>h2{font-size:18px;line-height:1.4;min-height:39px;margin:0 0 14px;padding:0 0 12px}
+.admin-management .ops-record-detail>.ops-detail-empty{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+  flex:1 1 0;min-height:0;margin:0;padding:24px;color:var(--admin-muted);
+}
+.admin-management .ops-detail-empty>svg{width:48px;height:48px;opacity:.55}
+.admin-management .ops-detail-empty>p{font-size:15px;line-height:1.5;margin:0}
+:root[data-theme] .admin-management .admin-content .ops-records .ops-list:has(>.state){display:grid;place-items:center;padding:24px}
+.admin-management .ops-records .ops-list>.state{display:grid;place-content:center;width:100%;height:100%;min-height:0;padding:0;margin:0;border:0;border-radius:0;background:transparent;box-shadow:none;font-size:15px;color:var(--admin-muted)}
+:root[data-theme] .admin-management .ops-list button{padding:12px 10px;gap:12px;border-radius:6px}
+.admin-management .ops-row-copy>strong{font-size:16px;font-weight:650;line-height:1.4}
+.admin-management .ops-list .ops-row-copy>span{font-size:14px;line-height:1.5;margin-top:4px}
+:root[data-theme] .admin-management .ops-list .ops-status{font-size:13px;padding:4px 8px}
+:root[data-theme] .admin-management .ops-status[data-status="판매 중지"]{color:var(--status-alert);background:var(--status-alert-bg)}
+.admin-management .ops-list-group h3{font-size:14px}
+.admin-management .admin-feedback{font-size:15px;line-height:1.5;margin:0;padding:8px 12px;border-radius:6px;background:var(--work-tint)}
+
+/* Compact review insights sit directly above the filters, with no implicit grid row. */
+.admin-management .admin-content>.sentiment-report{
+  display:block;flex:0 0 auto;min-height:0;height:auto;margin:0;padding:0;gap:0;grid-template-rows:none;
+}
+:root[data-theme] .admin-management .sentiment-overview{
+  padding:14px 16px;margin:0;background:var(--work-surface);border:1px solid var(--work-line);border-radius:12px;box-shadow:none;
+}
+.admin-management .sentiment-overview header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 8px}
+.admin-management .sentiment-report h2{font-size:18px;line-height:1.4;margin:0}
+.admin-management .sentiment-report .sentiment-summary-note{display:none}
+.admin-management .sentiment-report .actions{gap:8px;flex-wrap:wrap}
+.admin-management .sentiment-report .button{font-size:14px;min-height:34px;padding:6px 12px}
+.admin-management .sentiment-summary-total{font-size:14px;margin:0 0 10px;line-height:1.4}
+.admin-management .sentiment-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0}
+.admin-management .sentiment-metrics article{display:grid;grid-template-columns:1fr auto;grid-template-rows:auto auto;column-gap:12px;row-gap:2px;padding:9px 12px;border:0;border-left:3px solid var(--sentiment-bar);border-radius:6px}
+.admin-management .sentiment-metrics h3{grid-column:1;grid-row:1;margin:0;font-size:14px;line-height:1.4}
+.admin-management .sentiment-metrics span{grid-column:1;grid-row:2;font-size:13px;line-height:1.4}
+.admin-management .sentiment-metrics strong{grid-column:2;grid-row:1 / span 2;align-self:center;font-size:27px;line-height:1.2}
+.admin-management .sentiment-distribution{height:5px;margin:10px 0 0}
+.admin-management .sentiment-empty{display:none}
+.admin-management .sentiment-overview>.state{min-height:65px;padding:12px;font-size:14px}
+
+/* Product fields and image actions retain the same spacing as other detail forms. */
+.admin-management .ops-product-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.admin-management .ops-product-form>label{display:grid;gap:6px;min-width:0;font-size:14px;line-height:1.4}
+.admin-management .ops-product-form>:is(.product-spec-field,.product-description-field,.product-images-editor,.product-detail-preview,.actions,.check){grid-column:1/-1}
+.admin-management .ops-product-form>label.check{display:flex;align-items:center}
+.admin-management .product-images-editor{border-block:1px solid var(--work-line);padding:14px 0}
+.admin-management .product-images-editor h3{font-size:16px;margin:0 0 6px}
+.admin-management .product-images-editor p{font-size:14px;line-height:1.5;margin:0 0 12px;color:var(--admin-muted)}
+.admin-management .product-images-editor label{display:grid;gap:6px;font-size:14px}
+.admin-management .image-url-entry{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:end;margin-block:12px}
+.admin-management .product-image-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(135px,1fr));gap:12px;list-style:none;padding:0;margin:12px 0 0}
+.admin-management .product-image-grid li{display:flex;flex-direction:column;gap:8px;min-width:0;margin:0;padding:10px;border:1px solid var(--work-line);border-radius:8px}
+.admin-management .product-image-grid img{width:100%;height:108px;object-fit:contain;background:white;border-radius:4px}
+.admin-management .product-image-grid :is(.button,strong){font-size:13px;text-align:center;min-height:32px}
+.admin-management .product-image-grid strong{display:grid;place-content:center;color:var(--work-accent)}
+.admin-management .product-detail-preview{font-size:14px;line-height:1.6}
+.admin-management .product-detail-preview dl{display:grid;grid-template-columns:minmax(95px,1fr) 2fr;gap:6px 10px}
+.admin-management .product-detail-preview dd{margin:0}
+
+/* FAQ occupies the same full-height management frame as records. */
+.admin-management .faq-workspace{
+  display:flex;flex-direction:column;flex:1 1 0;min-height:0;overflow:hidden;
+  margin:0;border:1px solid var(--work-line);border-radius:12px;background:var(--work-surface);
+}
+.admin-management .faq-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--work-line)}
+.admin-management .faq-heading h2{font-size:18px;margin:0}
+.admin-management .faq-heading>span{font-size:14px;color:var(--admin-muted)}
+.admin-management .faq-toolbar{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:12px;margin:0;padding:14px 18px 10px}
+.admin-management .faq-toolbar label{display:grid;gap:6px;min-width:0;font-size:14px;font-weight:650}
+.admin-management .faq-search{position:relative;display:flex;align-items:center}
+.admin-management .faq-search svg{position:absolute;left:11px;width:18px;height:18px;color:var(--admin-muted)}
+.admin-management .faq-search input{width:100%;padding-left:38px}
+.admin-management .faq-permissions{margin:0;padding:0 18px 12px;font-size:13px;line-height:1.5;color:var(--admin-muted);border-bottom:1px solid var(--work-line)}
+.admin-management .faq-scroll{flex:1;min-height:0;overflow:auto;padding:0 18px;scrollbar-width:thin}
+.admin-management .faq-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;height:100%;min-height:100px;padding:24px;text-align:center;color:var(--admin-muted)}
+.admin-management .faq-empty svg{width:44px;height:44px;opacity:.55}
+.admin-management .faq-empty h3{font-size:16px;font-weight:600;margin:0}
+.admin-management .faq-empty p{font-size:14px;margin:0}
+.admin-management .faq-item{border-bottom:1px solid var(--work-line);padding:0}
+.admin-management .faq-item summary{display:flex;align-items:center;gap:12px;padding:16px 0;cursor:pointer;font-size:16px;font-weight:600;list-style:none}
+.admin-management .faq-item summary::after{content:'+';margin-left:auto;color:var(--admin-muted)}
+.admin-management .faq-item[open] summary::after{content:'−'}
+.admin-management .faq-number{flex:none;color:var(--work-accent);font-size:14px}
+.admin-management .faq-item>p{margin:0;padding:0 0 18px 48px;font-size:15px;line-height:1.7;white-space:pre-wrap}
+.admin-management .admin-content>.customer-analysis,.admin-management .admin-content>.delivery-page{flex:1 1 0;min-height:0;overflow:auto}
+@media(max-width:1250px){
+ :root[data-theme] .admin-management .ops-toolbar.toolbar-products{grid-template-columns:130px 130px 145px minmax(160px,1fr)}
+ .admin-management .toolbar-products>.button{grid-column:1/-1;justify-self:end}
+}
+@media(max-width:900px){
+ .admin-layout.admin-management .admin-content{padding:12px;gap:10px;overflow:auto}
+ :root[data-theme] .admin-management .admin-content .ops-records{flex:1 0 650px;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(240px,1fr) minmax(300px,1.2fr)}
+ :root[data-theme] .admin-management .admin-content .ops-records .ops-record-detail{border-left:0;border-top:1px solid var(--work-line)}
+ :root[data-theme] .admin-management .ops-toolbar:is(.toolbar-products,.toolbar-orders,.toolbar-reviews){grid-template-columns:repeat(2,minmax(0,1fr))}
+ .admin-management .ops-toolbar .ops-search-label{grid-column:1/-1}
+ .admin-management .faq-workspace{min-height:440px;flex:1 0 440px}
+}
+@media(max-width:520px){
+ .admin-management .admin-page-heading h1{font-size:25px}
+ .admin-management .sentiment-overview header{align-items:start;flex-wrap:wrap}
+ .admin-management .sentiment-metrics{gap:6px}
+ .admin-management .sentiment-metrics article{display:flex;flex-direction:column;align-items:start;padding:8px}
+ .admin-management .sentiment-metrics strong{align-self:start;font-size:24px;order:1}
+ .admin-management .sentiment-metrics span{order:2}
+ .admin-management .ops-product-form{grid-template-columns:minmax(0,1fr)}
+ .admin-management .faq-toolbar{grid-template-columns:minmax(0,1fr) auto;padding-inline:12px}
+ .admin-management .faq-toolbar .button{padding-inline:10px;font-size:14px}
+ .admin-management .image-url-entry{grid-template-columns:minmax(0,1fr)}
+}
+
+/* Search is submitted with its adjacent button or Enter. */
+.admin-management .ops-search-form{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:8px;margin:0;min-width:0}
+.admin-management .ops-search-form label{display:grid;gap:6px;font-size:14px;line-height:1.35;font-weight:650;min-width:0}
+.admin-management .faq-search-group{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:8px;min-width:0}
+.admin-global-search .header-search-submit{flex:none;padding:6px 12px;border:0;border-radius:999px;background:var(--ui-text,#26364a);color:var(--ui-surface,#fff);font-size:13px;line-height:1.4;white-space:nowrap}
+/* Product cards only change the left list; the detail pane keeps its layout. */
+:root[data-theme] .admin-management .ops-records .ops-list:has(.is-product-grid){padding:12px;}
+.admin-management .ops-list-group.is-product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:12px;align-items:stretch}
+.admin-management .is-product-grid>h3{grid-column:1/-1}
+:root[data-theme] .admin-management .ops-list .is-product-grid button.ops-product-row{display:flex;flex-direction:column;align-items:stretch;justify-content:start;gap:9px;position:relative;padding:12px;border:1px solid var(--work-line);border-radius:9px;background:var(--work-surface);height:100%;min-width:0}
+:root[data-theme] .admin-management .ops-list .is-product-grid button.ops-product-row[aria-pressed=true]{border-color:var(--work-accent);background:var(--work-selected);box-shadow:inset 0 0 0 1px var(--work-accent)}
+.admin-management .is-product-grid .ops-product-row :is(img,.ops-thumb-empty){width:100%;height:108px;min-height:108px;object-fit:contain;border:0;border-radius:6px;background:#fff}
+.admin-management .is-product-grid .ops-row-copy{display:flex;flex-direction:column;flex:1;gap:3px}
+.admin-management .is-product-grid .ops-row-copy>strong{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:44px;font-size:15px;line-height:1.45}
+.admin-management .is-product-grid .ops-row-copy>span{margin:0;font-size:13px}
+.admin-management .is-product-grid .ops-row-copy>.product-card-price{font-size:16px;font-weight:750;color:var(--ui-text);margin-top:5px}
+.admin-management .is-product-grid .ops-product-row>.ops-status{align-self:start;margin-top:2px}
+@media(max-width:900px){.admin-management .ops-toolbar .ops-search-form{grid-column:1/-1}.admin-management .is-product-grid .ops-product-row :is(img,.ops-thumb-empty){height:94px;min-height:94px}}
+
+/* Product browsing and editing each use the entire workspace. */
+:root[data-theme] .admin-management .admin-content .ops-records.product-gallery-mode{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
+.admin-management .product-gallery-mode .ops-list-group.is-product-grid{grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:16px}
+.admin-management .product-gallery-mode .is-product-grid .ops-product-row :is(img,.ops-thumb-empty){height:145px;min-height:145px}
+:root[data-theme] .admin-management .admin-content .product-gallery-mode .ops-record-detail{border-left:0;padding:20px 24px 16px}
+.admin-management .product-editor-heading{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:0 0 16px;margin:0;border-bottom:1px solid var(--work-line)}
+.admin-management .product-editor-heading>div{min-width:0}
+.admin-management .product-editor-heading span{display:block;font-size:13px;color:var(--admin-muted);margin:0 0 5px}
+.admin-management .product-editor-heading h2{font-size:24px;line-height:1.4;margin:0;overflow-wrap:anywhere}
+.admin-management .product-gallery-mode .ops-product-form{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,1fr);gap:22px 30px;margin-top:18px}
+.admin-management .product-edit-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-content:start;min-width:0}
+.admin-management .product-edit-fields>label{display:grid;gap:6px;min-width:0;font-size:15px;line-height:1.4}
+.admin-management .product-edit-fields>:is(.product-name-field,.product-category-field,.product-spec-field,.product-description-field,.check){grid-column:1/-1}
+.admin-management .product-edit-fields>label.check{display:flex;align-items:center;gap:8px}
+.admin-management .product-gallery-mode .ops-product-form>.product-images-editor{grid-column:2;grid-row:1;border:0;border-left:1px solid var(--work-line);padding:0 0 0 24px;align-self:start}
+.admin-management .product-gallery-mode .ops-product-form>:is(.product-detail-preview,.actions){grid-column:1/-1}
+.admin-management .product-gallery-mode .ops-product-form>.actions{bottom:-16px;padding:12px 0;margin:0;background:var(--work-surface)}
+@media(max-width:900px){
+ :root[data-theme] .admin-management .admin-content .ops-records.product-gallery-mode{flex:1 0 600px;grid-template-rows:minmax(0,1fr)}
+ .admin-management .product-gallery-mode .ops-list-group.is-product-grid{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
+ .admin-management .product-gallery-mode .ops-product-form{grid-template-columns:minmax(0,1fr)}
+ .admin-management .product-gallery-mode .ops-product-form>.product-images-editor{grid-column:1;grid-row:auto;border-left:0;border-top:1px solid var(--work-line);padding:16px 0 0}
+ .admin-management .product-editor-heading{align-items:start;flex-wrap:wrap;gap:12px}
+ :root[data-theme] .admin-management .admin-content .product-gallery-mode .ops-record-detail{padding:16px}
+}
+.admin-management .product-gallery-mode .ops-product-form>.product-edit-fields{grid-column:1;grid-row:1;align-self:start}@media(max-width:900px){.admin-management .product-gallery-mode .ops-product-form>.product-edit-fields{grid-column:1;grid-row:auto}}
+.admin-management .image-upload-field{display:grid;gap:6px;font-size:15px;min-width:0}.admin-management .product-images-editor .image-upload-control{position:relative;display:flex;align-items:center;gap:10px;width:100%;min-width:0;height:44px;padding:5px;border:1px solid var(--work-line);border-radius:6px;background:var(--work-surface);overflow:hidden;cursor:pointer}.admin-management .image-upload-control input[type=file]{position:absolute;inset:0;width:100%;height:100%;min-height:0;padding:0;margin:0;border:0;opacity:0;cursor:pointer;z-index:1}.admin-management .image-upload-trigger{display:flex;align-items:center;justify-content:center;flex:none;height:32px;padding:4px 11px;border:1px solid var(--work-line);border-radius:4px;background:var(--work-tint);font-size:14px;line-height:20px}.admin-management .image-upload-filename{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px;line-height:20px}.admin-management .image-upload-control:focus-within{outline:2px solid var(--work-accent);outline-offset:1px}.admin-management .image-upload-control.is-disabled{opacity:.6;cursor:wait}
+
+.admin-management .faq-source{flex:none;margin-left:auto;padding:3px 8px;border:1px solid var(--work-line);border-radius:5px;color:var(--admin-muted);font-size:12px;font-weight:500;white-space:nowrap}
+@media(max-width:600px){.admin-management .faq-item summary{flex-wrap:wrap}.admin-management .faq-source{margin-left:0}}
+
+/* Keep each FAQ row on the same question / source / disclosure columns. */
+.admin-management .faq-item summary{display:grid;grid-template-columns:36px minmax(0,1fr) 112px 20px;gap:12px;align-items:center}
+.admin-management .faq-item .faq-question{min-width:0;overflow-wrap:anywhere;line-height:1.5}
+.admin-management .faq-item .faq-source{grid-column:3;justify-self:end;margin:0;text-align:center}
+.admin-management .faq-item summary::after{grid-column:4;justify-self:center;margin:0;width:20px;text-align:center}
+@media(max-width:600px){
+ .admin-management .faq-item summary{grid-template-columns:30px minmax(0,1fr) 20px;gap:8px}
+ .admin-management .faq-item>p{padding-left:38px}
+ .admin-management .faq-item .faq-source{grid-column:2;grid-row:2;justify-self:start}
+ .admin-management .faq-item summary::after{grid-column:3;grid-row:1}
+}
+
+
+.admin-management .faq-toolbar-actions,.admin-management .faq-row-actions{display:flex;justify-content:flex-end;align-items:center;gap:8px}
+.admin-management .faq-toolbar-actions{flex-wrap:wrap}.admin-management .faq-register{background:var(--work-accent,#304c74);color:white}
+.admin-management .faq-row-actions{padding:0 0 16px 48px}.admin-management .faq-delete{color:#a53131}.admin-management .faq-notice{margin:0;padding:10px 18px;color:#256344;background:#edf8f1}
+
+.admin-management .faq-search-group{width:100%}
+.admin-management .faq-search-group label{width:100%}
+@media(max-width:700px){.admin-management .faq-toolbar{grid-template-columns:minmax(0,1fr)}.admin-management .faq-toolbar-actions{justify-content:flex-end}}
+
+.admin-management .ops-product-form>.product-editor-actions{display:flex;justify-content:flex-end;align-items:center;gap:10px;width:100%}
+.admin-management .product-editor-actions>.button{flex:none;width:auto;min-width:100px}
+:root[data-theme] .admin-management .product-editor-actions>.button.product-stop-selling{background:#b42332;border-color:#b42332;color:#fff}
+:root[data-theme] .admin-management .product-editor-actions>.button.product-stop-selling:hover:not(:disabled){background:#941c28;border-color:#941c28;color:#fff}
+/* Member search and filters stay compact on one row. */
+:root[data-theme] .admin-management .admin-content .ops-toolbar.toolbar-members{
+  grid-template-columns:minmax(240px,480px) 150px 150px;
+  justify-content:start;
+}
+.admin-management .toolbar-members>.ops-search-form{grid-column:1;grid-row:1;width:100%}
+.admin-management .toolbar-members>label:nth-of-type(1){grid-column:2;grid-row:1}
+.admin-management .toolbar-members>label:nth-of-type(2){grid-column:3;grid-row:1}
+@media(max-width:1100px){
+  :root[data-theme] .admin-management .admin-content .ops-toolbar.toolbar-members{grid-template-columns:minmax(180px,1fr) 135px 135px}
+}
+@media(max-width:700px){
+  :root[data-theme] .admin-management .admin-content .ops-toolbar.toolbar-members{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .admin-management .toolbar-members>.ops-search-form{grid-column:1/-1;grid-row:1}
+  .admin-management .toolbar-members>label:nth-of-type(1){grid-column:1;grid-row:2}
+  .admin-management .toolbar-members>label:nth-of-type(2){grid-column:2;grid-row:2}
+}
+
+/* Show the actual purchase in the order list and detail pane. */
+.admin-management .ops-list .ops-order-row{display:flex;align-items:center;gap:14px;padding:16px;min-height:112px}
+.admin-management .ops-order-row .ops-order-thumb{width:70px;height:70px;flex:none;object-fit:contain;border:1px solid var(--work-line,#e0e6ee);border-radius:8px;background:#fff}
+.admin-management .ops-order-row .ops-row-copy{flex:1;min-width:0;gap:5px}
+.admin-management .ops-order-row .ops-row-copy>strong{font-size:13px;font-weight:600;color:var(--admin-muted,#718096)}
+.admin-management .ops-order-row .ops-row-copy>.ops-order-product{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:16px;font-weight:750;line-height:1.45;color:var(--admin-text,#26364a)}
+.admin-management .ops-order-row .ops-order-quantity{font-size:13px;color:var(--admin-muted,#718096)}
+.admin-management .ops-record-detail .ops-order-items{list-style:none;margin:14px 0 20px;padding:0;display:grid;gap:0}
+.admin-management .ops-record-detail .ops-order-items>li{display:flex;align-items:center;gap:14px;padding:16px 0;margin:0;border-bottom:1px solid var(--work-line,#e0e6ee)}
+.admin-management .ops-record-detail .ops-order-items>li>img{width:76px;height:76px;flex:none;object-fit:contain;background:#fff;border:1px solid #e8edf3;border-radius:8px}
+.admin-management .ops-order-items>li>div{display:grid;gap:7px;min-width:0;flex:1}
+.admin-management .ops-order-items>li>div>strong{font-size:17px;line-height:1.5}
+.admin-management .ops-order-items>li>div>span{font-size:14px;color:var(--admin-muted,#718096)}
+.admin-management .ops-order-items>li>strong{font-size:17px;white-space:nowrap}
+@media(max-width:650px){.admin-management .ops-list .ops-order-row{padding:12px;gap:10px}.admin-management .ops-order-row .ops-order-thumb{width:54px;height:54px}.admin-management .ops-order-row>.ops-status{font-size:12px}.admin-management .ops-order-items>li{flex-wrap:wrap}.admin-management .ops-order-items>li>strong{margin-left:auto}}
+
+/* One list per screen. A selected record opens a full-width detail view. */
+:root[data-theme] .admin-management .admin-content .ops-records.full-width-records{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
+.admin-management .full-width-records .ops-record-detail{border-left:0}
+.record-full-detail-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:16px;margin-bottom:20px;border-bottom:1px solid var(--work-line,#dce3eb)}
+.record-full-detail-heading h2{font-size:24px;margin:0;line-height:1.4}
+.customer-title-actions{margin-left:auto;display:flex;justify-content:flex-end;align-items:center}
+.admin-layout.admin-management .admin-content{font-size:18px}
+.admin-management .admin-page-heading h1{font-size:30px}
+.admin-management .admin-content :is(input,select,textarea,.button){font-size:17px}
+.admin-management .admin-content :is(input,select){height:44px;min-height:44px}
+.admin-management .ops-toolbar>label,.admin-management .ops-search-form label{font-size:15px}
+.admin-management .ops-records-heading h2{font-size:20px}
+.admin-management .ops-records-heading>span{font-size:16px}
+.admin-management .ops-row-copy>strong{font-size:18px;line-height:1.5}
+.admin-management .ops-row-copy>span{font-size:15px;line-height:1.6}
+.admin-management .ops-list button:not(.ops-product-row){padding:18px 20px;min-height:88px}
+.admin-management .ops-list .ops-order-row{padding:18px 20px;min-height:122px}
+.admin-management .ops-order-row .ops-row-copy>.ops-order-product{font-size:18px}
+.admin-management .ops-order-row .ops-order-thumb{width:82px;height:82px}
+.admin-management .ops-status{font-size:14px;padding:6px 10px}
+.admin-management .is-product-grid .ops-row-copy>strong{font-size:17px;min-height:49px}
+.admin-management .is-product-grid .ops-row-copy>span{font-size:15px}
+.admin-management .is-product-grid .ops-row-copy>.product-card-price{font-size:19px}
+.admin-management .review-list-excerpt{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:var(--admin-muted,#718096);max-width:1000px}
+.admin-layout .admin-sidebar nav a{font-size:17px}
+.admin-management .admin-content .customer-analysis{width:100%;max-width:none}
+.admin-management .customer-metrics article>span{font-size:17px}
+@media(max-width:650px){.record-full-detail-heading{align-items:flex-start;flex-wrap:wrap}.record-full-detail-heading h2{font-size:21px}.admin-management .ops-order-row .ops-order-thumb{width:58px;height:58px}.admin-management .ops-order-row .ops-row-copy>.ops-order-product{font-size:16px}}
+/* Customer analysis uses generous, scrolling charts rather than dashboard-sized previews. */
+.admin-layout.admin-management .admin-content:has(.customer-analysis){display:block;overflow:auto;padding:24px 28px 36px}
+.admin-content:has(.customer-analysis)>.admin-page-heading{display:flex;margin:0 0 22px}
+.admin-management .admin-content .customer-analysis{display:flex;flex-direction:column;gap:24px;min-height:0;height:auto;flex:none}
+.admin-management .customer-analysis .customer-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;flex:none}
+.admin-management .customer-analysis .customer-metrics article{padding:26px;min-height:145px;border-radius:12px}
+.admin-management .customer-analysis .customer-metrics article>span{font-size:18px}
+.admin-management .customer-analysis .customer-metrics strong{font-size:40px;line-height:1.25;margin-top:12px}
+.admin-management .customer-analysis .customer-metrics strong small{font-size:20px}
+.admin-management .customer-analysis .customer-metrics p{font-size:15px;margin-top:10px}
+.admin-management .customer-analysis .customer-charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;flex:none;min-height:0;height:auto}
+.admin-management .customer-analysis .customer-charts>article{display:flex;flex-direction:column;min-height:460px;height:auto;padding:26px;border-radius:12px}
+.admin-management .customer-analysis .customer-charts header{margin:0 0 22px;gap:12px}
+.admin-management .customer-analysis .customer-charts h2{font-size:22px;line-height:1.4}
+.admin-management .customer-analysis .customer-charts header :is(span,a){font-size:15px}
+.admin-management .customer-analysis .customer-charts .admin-chart{height:330px;min-height:330px;flex:none;position:relative;margin:0}
+.admin-management .customer-analysis .customer-charts canvas{position:absolute;inset:0}
+.admin-management .customer-analysis .customer-table{height:auto;max-height:none;flex:1;font-size:17px}
+.admin-management .customer-analysis .customer-table :is(th,td){font-size:16px;padding:15px 12px}
+.admin-management .customer-analysis .customer-analysis-note{font-size:16px;line-height:1.7}
+.admin-management .customer-analysis .customer-insights-heading{display:flex;justify-content:space-between;align-items:center;gap:20px;flex:none}
+@media(max-width:1200px){.admin-management .customer-analysis .customer-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-management .customer-analysis .customer-charts{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:650px){.admin-layout.admin-management .admin-content:has(.customer-analysis){padding:18px 14px}.admin-management .customer-analysis .customer-metrics article{padding:18px}.admin-management .customer-analysis .customer-metrics strong{font-size:32px}.admin-management .customer-analysis .customer-charts>article{padding:18px;min-height:420px}.admin-management .customer-analysis .customer-charts h2{font-size:20px}.admin-management .customer-analysis .customer-charts .admin-chart{height:300px;min-height:300px}}
+
+.admin-management .customer-analysis .customer-charts{grid-template-columns:minmax(0,1fr)}
+.admin-management .customer-analysis .customer-charts>article{min-height:520px}
+.admin-management .customer-analysis .customer-charts .admin-chart{height:400px;min-height:400px}
+@media(max-width:650px){.admin-management .customer-analysis .customer-charts>article{min-height:420px}.admin-management .customer-analysis .customer-charts .admin-chart{height:300px;min-height:300px}}
+
+/* 20 records per page: column counts always divide the page size. */
+.admin-management .ops-record-list { container-type:inline-size; }
+:root[data-theme] .admin-management .ops-list-group.is-product-grid { grid-template-columns:repeat(5,minmax(0,1fr)); }
+@container (max-width:1100px){:root[data-theme] .admin-management .ops-list-group.is-product-grid { grid-template-columns:repeat(4,minmax(0,1fr)); }}
+@container (max-width:760px){:root[data-theme] .admin-management .ops-list-group.is-product-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }}
+@container (max-width:360px){:root[data-theme] .admin-management .ops-list-group.is-product-grid { grid-template-columns:minmax(0,1fr); }}

@@ -1,0 +1,846 @@
+{
+  "importedAt": "2026-11-19T07:38:31.238Z",
+  "count": 120,
+  "records": [
+    {
+      "sourceProductId": "cpu-14100f",
+      "serverProductId": 1,
+      "name": "Intel Core i3-14100F",
+      "category": "CPU",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "cpu-5600",
+      "serverProductId": 2,
+      "name": "AMD Ryzen 5 5600",
+      "category": "CPU",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "cpu-14400f",
+      "serverProductId": 3,
+      "name": "Intel Core i5-14400F",
+      "category": "CPU",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "cpu-7500f",
+      "serverProductId": 4,
+      "name": "AMD Ryzen 5 7500F",
+      "category": "CPU",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "cpu-14600k",
+      "serverProductId": 5,
+      "name": "Intel Core i5-14600K",
+      "category": "CPU",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "cpu-9600x",
+      "serverProductId": 6,
+      "name": "AMD Ryzen 5 9600X",
+      "category": "CPU",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "cpu-245k",
+      "serverProductId": 7,
+      "name": "Intel Core Ultra 5 245K",
+      "category": "CPU",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "cpu-9700x",
+      "serverProductId": 8,
+      "name": "AMD Ryzen 7 9700X",
+      "category": "CPU",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "cpu-270k-plus",
+      "serverProductId": 9,
+      "name": "Intel Core Ultra 7 270K Plus",
+      "category": "CPU",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "cpu-9950x3d",
+      "serverProductId": 10,
+      "name": "AMD Ryzen 9 9950X3D",
+      "category": "CPU",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "board-h610m-k-d4",
+      "serverProductId": 11,
+      "name": "ASUS PRIME H610M-K D4",
+      "category": "메인보드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "board-pro-h610m-e-ddr4",
+      "serverProductId": 12,
+      "name": "MSI PRO H610M-E DDR4",
+      "category": "메인보드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "board-a520m-k-v2",
+      "serverProductId": 13,
+      "name": "GIGABYTE A520M K V2",
+      "category": "메인보드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "board-tuf-b650-plus-wifi",
+      "serverProductId": 14,
+      "name": "ASUS TUF GAMING B650-PLUS WIFI",
+      "category": "메인보드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "board-pro-b650m-a-wifi",
+      "serverProductId": 15,
+      "name": "MSI PRO B650M-A WIFI",
+      "category": "메인보드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "board-b760m-ds3h-ax-ddr4",
+      "serverProductId": 16,
+      "name": "GIGABYTE B760M DS3H AX DDR4",
+      "category": "메인보드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "board-b650m-pro-rs-wifi",
+      "serverProductId": 17,
+      "name": "ASRock B650M Pro RS WiFi",
+      "category": "메인보드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "board-x870e-e-wifi",
+      "serverProductId": 18,
+      "name": "ASUS ROG STRIX X870E-E GAMING WIFI",
+      "category": "메인보드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "board-z890-carbon-wifi",
+      "serverProductId": 19,
+      "name": "MSI MPG Z890 CARBON WIFI",
+      "category": "메인보드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "board-x870e-aorus-master",
+      "serverProductId": 20,
+      "name": "GIGABYTE X870E AORUS MASTER",
+      "category": "메인보드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "gpu-dual-rtx3050",
+      "serverProductId": 21,
+      "name": "ASUS DUAL GeForce RTX 3050 6GB",
+      "category": "그래픽카드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "gpu-pulse-rx6600",
+      "serverProductId": 22,
+      "name": "SAPPHIRE PULSE Radeon RX 6600 8GB",
+      "category": "그래픽카드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "gpu-ventus-rtx4060",
+      "serverProductId": 23,
+      "name": "MSI GeForce RTX 4060 VENTUS 2X BLACK 8G OC",
+      "category": "그래픽카드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "gpu-ventus-rtx5060",
+      "serverProductId": 24,
+      "name": "MSI GeForce RTX 5060 8G VENTUS 2X OC",
+      "category": "그래픽카드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "gpu-ventus-rtx5060-ti",
+      "serverProductId": 25,
+      "name": "MSI GeForce RTX 5060 Ti 16G VENTUS 2X OC PLUS",
+      "category": "그래픽카드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "gpu-pulse-rx9060-xt",
+      "serverProductId": 26,
+      "name": "SAPPHIRE PULSE Radeon RX 9060 XT OC 16GB",
+      "category": "그래픽카드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "gpu-dual-rtx5070",
+      "serverProductId": 27,
+      "name": "ASUS DUAL GeForce RTX 5070 12GB",
+      "category": "그래픽카드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "gpu-gaming-rtx5070-ti",
+      "serverProductId": 28,
+      "name": "GIGABYTE GeForce RTX 5070 Ti GAMING OC 16G",
+      "category": "그래픽카드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "gpu-trio-rtx5080",
+      "serverProductId": 29,
+      "name": "MSI GeForce RTX 5080 16G GAMING TRIO OC",
+      "category": "그래픽카드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "gpu-astral-rtx5090",
+      "serverProductId": 30,
+      "name": "ASUS ROG Astral GeForce RTX 5090 32GB OC Edition",
+      "category": "그래픽카드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "psu-hyper-k-pro-500",
+      "serverProductId": 31,
+      "name": "FSP HYPER K PRO 500W",
+      "category": "파워",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "psu-classic-ii-600",
+      "serverProductId": 32,
+      "name": "마이크로닉스 Classic II 풀체인지 600W 80PLUS BRONZE ATX 3.1",
+      "category": "파워",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "psu-pk650d",
+      "serverProductId": 33,
+      "name": "DeepCool PK650D 650W",
+      "category": "파워",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "psu-rm750e",
+      "serverProductId": 34,
+      "name": "CORSAIR RM750e (2025)",
+      "category": "파워",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "psu-a750gl",
+      "serverProductId": 35,
+      "name": "MSI MAG A750GL PCIE5",
+      "category": "파워",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "psu-focus-gx-850",
+      "serverProductId": 36,
+      "name": "Seasonic FOCUS GX-850 ATX 3.0",
+      "category": "파워",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "psu-leadex-iii-850",
+      "serverProductId": 37,
+      "name": "SuperFlower LEADEX III GOLD 850W",
+      "category": "파워",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "psu-hx1000i",
+      "serverProductId": 38,
+      "name": "CORSAIR HX1000i",
+      "category": "파워",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "psu-vertex-gx-1200",
+      "serverProductId": 39,
+      "name": "Seasonic VERTEX GX-1200 ATX 3.1",
+      "category": "파워",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "psu-ai1300p",
+      "serverProductId": 40,
+      "name": "MSI MEG Ai1300P PCIE5",
+      "category": "파워",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "case-dk200-rgb",
+      "serverProductId": 41,
+      "name": "darkFlash DK200 RGB",
+      "category": "케이스",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "case-x3-mesh",
+      "serverProductId": 42,
+      "name": "MONTECH X3 MESH",
+      "category": "케이스",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "case-matrexx-40-3fs",
+      "serverProductId": 43,
+      "name": "DeepCool MATREXX 40 3FS",
+      "category": "케이스",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "case-dlx21-mesh",
+      "serverProductId": 44,
+      "name": "darkFlash DLX21 MESH RGB",
+      "category": "케이스",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "case-lancool-216",
+      "serverProductId": 45,
+      "name": "LIAN LI LANCOOL 216",
+      "category": "케이스",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "case-air-903-max",
+      "serverProductId": 46,
+      "name": "MONTECH AIR 903 MAX",
+      "category": "케이스",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "case-h5-flow-2024",
+      "serverProductId": 47,
+      "name": "NZXT H5 Flow (2024)",
+      "category": "케이스",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "case-north-xl",
+      "serverProductId": 48,
+      "name": "Fractal Design North XL",
+      "category": "케이스",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "case-o11-dynamic-evo-rgb",
+      "serverProductId": 49,
+      "name": "LIAN LI O11 Dynamic EVO RGB",
+      "category": "케이스",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "case-y70-touch-infinite",
+      "serverProductId": 50,
+      "name": "HYTE Y70 Touch Infinite",
+      "category": "케이스",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "hdd-wd10ezex",
+      "serverProductId": 51,
+      "name": "Western Digital WD Blue 1TB WD10EZEX",
+      "category": "HDD",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "hdd-st2000dm008",
+      "serverProductId": 52,
+      "name": "Seagate BarraCuda 2TB ST2000DM008",
+      "category": "HDD",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "hdd-hdwd110",
+      "serverProductId": 53,
+      "name": "Toshiba P300 1TB HDWD110",
+      "category": "HDD",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "hdd-st4000dm004",
+      "serverProductId": 54,
+      "name": "Seagate BarraCuda 4TB ST4000DM004",
+      "category": "HDD",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "hdd-wd40ezax",
+      "serverProductId": 55,
+      "name": "Western Digital WD Blue 4TB WD40EZAX",
+      "category": "HDD",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "hdd-wd40efpx",
+      "serverProductId": 56,
+      "name": "Western Digital WD Red Plus 4TB WD40EFPX",
+      "category": "HDD",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "hdd-st4000vn006",
+      "serverProductId": 57,
+      "name": "Seagate IronWolf 4TB ST4000VN006",
+      "category": "HDD",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "hdd-st8000nt001",
+      "serverProductId": 58,
+      "name": "Seagate IronWolf Pro 8TB ST8000NT001",
+      "category": "HDD",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "hdd-wd8005ffbx",
+      "serverProductId": 59,
+      "name": "Western Digital WD Red Pro 8TB WD8005FFBX",
+      "category": "HDD",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "hdd-st20000nm007d",
+      "serverProductId": 60,
+      "name": "Seagate Exos X20 20TB ST20000NM007D",
+      "category": "HDD",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "ssd-nv2-500",
+      "serverProductId": 61,
+      "name": "Kingston NV2 500GB",
+      "category": "SSD",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "ssd-sn580-500",
+      "serverProductId": 62,
+      "name": "Western Digital WD Blue SN580 500GB",
+      "category": "SSD",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "ssd-p3-plus-500",
+      "serverProductId": 63,
+      "name": "Crucial P3 Plus 500GB",
+      "category": "SSD",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "ssd-sn770-1tb",
+      "serverProductId": 64,
+      "name": "Western Digital WD_BLACK SN770 1TB",
+      "category": "SSD",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "ssd-990-evo-plus-1tb",
+      "serverProductId": 65,
+      "name": "Samsung 990 EVO Plus 1TB",
+      "category": "SSD",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "ssd-p41-1tb",
+      "serverProductId": 66,
+      "name": "SK hynix Platinum P41 1TB",
+      "category": "SSD",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "ssd-t500-1tb",
+      "serverProductId": 67,
+      "name": "Crucial T500 1TB",
+      "category": "SSD",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "ssd-990-pro-2tb",
+      "serverProductId": 68,
+      "name": "Samsung 990 PRO 2TB",
+      "category": "SSD",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "ssd-sn850x-2tb",
+      "serverProductId": 69,
+      "name": "Western Digital WD_BLACK SN850X 2TB",
+      "category": "SSD",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "ssd-t705-2tb",
+      "serverProductId": 70,
+      "name": "Crucial T705 2TB",
+      "category": "SSD",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "monitor-24mp400-b",
+      "serverProductId": 71,
+      "name": "LG 24MP400-B",
+      "category": "모니터",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "monitor-f24t350",
+      "serverProductId": 72,
+      "name": "Samsung F24T350",
+      "category": "모니터",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "monitor-24g2sp",
+      "serverProductId": 73,
+      "name": "AOC 24G2SP",
+      "category": "모니터",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "monitor-27gp850-b",
+      "serverProductId": 74,
+      "name": "LG UltraGear 27GP850-B",
+      "category": "모니터",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "monitor-g2724d",
+      "serverProductId": 75,
+      "name": "Dell G2724D",
+      "category": "모니터",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "monitor-m27q-x",
+      "serverProductId": 76,
+      "name": "GIGABYTE M27Q X",
+      "category": "모니터",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "monitor-g50d-27",
+      "serverProductId": 77,
+      "name": "Samsung Odyssey G5 G50D 27인치",
+      "category": "모니터",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "monitor-27gs95qe-b",
+      "serverProductId": 78,
+      "name": "LG UltraGear OLED 27GS95QE-B",
+      "category": "모니터",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "monitor-g80sd",
+      "serverProductId": 79,
+      "name": "Samsung Odyssey OLED G8 G80SD",
+      "category": "모니터",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "monitor-pg32ucdm",
+      "serverProductId": 80,
+      "name": "ASUS ROG Swift OLED PG32UCDM",
+      "category": "모니터",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "keyboard-k120",
+      "serverProductId": 81,
+      "name": "Logitech K120",
+      "category": "키보드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "keyboard-k270",
+      "serverProductId": 82,
+      "name": "Logitech K270",
+      "category": "키보드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "keyboard-c3-pro",
+      "serverProductId": 83,
+      "name": "Keychron C3 Pro",
+      "category": "키보드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "keyboard-g413-se",
+      "serverProductId": 84,
+      "name": "Logitech G413 SE",
+      "category": "키보드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "keyboard-k2-pro",
+      "serverProductId": 85,
+      "name": "Keychron K2 Pro",
+      "category": "키보드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "keyboard-blackwidow-v4-x",
+      "serverProductId": 86,
+      "name": "Razer BlackWidow V4 X",
+      "category": "키보드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "keyboard-k70-core",
+      "serverProductId": 87,
+      "name": "CORSAIR K70 CORE",
+      "category": "키보드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "keyboard-pro-x-tkl",
+      "serverProductId": 88,
+      "name": "Logitech G PRO X TKL LIGHTSPEED",
+      "category": "키보드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "keyboard-huntsman-v3-pro-tkl",
+      "serverProductId": 89,
+      "name": "Razer Huntsman V3 Pro TKL",
+      "category": "키보드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "keyboard-apex-pro-tkl-2023",
+      "serverProductId": 90,
+      "name": "SteelSeries Apex Pro TKL (2023)",
+      "category": "키보드",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "mouse-b100",
+      "serverProductId": 91,
+      "name": "Logitech B100",
+      "category": "마우스",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "mouse-m185",
+      "serverProductId": 92,
+      "name": "Logitech M185",
+      "category": "마우스",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "mouse-deathadder-essential",
+      "serverProductId": 93,
+      "name": "Razer DeathAdder Essential",
+      "category": "마우스",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "mouse-g304",
+      "serverProductId": 94,
+      "name": "Logitech G304 LIGHTSPEED",
+      "category": "마우스",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "mouse-g502-hero",
+      "serverProductId": 95,
+      "name": "Logitech G502 HERO",
+      "category": "마우스",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "mouse-deathadder-v3",
+      "serverProductId": 96,
+      "name": "Razer DeathAdder V3",
+      "category": "마우스",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "mouse-rival-5",
+      "serverProductId": 97,
+      "name": "SteelSeries Rival 5",
+      "category": "마우스",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "mouse-superlight-2-dex",
+      "serverProductId": 98,
+      "name": "Logitech G PRO X SUPERLIGHT 2 DEX",
+      "category": "마우스",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "mouse-viper-v3-pro",
+      "serverProductId": 99,
+      "name": "Razer Viper V3 Pro",
+      "category": "마우스",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "mouse-harpe-ace",
+      "serverProductId": 100,
+      "name": "ASUS ROG Harpe Ace Aim Lab Edition",
+      "category": "마우스",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "ram-samsung-ddr4-8",
+      "serverProductId": 101,
+      "name": "Samsung DDR4-3200 8GB M378A1K43EB2-CWE",
+      "category": "메모리",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "ram-ct16g4dfra32a",
+      "serverProductId": 102,
+      "name": "Crucial DDR4-3200 16GB CT16G4DFRA32A",
+      "category": "메모리",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "ram-ct16g48c40u5",
+      "serverProductId": 103,
+      "name": "Crucial DDR5-4800 16GB CT16G48C40U5",
+      "category": "메모리",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "ram-fury-beast",
+      "serverProductId": 104,
+      "name": "Kingston FURY Beast DDR5-6000 32GB (16GB×2) KF560C36BBEK2-32",
+      "category": "메모리",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "ram-vengeance",
+      "serverProductId": 105,
+      "name": "CORSAIR VENGEANCE DDR5-6000 32GB (16GB×2) CMK32GX5M2B6000C30",
+      "category": "메모리",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "ram-vulcan",
+      "serverProductId": 106,
+      "name": "TeamGroup T-FORCE VULCAN DDR5-6000 32GB (16GB×2)",
+      "category": "메모리",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "ram-ripjaws-s5",
+      "serverProductId": 107,
+      "name": "G.SKILL Ripjaws S5 DDR5-6000 32GB (16GB×2)",
+      "category": "메모리",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "ram-trident-z5-neo-rgb",
+      "serverProductId": 108,
+      "name": "G.SKILL Trident Z5 Neo RGB DDR5-6000 CL30 32GB (16GB×2)",
+      "category": "메모리",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "ram-dominator-titanium",
+      "serverProductId": 109,
+      "name": "CORSAIR DOMINATOR TITANIUM RGB DDR5-7200 CL34 32GB (16GB×2)",
+      "category": "메모리",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "ram-fury-renegade-rgb",
+      "serverProductId": 110,
+      "name": "Kingston FURY Renegade RGB DDR5-7200 32GB (16GB×2) KF572C38RSAK2-32",
+      "category": "메모리",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "speaker-pebble-2",
+      "serverProductId": 111,
+      "name": "Creative Pebble 2.0",
+      "category": "스피커",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "speaker-z150",
+      "serverProductId": 112,
+      "name": "Logitech Z150",
+      "category": "스피커",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "speaker-pebble-v2",
+      "serverProductId": 113,
+      "name": "Creative Pebble V2",
+      "category": "스피커",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "speaker-pebble-pro",
+      "serverProductId": 114,
+      "name": "Creative Pebble Pro",
+      "category": "스피커",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "speaker-z407",
+      "serverProductId": 115,
+      "name": "Logitech Z407",
+      "category": "스피커",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "speaker-r1280db",
+      "serverProductId": 116,
+      "name": "Edifier R1280DB",
+      "category": "스피커",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "speaker-r1700bts",
+      "serverProductId": 117,
+      "name": "Edifier R1700BTs",
+      "category": "스피커",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "speaker-s2000mkiii",
+      "serverProductId": 118,
+      "name": "Edifier S2000MKIII",
+      "category": "스피커",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "speaker-a2-wireless",
+      "serverProductId": 119,
+      "name": "Audioengine A2+ Wireless",
+      "category": "스피커",
+      "action": "created"
+    },
+    {
+      "sourceProductId": "speaker-the-fives",
+      "serverProductId": 120,
+      "name": "Klipsch The Fives",
+      "category": "스피커",
+      "action": "created"
+    }
+  ]
+}

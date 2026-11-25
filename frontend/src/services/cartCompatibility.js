@@ -1,0 +1,86 @@
+// Compare the requirements each part declares against the matching parts in the cart.
+const storageCategories = ['SSD','HDD']
+const rules = [
+  {
+    partCategory:'CPU', fitCategory:'메인보드', partField:'socket', fitField:'socket',
+    fits:(part, fit) => part === fit,
+    reason:(part, fit) => 'CPU 소켓 ' + part + '과 메인보드 소켓 ' + fit + '이 달라요.',
+  },
+  {
+    partCategory:'그래픽카드', fitCategory:'케이스', partField:'gpuLengthMm', fitField:'maxGpuLengthMm',
+    fits:(part, fit) => part <= fit,
+    reason:(part, fit) => '그래픽카드 길이 ' + part + 'mm가 케이스 장착 한도 ' + fit + 'mm를 초과해요.',
+  },
+  {
+    partCategory:'메모리', fitCategory:'메인보드', partField:'memoryType', fitField:'memoryType',
+    fits:(part, fit) => part === fit,
+    reason:(part, fit) => '메모리는 ' + part + '이고 메인보드는 ' + fit + ' 메모리를 지원해요.',
+  },
+  {
+    partCategory:'메인보드', fitCategory:'케이스', partField:'boardFormat', fitField:'supportedBoardFormats',
+    fits:(part, fit) => fit.includes(part),
+    reason:(part, fit) => '메인보드는 ' + part + '이고 케이스는 ' + fit.join(' · ') + '까지만 지원해요.',
+  },
+  {
+    partCategory:'그래픽카드', fitCategory:'파워', partField:'recommendedWatts', fitField:'supplyWatts',
+    fits:(part, fit) => part <= fit,
+    reason:(part, fit) => '파워 정격 ' + fit + 'W가 그래픽카드의 권장 시스템 파워 ' + part + 'W보다 낮아요.',
+  },
+  {
+    partCategory:storageCategories, fitCategory:'메인보드', partField:'storageInterface', fitField:'storageInterfaces',
+    fits:(part, fit) => fit.includes(part),
+    reason:(part, fit) => '저장장치는 ' + part + ' 연결이 필요하고 메인보드는 ' + fit.join(' · ') + ' 연결을 지원해요.',
+  },
+  {
+    partCategory:storageCategories, fitCategory:'케이스', partField:'driveBaySize', fitField:'driveBays',
+    fits:(part, fit) => fit.includes(part),
+    reason:(part, fit) => '저장장치에 ' + part + ' 베이가 필요해요. 이 케이스의 베이는 ' + fit.join(' · ') + '예요.',
+  },
+  {
+    partCategory:'파워', fitCategory:'케이스', partField:'powerFormat', fitField:'supportedPowerFormats',
+    fits:(part, fit) => fit.includes(part),
+    reason:(part, fit) => '파워 규격은 ' + part + '이고 케이스가 지원하는 규격은 ' + fit.join(' · ') + '예요.',
+  },
+  {
+    partCategory:'파워', fitCategory:'케이스', partField:'powerSupplyLengthMm', fitField:'maxPsuLengthMm',
+    fits:(part, fit) => part <= fit,
+    reason:(part, fit) => '파워 길이 ' + part + 'mm가 케이스 장착 한도 ' + fit + 'mm를 초과해요.',
+  },
+  {
+    partCategory:'그래픽카드', fitCategory:'케이스', partField:'gpuSlotWidth', fitField:'maxGpuSlotWidth',
+    fits:(part, fit) => part <= fit,
+    reason:(part, fit) => '그래픽카드 두께 ' + part + '슬롯이 케이스의 사용 가능 공간 ' + fit + '슬롯을 초과해요.',
+  },
+  {
+    partCategory:'그래픽카드', fitCategory:'파워', partField:'gpuPowerConnector', fitField:'gpuCables',
+    fits:(part, fit) => (fit[part.pin] ?? 0) >= part.count,
+    reason:(part, fit) => '그래픽카드는 ' + part.pin + '핀 보조전원 ' + part.count + '개가 필요하고 파워 기본 제공 케이블에는 ' + (fit[part.pin] ?? 0) + '개가 있어요.',
+  },
+]
+
+export function cartCompatibilityWarnings(items) {
+  return rules.flatMap(rule => {
+    const categories = Array.isArray(rule.partCategory) ? rule.partCategory : [rule.partCategory]
+    const parts = items.filter(item => categories.includes(item.category))
+    const fits = items.filter(item => item.category === rule.fitCategory)
+    // A missing spec or a viable alternative may belong to a separate build.
+    const unmatched = (part, partField, candidates, fitField, match) => {
+      const spec = part.compatibility?.[partField]
+      return spec != null && candidates.length > 0 && candidates.every(candidate => {
+        const other = candidate.compatibility?.[fitField]
+        return other != null && !match(spec,other)
+      })
+    }
+    return parts.flatMap(part => {
+      const noFit = unmatched(part,rule.partField,fits,rule.fitField,rule.fits)
+      return fits.flatMap(fit => {
+        const a = part.compatibility?.[rule.partField]
+        const b = fit.compatibility?.[rule.fitField]
+        if (a == null || b == null || rule.fits(a,b)) return []
+        const noPart = unmatched(fit,rule.fitField,parts,rule.partField,(x,y)=>rule.fits(y,x))
+        if (!noFit && !noPart) return []
+        return [{ key:rule.partField+'-'+part.productId+'-'+fit.productId, part, fit, reason:rule.reason(a,b) }]
+      })
+    })
+  })
+}

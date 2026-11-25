@@ -1,0 +1,46 @@
+.product-editorial{margin:28px 0 52px;color:#eef1f5}
+.editorial-highlights{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-bottom:28px}
+.editorial-highlights article{position:relative;overflow:hidden;padding:28px 30px 30px;border:1px solid #343941;border-radius:16px;background:linear-gradient(135deg,#20242a,#15181d)}
+.highlight-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.highlight-top>span{font-size:12px;letter-spacing:.12em;color:#c5cdd8;font-weight:700}
+.highlight-top svg{width:37px;height:37px;padding:7px;box-sizing:content-box;border:1px solid #454c57;border-radius:50%;background:#252a32;color:#d6dde7}
+.editorial-highlights h3{margin:0 0 10px;font-size:21px;letter-spacing:-.04em;font-weight:750}
+.editorial-highlights p{font-size:15px;line-height:1.7;margin:0;color:#c0c7d1;word-break:keep-all}
+.editorial-overview{position:relative;overflow:hidden;isolation:isolate;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.3fr);align-items:center;gap:50px;padding:46px 48px;border-radius:18px;background:#0d1014;color:#f2f5f8}
+.editorial-overview::after{content:"";position:absolute;z-index:-1;width:360px;height:360px;right:-100px;top:-220px;border:1px solid #d1dbea35;border-radius:50%;box-shadow:0 0 0 45px #d1dbea09,0 0 0 90px #d1dbea06}
+.editorial-eyebrow{margin:0 0 15px;font-size:10px;line-height:1.5;letter-spacing:.2em;font-weight:700;color:#b9c4d2}
+.editorial-overview .editorial-eyebrow{color:#d6dfea}
+.editorial-overview h3{font-size:clamp(25px,2.5vw,34px);line-height:1.35;letter-spacing:-.04em;margin:0;overflow-wrap:anywhere}
+.editorial-overview h3 span{display:block;color:#b5bdca;font-weight:400;margin-top:5px}
+.editorial-overview-body{font-size:15px;line-height:1.95;color:#c8ced7;margin:0;padding-left:34px;border-left:1px solid #c5d1e045;word-break:keep-all}
+.editorial-chapters{display:grid;gap:14px;margin:28px 0}
+.editorial-chapters article{display:grid;grid-template-columns:68px minmax(0,1fr);gap:24px;align-items:start;padding:30px 34px;border:1px solid #343941;border-radius:16px;background:#191e25;box-shadow:0 4px 20px #080b1030}
+.editorial-number{font-size:48px;line-height:1;font-weight:500;letter-spacing:-.07em;color:#adb9c9;font-variant-numeric:tabular-nums}
+.editorial-chapter-heading{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 20px;margin:2px 0 14px}
+.editorial-chapter-heading h3{margin:0;font-size:21px;letter-spacing:-.035em;font-weight:750}
+.editorial-chapter-heading small{display:inline-flex;align-items:center;gap:7px;border:1px solid #4b5360;border-radius:30px;padding:7px 11px;font-size:11px;line-height:1.5;color:#d2dbe6;background:#252b34}
+.editorial-chapter-heading small span{font-size:12px;color:#dce5ef}
+.editorial-chapter-body>p{margin:0;color:#c1c9d4;font-size:15px;line-height:1.9;word-break:keep-all;max-width:920px}
+.editorial-usage{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);align-items:center;gap:40px;padding:38px 44px;border-radius:18px;background:#14181e;border:1px solid #343b46}
+.editorial-usage h3{position:relative;display:inline-block;margin:0;font-size:30px;line-height:1.35;letter-spacing:-.045em;font-weight:750}
+.editorial-usage h3>span{position:absolute;right:-50px;top:0;font-size:34px;color:#c3cdda;font-weight:400}
+.editorial-usage ul{display:grid;gap:10px;padding:0;margin:0;list-style:none}
+.editorial-usage li{display:flex;align-items:center;gap:13px;padding:15px 18px;border:1px solid #3a424e;border-radius:11px;background:#20262e;font-size:14px;line-height:1.65;color:#e0e5ed;word-break:keep-all}
+.editorial-usage li::before{content:"✓";display:grid;place-items:center;flex:0 0 22px;width:22px;height:22px;background:#3b4655;color:#f0f4fa;border-radius:50%;font-size:11px}
+@media(max-width:900px){.editorial-highlights{gap:12px}.editorial-highlights article{padding:22px}.editorial-highlights h3{font-size:19px}.editorial-overview{gap:25px;padding:32px}.editorial-chapters article{padding:26px;gap:20px;grid-template-columns:52px minmax(0,1fr)}.editorial-usage{padding:30px;gap:30px}}
+@media(max-width:650px){.product-editorial{margin:20px 0 34px}.editorial-highlights{grid-template-columns:1fr;gap:10px;margin-bottom:20px}.editorial-highlights article{padding:20px 22px}.highlight-top{margin-bottom:10px}.highlight-top svg{position:absolute;right:22px;top:24px;width:25px;height:25px;padding:9px}.editorial-highlights h3{font-size:19px;padding-right:52px;margin-bottom:5px}.editorial-highlights p{font-size:14px;padding-right:46px}.editorial-overview{grid-template-columns:1fr;padding:28px 24px;gap:22px;border-radius:14px}.editorial-overview h3{font-size:26px}.editorial-overview h3 span{display:inline;margin-left:8px;font-size:22px}.editorial-overview-body{padding:20px 0 0;border-left:0;border-top:1px solid #c5d1e045;font-size:14px}.editorial-eyebrow{font-size:9px;margin-bottom:11px}.editorial-chapters{gap:12px;margin:20px 0}.editorial-chapters article{grid-template-columns:33px minmax(0,1fr);gap:16px;padding:24px 20px;border-radius:14px}.editorial-number{font-size:31px}.editorial-chapter-heading{gap:10px;margin:0 0 12px}.editorial-chapter-heading h3{font-size:19px}.editorial-chapter-heading small{font-size:10px;padding:5px 9px}.editorial-chapter-body>p{font-size:14px;line-height:1.85}.editorial-usage{grid-template-columns:1fr;padding:26px 22px;gap:22px;border-radius:14px}.editorial-usage h3{font-size:26px}.editorial-usage h3 br{display:none}.editorial-usage h3>span{right:-38px;font-size:29px}.editorial-usage li{font-size:13px;padding:13px 14px}}
+
+
+/* White reading surfaces, silver details, and two dark editorial anchors. */
+.product-editorial{color:#20242a}
+.editorial-highlights article{background:linear-gradient(135deg,#fff,#f3f5f7);border-color:#dce1e7}
+.highlight-top>span{color:#788493}
+.highlight-top svg{color:#586574;background:#fff;border-color:#d5dce5}
+.editorial-highlights p{color:#65707d}
+.editorial-chapters article{background:#fff;border-color:#dfe3e9;box-shadow:none}
+.editorial-number{color:#929eac}
+.editorial-chapter-heading small{color:#596675;background:#f0f3f6;border-color:#dce2e9}
+.editorial-chapter-heading small span{color:#7a8797}
+.editorial-chapter-body>p{color:#626d7a}
+.editorial-usage{background:#14181e;color:#f0f4f8}
+.editorial-usage li{background:#20262e;color:#e0e5ed}
