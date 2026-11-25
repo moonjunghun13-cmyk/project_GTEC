@@ -1,0 +1,121 @@
+﻿product_code,category,name,unverified_keys,known_spec_keys,source_url
+monitor-24mp400-b,MONITOR,LG 24MP400-B,,,https://prod.danawa.com/info/?pcode=14420480
+monitor-f24t350,MONITOR,Samsung F24T350,,,https://prod.danawa.com/info/?pcode=12126638
+monitor-24g2sp,MONITOR,AOC 24G2SP,,,https://www.aoc.com/us/gaming/monitors/24g2sp
+monitor-27gp850-b,MONITOR,LG UltraGear 27GP850-B,,,https://prod.danawa.com/info/?pcode=14948531
+monitor-g2724d,MONITOR,Dell G2724D,,,https://prod.danawa.com/info/?pcode=26423741
+monitor-m27q-x,MONITOR,GIGABYTE M27Q X,,,https://www.gigabyte.com/Monitor/M27Q-X-rev-20/sp
+monitor-g50d-27,MONITOR,Samsung Odyssey G5 G50D 27인치,,,https://prod.danawa.com/info/?pcode=48478988
+monitor-27gs95qe-b,MONITOR,LG UltraGear OLED 27GS95QE-B,,,https://prod.danawa.com/info/?pcode=45313373
+monitor-g80sd,MONITOR,Samsung Odyssey OLED G8 G80SD,,,https://prod.danawa.com/info/?pcode=55041920
+monitor-pg32ucdm,MONITOR,ASUS ROG Swift OLED PG32UCDM,,,https://prod.danawa.com/info/?pcode=75541148
+cpu-14100f,CPU,Intel Core i3-14100F,CPU_POWER_W,CPU_SOCKET,https://www.intel.com/content/www/us/en/products/sku/236786/intel-core-i3-processor-14100f-12m-cache-up-to-4-70-ghz/specifications.html
+cpu-5600,CPU,AMD Ryzen 5 5600,CPU_POWER_W,CPU_SOCKET,https://www.amd.com/en/products/processors/desktops/ryzen.html
+cpu-14400f,CPU,Intel Core i5-14400F,CPU_POWER_W,CPU_SOCKET,https://www.intel.com/content/www/us/en/products/sku/236777/intel-core-i5-processor-14400f-20m-cache-up-to-4-70-ghz/specifications.html
+cpu-7500f,CPU,AMD Ryzen 5 7500F,CPU_POWER_W,CPU_SOCKET,https://www.amd.com/en/products/processors/desktops/ryzen.html
+cpu-14600k,CPU,Intel Core i5-14600K,CPU_POWER_W,CPU_SOCKET,https://www.intel.com/content/www/us/en/products/sku/236799/intel-core-i5-processor-14600k-24m-cache-up-to-5-30-ghz/specifications.html
+cpu-9600x,CPU,AMD Ryzen 5 9600X,CPU_POWER_W,CPU_SOCKET,https://www.amd.com/en/products/processors/desktops/ryzen.html
+cpu-245k,CPU,Intel Core Ultra 5 245K,CPU_POWER_W,CPU_SOCKET,https://www.intel.com/content/www/us/en/products/sku/241067/intel-core-ultra-5-processor-245k-24m-cache-up-to-5-20-ghz/specifications.html
+cpu-9700x,CPU,AMD Ryzen 7 9700X,CPU_POWER_W,CPU_SOCKET,https://www.amd.com/en/products/processors/desktops/ryzen.html
+cpu-270k-plus,CPU,Intel Core Ultra 7 270K Plus,CPU_POWER_W,CPU_SOCKET,https://www.intel.com/content/www/us/en/products/sku/245692/intel-core-ultra-7-processor-270k-plus-36m-cache-up-to-5-50-ghz/specifications.html
+cpu-9950x3d,CPU,AMD Ryzen 9 9950X3D,CPU_POWER_W,CPU_SOCKET,https://www.amd.com/en/products/processors/desktops/ryzen.html
+board-h610m-k-d4,MAINBOARD,ASUS PRIME H610M-K D4,"RAM_SLOTS,MAX_RAM_GB,PCIE_X16_SLOTS,M2_NVME_2280_SLOTS,SATA_PORTS,CPU_EPS_8PIN_REQUIRED","CPU_SOCKET,RAM_TYPE,FORM_FACTOR,M2_NVME_SUPPORTED,SATA_SUPPORTED",https://prod.danawa.com/info/?pcode=16083650
+board-pro-h610m-e-ddr4,MAINBOARD,MSI PRO H610M-E DDR4,"RAM_SLOTS,MAX_RAM_GB,PCIE_X16_SLOTS,M2_NVME_2280_SLOTS,SATA_PORTS,CPU_EPS_8PIN_REQUIRED","CPU_SOCKET,RAM_TYPE,FORM_FACTOR,M2_NVME_SUPPORTED,SATA_SUPPORTED",https://prod.danawa.com/info/?pcode=18109313
+board-a520m-k-v2,MAINBOARD,GIGABYTE A520M K V2,"RAM_SLOTS,MAX_RAM_GB,PCIE_X16_SLOTS,M2_NVME_2280_SLOTS,SATA_PORTS,CPU_EPS_8PIN_REQUIRED","CPU_SOCKET,RAM_TYPE,FORM_FACTOR,M2_NVME_SUPPORTED,SATA_SUPPORTED",https://prod.danawa.com/info/?pcode=20459081
+board-tuf-b650-plus-wifi,MAINBOARD,ASUS TUF GAMING B650-PLUS WIFI,"RAM_SLOTS,MAX_RAM_GB,PCIE_X16_SLOTS,M2_NVME_2280_SLOTS,SATA_PORTS,CPU_EPS_8PIN_REQUIRED","CPU_SOCKET,RAM_TYPE,FORM_FACTOR,M2_NVME_SUPPORTED,SATA_SUPPORTED",https://prod.danawa.com/info/?pcode=18044558
+board-pro-b650m-a-wifi,MAINBOARD,MSI PRO B650M-A WIFI,"RAM_SLOTS,MAX_RAM_GB,PCIE_X16_SLOTS,M2_NVME_2280_SLOTS,SATA_PORTS,CPU_EPS_8PIN_REQUIRED","CPU_SOCKET,RAM_TYPE,FORM_FACTOR,M2_NVME_SUPPORTED,SATA_SUPPORTED",https://prod.danawa.com/info/?pcode=17971184
+board-b760m-ds3h-ax-ddr4,MAINBOARD,GIGABYTE B760M DS3H AX DDR4,"RAM_SLOTS,MAX_RAM_GB,PCIE_X16_SLOTS,M2_NVME_2280_SLOTS,SATA_PORTS,CPU_EPS_8PIN_REQUIRED","CPU_SOCKET,RAM_TYPE,FORM_FACTOR,M2_NVME_SUPPORTED,SATA_SUPPORTED",https://www.gigabyte.com/Motherboard/B760M-DS3H-AX-DDR4-rev-14-15/sp
+board-b650m-pro-rs-wifi,MAINBOARD,ASRock B650M Pro RS WiFi,"RAM_SLOTS,MAX_RAM_GB,PCIE_X16_SLOTS,M2_NVME_2280_SLOTS,SATA_PORTS,CPU_EPS_8PIN_REQUIRED","CPU_SOCKET,RAM_TYPE,FORM_FACTOR,M2_NVME_SUPPORTED,SATA_SUPPORTED",https://www.asrock.com/mb/amd/b650m%20pro%20rs%20wifi/index.asp
+board-x870e-e-wifi,MAINBOARD,ASUS ROG STRIX X870E-E GAMING WIFI,"RAM_SLOTS,MAX_RAM_GB,PCIE_X16_SLOTS,M2_NVME_2280_SLOTS,SATA_PORTS,CPU_EPS_8PIN_REQUIRED","CPU_SOCKET,RAM_TYPE,FORM_FACTOR,M2_NVME_SUPPORTED,SATA_SUPPORTED",https://prod.danawa.com/info/?pcode=67694921
+board-z890-carbon-wifi,MAINBOARD,MSI MPG Z890 CARBON WIFI,"RAM_SLOTS,MAX_RAM_GB,PCIE_X16_SLOTS,M2_NVME_2280_SLOTS,SATA_PORTS,CPU_EPS_8PIN_REQUIRED","CPU_SOCKET,RAM_TYPE,FORM_FACTOR,M2_NVME_SUPPORTED,SATA_SUPPORTED",https://prod.danawa.com/info/?pcode=69698066
+board-x870e-aorus-master,MAINBOARD,GIGABYTE X870E AORUS MASTER,"RAM_SLOTS,MAX_RAM_GB,PCIE_X16_SLOTS,M2_NVME_2280_SLOTS,SATA_PORTS,CPU_EPS_8PIN_REQUIRED","CPU_SOCKET,RAM_TYPE,FORM_FACTOR,M2_NVME_SUPPORTED,SATA_SUPPORTED",https://www.gigabyte.com/Motherboard/X870E-AORUS-MASTER/sp
+ram-samsung-ddr4-8,RAM,Samsung DDR4-3200 8GB M378A1K43EB2-CWE,RAM_MODULE_COUNT,"RAM_TYPE,RAM_MODULE_GB",https://www.oempcworld.com/OEMPCworld-com/501126.html
+ram-ct16g4dfra32a,RAM,Crucial DDR4-3200 16GB CT16G4DFRA32A,RAM_MODULE_COUNT,"RAM_TYPE,RAM_MODULE_GB",https://www.crucial.com/memory/ddr4/ct16g4dfra32a
+ram-ct16g48c40u5,RAM,Crucial DDR5-4800 16GB CT16G48C40U5,RAM_MODULE_COUNT,"RAM_TYPE,RAM_MODULE_GB",https://www.crucial.com/memory/ddr5/ct16g48c40u5
+ram-fury-beast,RAM,Kingston FURY Beast DDR5-6000 32GB (16GB×2) KF560C36BBEK2-32,,"RAM_TYPE,RAM_MODULE_GB,RAM_MODULE_COUNT",https://www.kingston.com/datasheets/KF560C36BBEK2-32.pdf
+ram-vengeance,RAM,CORSAIR VENGEANCE DDR5-6000 32GB (16GB×2) CMK32GX5M2B6000C30,,"RAM_TYPE,RAM_MODULE_GB,RAM_MODULE_COUNT",https://prod.danawa.com/info/?pcode=59829503
+ram-vulcan,RAM,TeamGroup T-FORCE VULCAN DDR5-6000 32GB (16GB×2),,"RAM_TYPE,RAM_MODULE_GB,RAM_MODULE_COUNT",https://prod.danawa.com/info/?pcode=18613178
+ram-ripjaws-s5,RAM,G.SKILL Ripjaws S5 DDR5-6000 32GB (16GB×2),,"RAM_TYPE,RAM_MODULE_GB,RAM_MODULE_COUNT",https://prod.danawa.com/info/?pcode=16875872
+ram-trident-z5-neo-rgb,RAM,G.SKILL Trident Z5 Neo RGB DDR5-6000 CL30 32GB (16GB×2),,"RAM_TYPE,RAM_MODULE_GB,RAM_MODULE_COUNT",https://prod.danawa.com/info/?pcode=17931836
+ram-dominator-titanium,RAM,CORSAIR DOMINATOR TITANIUM RGB DDR5-7200 CL34 32GB (16GB×2),,"RAM_TYPE,RAM_MODULE_GB,RAM_MODULE_COUNT",https://www.corsair.com/ww/en/p/memory/cmp32gx5m2x7200c34/dominator-titanium-rgb-2x16gb-ddr5-dram-7200mt-s-c34-intel-xmp-memory-kit-cmp32gx5m2x7200c34
+ram-fury-renegade-rgb,RAM,Kingston FURY Renegade RGB DDR5-7200 32GB (16GB×2) KF572C38RSAK2-32,,"RAM_TYPE,RAM_MODULE_GB,RAM_MODULE_COUNT",https://www.kingston.com/datasheets/KF572C38RSAK2-32.pdf
+gpu-dual-rtx3050,GPU,ASUS DUAL GeForce RTX 3050 6GB,GPU_POWER_W,"GPU_LENGTH_MM,GPU_RECOMMENDED_PSU_W,GPU_POWER_CONNECTOR",https://prod.danawa.com/info/?pcode=68918675
+gpu-pulse-rx6600,GPU,SAPPHIRE PULSE Radeon RX 6600 8GB,GPU_POWER_W,"GPU_LENGTH_MM,GPU_RECOMMENDED_PSU_W,GPU_POWER_CONNECTOR",https://www.sapphiretech.com/en/news/sapphire-pulse-rx-6600
+gpu-ventus-rtx4060,GPU,MSI GeForce RTX 4060 VENTUS 2X BLACK 8G OC,GPU_POWER_W,"GPU_LENGTH_MM,GPU_RECOMMENDED_PSU_W,GPU_POWER_CONNECTOR",https://prod.danawa.com/info/?pcode=20740013
+gpu-ventus-rtx5060,GPU,MSI GeForce RTX 5060 8G VENTUS 2X OC,GPU_POWER_W,"GPU_LENGTH_MM,GPU_RECOMMENDED_PSU_W,GPU_POWER_CONNECTOR",https://prod.danawa.com/info/?pcode=90956033
+gpu-ventus-rtx5060-ti,GPU,MSI GeForce RTX 5060 Ti 16G VENTUS 2X OC PLUS,GPU_POWER_W,"GPU_LENGTH_MM,GPU_RECOMMENDED_PSU_W,GPU_POWER_CONNECTOR",https://prod.danawa.com/info/?pcode=81990338
+gpu-pulse-rx9060-xt,GPU,SAPPHIRE PULSE Radeon RX 9060 XT OC 16GB,GPU_POWER_W,"GPU_LENGTH_MM,GPU_RECOMMENDED_PSU_W,GPU_POWER_CONNECTOR",https://prod.danawa.com/info/?pcode=91909571
+gpu-dual-rtx5070,GPU,ASUS DUAL GeForce RTX 5070 12GB,GPU_POWER_W,"GPU_LENGTH_MM,GPU_RECOMMENDED_PSU_W,GPU_POWER_CONNECTOR",https://www.asus.com/de/motherboards-components/graphics-cards/dual/dual-rtx5070-12g/techspec/
+gpu-gaming-rtx5070-ti,GPU,GIGABYTE GeForce RTX 5070 Ti GAMING OC 16G,GPU_POWER_W,"GPU_LENGTH_MM,GPU_RECOMMENDED_PSU_W,GPU_POWER_CONNECTOR",https://prod.danawa.com/info/?pcode=76551056
+gpu-trio-rtx5080,GPU,MSI GeForce RTX 5080 16G GAMING TRIO OC,GPU_POWER_W,"GPU_LENGTH_MM,GPU_RECOMMENDED_PSU_W,GPU_POWER_CONNECTOR",https://prod.danawa.com/info/?pcode=75373376
+gpu-astral-rtx5090,GPU,ASUS ROG Astral GeForce RTX 5090 32GB OC Edition,GPU_POWER_W,"GPU_LENGTH_MM,GPU_RECOMMENDED_PSU_W,GPU_POWER_CONNECTOR",https://rog.asus.com/graphics-cards/graphics-cards/rog-astral/rog-astral-rtx5090-o32g-gaming/
+ssd-nv2-500,SSD,Kingston NV2 500GB,,"STORAGE_INTERFACE,STORAGE_FORM_FACTOR",https://www.kingston.com/datasheets/snv2s_en.pdf
+ssd-sn580-500,SSD,Western Digital WD Blue SN580 500GB,,"STORAGE_INTERFACE,STORAGE_FORM_FACTOR",https://prod.danawa.com/info/?pcode=21691043
+ssd-p3-plus-500,SSD,Crucial P3 Plus 500GB,,"STORAGE_INTERFACE,STORAGE_FORM_FACTOR",https://www.microlandusa.com/products/ssd/crucialr-p3-plus-500gb-ssd.html
+ssd-sn770-1tb,SSD,Western Digital WD_BLACK SN770 1TB,,"STORAGE_INTERFACE,STORAGE_FORM_FACTOR",https://gitec.ge/ge/ssd-western-digital-wd-black-sn770-wds100t3x0e-m2-2280-1tb-pcie-gen4
+ssd-990-evo-plus-1tb,SSD,Samsung 990 EVO Plus 1TB,,"STORAGE_INTERFACE,STORAGE_FORM_FACTOR",https://prod.danawa.com/info/?pcode=69869543
+ssd-p41-1tb,SSD,SK hynix Platinum P41 1TB,,"STORAGE_INTERFACE,STORAGE_FORM_FACTOR",https://prod.danawa.com/info/?pcode=17001050
+ssd-t500-1tb,SSD,Crucial T500 1TB,,"STORAGE_INTERFACE,STORAGE_FORM_FACTOR",https://prod.danawa.com/info/?pcode=29655656
+ssd-990-pro-2tb,SSD,Samsung 990 PRO 2TB,,"STORAGE_INTERFACE,STORAGE_FORM_FACTOR",https://prod.danawa.com/info/?pcode=18297722
+ssd-sn850x-2tb,SSD,Western Digital WD_BLACK SN850X 2TB,,"STORAGE_INTERFACE,STORAGE_FORM_FACTOR",https://prod.danawa.com/info/?pcode=17788451
+ssd-t705-2tb,SSD,Crucial T705 2TB,,"STORAGE_INTERFACE,STORAGE_FORM_FACTOR",https://www.crucial.com/ssd/t705/ct2000t705ssd3
+hdd-wd10ezex,HDD,Western Digital WD Blue 1TB WD10EZEX,,"STORAGE_INTERFACE,STORAGE_FORM_FACTOR",https://prod.danawa.com/info/?pcode=1706996
+hdd-st2000dm008,HDD,Seagate BarraCuda 2TB ST2000DM008,,"STORAGE_INTERFACE,STORAGE_FORM_FACTOR",https://prod.danawa.com/info/?pcode=6545078
+hdd-hdwd110,HDD,Toshiba P300 1TB HDWD110,,"STORAGE_INTERFACE,STORAGE_FORM_FACTOR",https://prod.danawa.com/info/?pcode=6288798
+hdd-st4000dm004,HDD,Seagate BarraCuda 4TB ST4000DM004,,"STORAGE_INTERFACE,STORAGE_FORM_FACTOR",https://prod.danawa.com/info/?pcode=5173062
+hdd-wd40ezax,HDD,Western Digital WD Blue 4TB WD40EZAX,,"STORAGE_INTERFACE,STORAGE_FORM_FACTOR",https://prod.danawa.com/info/?pcode=19948346
+hdd-wd40efpx,HDD,Western Digital WD Red Plus 4TB WD40EFPX,,"STORAGE_INTERFACE,STORAGE_FORM_FACTOR",https://prod.danawa.com/info/?pcode=28415234
+hdd-st4000vn006,HDD,Seagate IronWolf 4TB ST4000VN006,,"STORAGE_INTERFACE,STORAGE_FORM_FACTOR",https://prod.danawa.com/info/?pcode=16930205
+hdd-st8000nt001,HDD,Seagate IronWolf Pro 8TB ST8000NT001,,"STORAGE_INTERFACE,STORAGE_FORM_FACTOR",https://prod.danawa.com/info/?pcode=18146048
+hdd-wd8005ffbx,HDD,Western Digital WD Red Pro 8TB WD8005FFBX,,"STORAGE_INTERFACE,STORAGE_FORM_FACTOR",https://prod.danawa.com/info/?pcode=65431049
+hdd-st20000nm007d,HDD,Seagate Exos X20 20TB ST20000NM007D,,"STORAGE_INTERFACE,STORAGE_FORM_FACTOR",https://prod.danawa.com/info/?pcode=16407728
+psu-hyper-k-pro-500,POWER,FSP HYPER K PRO 500W,"MAINBOARD_24PIN_COUNT,CPU_EPS_8PIN_COUNT,PCIE_8PIN_COUNT,PCIE_16PIN_COUNT,SATA_POWER_COUNT","PSU_WATT,PSU_FORM_FACTOR,PSU_LENGTH_MM",https://prod.danawa.com/info/?pcode=12397211
+psu-classic-ii-600,POWER,마이크로닉스 Classic II 풀체인지 600W 80PLUS BRONZE ATX 3.1,"MAINBOARD_24PIN_COUNT,CPU_EPS_8PIN_COUNT,PCIE_8PIN_COUNT,PCIE_16PIN_COUNT,SATA_POWER_COUNT","PSU_WATT,PSU_FORM_FACTOR,PSU_LENGTH_MM",https://prod.danawa.com/info/?pcode=49642652
+psu-pk650d,POWER,DeepCool PK650D 650W,"MAINBOARD_24PIN_COUNT,CPU_EPS_8PIN_COUNT,PCIE_8PIN_COUNT,PCIE_16PIN_COUNT,SATA_POWER_COUNT","PSU_WATT,PSU_FORM_FACTOR,PSU_LENGTH_MM",https://aqua.hu/alkatreszek/deepcool-pk650d-650w-tapegyseg-t1280013
+psu-rm750e,POWER,CORSAIR RM750e (2025),"MAINBOARD_24PIN_COUNT,CPU_EPS_8PIN_COUNT,PCIE_8PIN_COUNT,PCIE_16PIN_COUNT,SATA_POWER_COUNT","PSU_WATT,PSU_FORM_FACTOR,PSU_LENGTH_MM",https://www.corsair.com/us/en/p/psu/cp-9020295-na/rme-series-rm750e-fully-modular-low-noise-atx-power-supply-cp-9020295-na
+psu-a750gl,POWER,MSI MAG A750GL PCIE5,"MAINBOARD_24PIN_COUNT,CPU_EPS_8PIN_COUNT,PCIE_8PIN_COUNT,PCIE_16PIN_COUNT,SATA_POWER_COUNT","PSU_WATT,PSU_FORM_FACTOR,PSU_LENGTH_MM",https://www.msi.com/Power-Supply/MAG-A750GL-PCIE5
+psu-focus-gx-850,POWER,Seasonic FOCUS GX-850 ATX 3.0,"MAINBOARD_24PIN_COUNT,CPU_EPS_8PIN_COUNT,PCIE_8PIN_COUNT,PCIE_16PIN_COUNT,SATA_POWER_COUNT","PSU_WATT,PSU_FORM_FACTOR,PSU_LENGTH_MM",https://seasonic.com/atx3-focus-gx/
+psu-leadex-iii-850,POWER,SuperFlower LEADEX III GOLD 850W,"MAINBOARD_24PIN_COUNT,CPU_EPS_8PIN_COUNT,PCIE_8PIN_COUNT,PCIE_16PIN_COUNT,SATA_POWER_COUNT","PSU_WATT,PSU_FORM_FACTOR,PSU_LENGTH_MM",https://prod.danawa.com/info/?pcode=9243210
+psu-hx1000i,POWER,CORSAIR HX1000i,"MAINBOARD_24PIN_COUNT,CPU_EPS_8PIN_COUNT,PCIE_8PIN_COUNT,PCIE_16PIN_COUNT,SATA_POWER_COUNT","PSU_WATT,PSU_FORM_FACTOR,PSU_LENGTH_MM",https://prod.danawa.com/info/?pcode=19883954
+psu-vertex-gx-1200,POWER,Seasonic VERTEX GX-1200 ATX 3.1,"MAINBOARD_24PIN_COUNT,CPU_EPS_8PIN_COUNT,PCIE_8PIN_COUNT,PCIE_16PIN_COUNT,SATA_POWER_COUNT","PSU_WATT,PSU_FORM_FACTOR,PSU_LENGTH_MM",https://prod.danawa.com/info/?pcode=18698087
+psu-ai1300p,POWER,MSI MEG Ai1300P PCIE5,"MAINBOARD_24PIN_COUNT,CPU_EPS_8PIN_COUNT,PCIE_8PIN_COUNT,PCIE_16PIN_COUNT,SATA_POWER_COUNT","PSU_WATT,PSU_FORM_FACTOR,PSU_LENGTH_MM",https://prod.danawa.com/info/?pcode=18146243
+case-dk200-rgb,CASE,darkFlash DK200 RGB,"HDD_3_5_BAYS,SSD_2_5_BAYS","MAINBOARD_SUPPORT,MAX_GPU_LENGTH_MM,PSU_SUPPORT,MAX_PSU_LENGTH_MM",https://prod.danawa.com/info/?pcode=13381634
+case-x3-mesh,CASE,MONTECH X3 MESH,"HDD_3_5_BAYS,SSD_2_5_BAYS","MAINBOARD_SUPPORT,MAX_GPU_LENGTH_MM,PSU_SUPPORT,MAX_PSU_LENGTH_MM",https://www.montechpc.com/x3-mesh
+case-matrexx-40-3fs,CASE,DeepCool MATREXX 40 3FS,"HDD_3_5_BAYS,SSD_2_5_BAYS","MAINBOARD_SUPPORT,MAX_GPU_LENGTH_MM,PSU_SUPPORT,MAX_PSU_LENGTH_MM",https://global.deepcool.com/products/Cases/fulltowercases/2021/12078.shtml
+case-dlx21-mesh,CASE,darkFlash DLX21 MESH RGB,"HDD_3_5_BAYS,SSD_2_5_BAYS","MAINBOARD_SUPPORT,MAX_GPU_LENGTH_MM,PSU_SUPPORT,MAX_PSU_LENGTH_MM",https://prod.danawa.com/info/?pcode=11884168
+case-lancool-216,CASE,LIAN LI LANCOOL 216,"HDD_3_5_BAYS,SSD_2_5_BAYS","MAINBOARD_SUPPORT,MAX_GPU_LENGTH_MM,PSU_SUPPORT,MAX_PSU_LENGTH_MM",https://prod.danawa.com/info/?pcode=18538823
+case-air-903-max,CASE,MONTECH AIR 903 MAX,"HDD_3_5_BAYS,SSD_2_5_BAYS","MAINBOARD_SUPPORT,MAX_GPU_LENGTH_MM,PSU_SUPPORT,MAX_PSU_LENGTH_MM",https://www.montechpc.com/air-903-max
+case-h5-flow-2024,CASE,NZXT H5 Flow (2024),"HDD_3_5_BAYS,SSD_2_5_BAYS","MAINBOARD_SUPPORT,MAX_GPU_LENGTH_MM,PSU_SUPPORT,MAX_PSU_LENGTH_MM",https://support.nzxt.com/hc/en-us/articles/40225168535451-H5-Flow-2024-Specs
+case-north-xl,CASE,Fractal Design North XL,"HDD_3_5_BAYS,SSD_2_5_BAYS","MAINBOARD_SUPPORT,MAX_GPU_LENGTH_MM,PSU_SUPPORT,MAX_PSU_LENGTH_MM",https://prod.danawa.com/info/?pcode=40016360
+case-o11-dynamic-evo-rgb,CASE,LIAN LI O11 Dynamic EVO RGB,"HDD_3_5_BAYS,SSD_2_5_BAYS","MAINBOARD_SUPPORT,MAX_GPU_LENGTH_MM,PSU_SUPPORT,MAX_PSU_LENGTH_MM",https://lian-li.com/product/o11d-evo-rgb/
+case-y70-touch-infinite,CASE,HYTE Y70 Touch Infinite,"HDD_3_5_BAYS,SSD_2_5_BAYS","MAINBOARD_SUPPORT,MAX_GPU_LENGTH_MM,PSU_SUPPORT,MAX_PSU_LENGTH_MM",https://prod.danawa.com/info/?pcode=61844234
+keyboard-k120,KEYBOARD,Logitech K120,,,https://prod.danawa.com/info/?pcode=1581153
+keyboard-k270,KEYBOARD,Logitech K270,,,https://prod.danawa.com/info/?pcode=1433300
+keyboard-c3-pro,KEYBOARD,Keychron C3 Pro,,,https://www.keychron.com/products/keychron-c3-pro-qmk-via-wired-mechanical-keyboard
+keyboard-g413-se,KEYBOARD,Logitech G413 SE,,,https://prod.danawa.com/info/?pcode=16396631
+keyboard-k2-pro,KEYBOARD,Keychron K2 Pro,,,https://www.keychron.com/products/keychron-k2-pro-qmk-via-wireless-mechanical-keyboard
+keyboard-blackwidow-v4-x,KEYBOARD,Razer BlackWidow V4 X,,,https://prod.danawa.com/info/?pcode=67508900
+keyboard-k70-core,KEYBOARD,CORSAIR K70 CORE,,,https://prod.danawa.com/info/?pcode=28603439
+keyboard-pro-x-tkl,KEYBOARD,Logitech G PRO X TKL LIGHTSPEED,,,https://prod.danawa.com/info/?pcode=28365206
+keyboard-huntsman-v3-pro-tkl,KEYBOARD,Razer Huntsman V3 Pro TKL,,,https://prod.danawa.com/info/?pcode=29367524
+keyboard-apex-pro-tkl-2023,KEYBOARD,SteelSeries Apex Pro TKL (2023),,,https://steelseries.com/en-ee/gaming-keyboards/apex-pro-2023
+mouse-b100,MOUSE,Logitech B100,,,https://prod.danawa.com/info/?pcode=1629951
+mouse-m185,MOUSE,Logitech M185,,,https://prod.danawa.com/info/?pcode=1458995
+mouse-deathadder-essential,MOUSE,Razer DeathAdder Essential,,,https://prod.danawa.com/info/?pcode=15395066
+mouse-g304,MOUSE,Logitech G304 LIGHTSPEED,,,https://prod.danawa.com/info/?pcode=6143401
+mouse-g502-hero,MOUSE,Logitech G502 HERO,,,https://prod.danawa.com/info/?pcode=7668142
+mouse-deathadder-v3,MOUSE,Razer DeathAdder V3,,,https://prod.danawa.com/info/?pcode=19505813
+mouse-rival-5,MOUSE,SteelSeries Rival 5,,,https://prod.danawa.com/info/?pcode=14380064
+mouse-superlight-2-dex,MOUSE,Logitech G PRO X SUPERLIGHT 2 DEX,,,https://prod.danawa.com/info/?pcode=79791596
+mouse-viper-v3-pro,MOUSE,Razer Viper V3 Pro,,,https://prod.danawa.com/info/?pcode=49995902
+mouse-harpe-ace,MOUSE,ASUS ROG Harpe Ace Aim Lab Edition,,,https://prod.danawa.com/info/?pcode=18728366
+speaker-pebble-2,SPEAKER,Creative Pebble 2.0,,,https://prod.danawa.com/info/?pcode=7490038
+speaker-z150,SPEAKER,Logitech Z150,,,https://prod.danawa.com/info/?pcode=2359027
+speaker-pebble-v2,SPEAKER,Creative Pebble V2,,,https://prod.danawa.com/info/?pcode=9864111
+speaker-pebble-pro,SPEAKER,Creative Pebble Pro,,,https://prod.danawa.com/info/?pcode=19064918
+speaker-z407,SPEAKER,Logitech Z407,,,https://www.logitech.com/en-us/shop/p/z407-bluetooth-computer-speakers
+speaker-r1280db,SPEAKER,Edifier R1280DB,,,https://prod.danawa.com/info/?pcode=43530803
+speaker-r1700bts,SPEAKER,Edifier R1700BTs,,,https://prod.danawa.com/info/?pcode=43705919
+speaker-s2000mkiii,SPEAKER,Edifier S2000MKIII,,,https://prod.danawa.com/info/?pcode=16637642
+speaker-a2-wireless,SPEAKER,Audioengine A2+ Wireless,,,https://prod.danawa.com/info/?pcode=7565926
+speaker-the-fives,SPEAKER,Klipsch The Fives,,,https://prod.danawa.com/info/?pcode=13120427
