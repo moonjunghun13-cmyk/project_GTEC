@@ -1,0 +1,92 @@
+/* Keep store text legible at presentation and ordinary desktop sizes. */
+:root[data-theme] { font-size:16px; }
+:root[data-theme] .site-header .shop-nav { font-size:clamp(18px,1.15vw,24px); font-weight:750; line-height:1.5; }
+:root[data-theme] .site-header .shop-nav a { font-weight:1000; white-space:nowrap; }
+:root[data-theme] .site-header .shop-nav { column-gap:clamp(18px,1.4vw,28px); min-width:0; overflow-x:auto; overflow-y:hidden; }
+:root[data-theme] .site-header .shop-nav a,
+:root[data-theme] .site-header .shop-nav:has(a:nth-child(12)) a { font-size:clamp(18px,1.15vw,23px); padding-inline:3px; flex-shrink:0; }
+@media (max-width:520px) {
+  :root[data-theme] .site-header .shop-nav a,
+  :root[data-theme] .site-header .shop-nav:has(a:nth-child(12)) a { font-size:16px; }
+}
+:root[data-theme] .site-header .header-row > nav[aria-label="회원 메뉴"] { font-size:clamp(16px,1vw,20px); font-weight:700; }
+:root[data-theme] .site-header .search input { font-size:16px; }
+:root[data-theme] .card-body .product-name { font-size:17px; font-weight:750; line-height:1.55; }
+:root[data-theme] .card-body .card-meta { font-size:14px; line-height:1.5; }
+:root[data-theme] .card-body > p { font-size:15px; line-height:1.65; }
+:root[data-theme] .card-body .card-buy-row > strong { font-size:20px; }
+:root[data-theme] .card-meta .wishlist-button { color:inherit; font-size:1.25rem; font-weight:400; line-height:normal; min-width:0; min-height:0; padding:.15rem; border-radius:0; background:transparent; }
+:root[data-theme] .card-meta .wishlist-button[aria-pressed=true] { color:#e11d48; }
+:root[data-theme] .product-wishlist .wishlist-heart { color:var(--ui-muted); font-size:1.25rem; line-height:1; vertical-align:-1px; }
+:root[data-theme] .product-wishlist[aria-pressed=true] .wishlist-heart { color:#e11d48; }
+:root[data-theme] .product-purchase-info :is(p,.button) { font-size:17px; line-height:1.6; }
+:root[data-theme] .product-detail-page .product-specifications :is(dt,dd) { font-size:16px; line-height:1.65; }
+:root[data-theme] .member-dashboard :is(.member-identity small,.member-section-head>a,.member-order-row small,.member-empty p,.member-empty a,.member-favorites strong,.member-favorites span,.member-stat span) { font-size:15px; }
+:root[data-theme] .member-dashboard :is(.member-edit,.member-order-row strong,.member-order-row div>span,.member-empty h3) { font-size:16px; }
+:root[data-theme] .store-footer :is(a,p) { font-size:15px; line-height:1.65; }
+
+/* Preserve the dashboard's overview while enlarging operational screens. */
+:root[data-theme] .admin-layout .admin-sidebar nav a { font-size:18px; font-weight:700; line-height:1.45; white-space:nowrap; }
+:root[data-theme] .admin-layout .admin-header :is(input,select,button,summary,a) { font-size:16px; }
+:root[data-theme] .admin-layout .ops-toolbar > label { font-size:16px; }
+:root[data-theme] .admin-layout .ops-toolbar :is(input,select,.button) { font-size:16px; min-height:46px; }
+:root[data-theme] .admin-layout .ops-product-row .ops-row-copy > strong { font-size:18px; line-height:1.55; }
+:root[data-theme] .admin-layout .ops-product-row .ops-row-copy :is(span,.product-card-category,.product-card-stock) { font-size:16px; }
+:root[data-theme] .admin-layout .ops-product-row .ops-row-copy .product-card-price { font-size:20px; }
+:root[data-theme] .admin-layout .ops-records .stack :is(label,input,select,textarea,.button) { font-size:17px; }
+:root[data-theme] .admin-layout .admin-pagination :is(button,span) { font-size:16px; }
+:root[data-theme] .admin-layout .reference-dashboard :is(.reference-card p,.reference-card td,.reference-card th,.reference-card button,.reference-card a) { font-size:14px; }
+:root[data-theme] .admin-layout .recommendation-model-panel :is(p,.model-metrics) { font-size:16px; line-height:1.6; }
+:root[data-theme] .admin-layout .recommendation-model-panel h2 { font-size:23px; }
+:root[data-theme] .admin-layout .recommendation-model-panel .model-metrics strong { font-size:22px; }
+:root[data-theme] .admin-layout .recommendation-model-panel .model-actions .button { font-size:16px; min-height:44px; }
+:root[data-theme] .admin-layout .customer-title-actions { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+
+@media(max-width:650px) {
+ :root[data-theme] .admin-layout .admin-sidebar nav a { font-size:14px; white-space:normal; }
+ :root[data-theme] .card-body .product-name { font-size:16px; }
+}
+
+:root[data-theme] .catalog-filters label{font-size:16px}
+:root[data-theme] .catalog-page .catalog-filters :is(input,select,.button){font-size:16px}
+:root[data-theme] .checkout-page :is(label,input,select,textarea,.button,.checkout-items li){font-size:17px;line-height:1.6}
+:root[data-theme] .support-page :is(p,input,textarea,.button){font-size:16px;line-height:1.7}
+:root[data-theme] .admin-layout .ops-records .ops-list button:not(.ops-member-row) .ops-row-copy>strong{font-size:18px;line-height:1.55}
+:root[data-theme] .admin-layout .ops-records .ops-list .ops-row-copy>span{font-size:16px;line-height:1.6}
+:root[data-theme] .admin-layout .ops-records .ops-member-row .ops-row-copy>strong{font-size:24px}
+:root[data-theme] .admin-layout .ops-records .ops-member-row .ops-row-copy>span{font-size:17px}
+
+/* Space every category consistently, including the twelve-category variant. */
+:root[data-theme] .site-header .shop-nav,
+:root[data-theme] .site-header .shop-nav:has(a:nth-child(12)) { column-gap:clamp(18px,1.4vw,28px); }
+@media (min-width:851px) and (max-width:1600px) {
+  :root[data-theme] .site-header .header-row { grid-template-columns:auto minmax(0,1fr) auto; }
+  :root[data-theme] .site-header .shop-nav { grid-column:1/-1; grid-row:2; justify-content:space-between; padding-block:12px; }
+  :root[data-theme] .site-header .search { grid-column:2; grid-row:1; justify-self:end; width:min(100%,280px); }
+  :root[data-theme] .site-header .header-row nav[aria-label="회원 메뉴"] { grid-column:3; grid-row:1; }
+}
+/* Keep category links visible without a horizontal menu scrollbar. */
+:root[data-theme] .site-header .header-row { grid-template-columns:auto minmax(0,1fr) auto; }
+:root[data-theme] .site-header .shop-nav,
+:root[data-theme] .site-header .shop-nav:has(a:nth-child(12)) { grid-row:2; grid-column:1/-1; display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px 16px; overflow:visible; container-type:normal; padding:10px 0 14px; }
+:root[data-theme] .site-header .shop-nav a,
+:root[data-theme] .site-header .shop-nav:has(a:nth-child(12)) a { font-size:clamp(16px,1.1vw,22px); font-weight:750; padding:4px 3px; }
+:root[data-theme] .site-header .search { grid-column:2; grid-row:1; justify-self:end; width:min(100%,280px); }
+:root[data-theme] .site-header .header-row nav[aria-label="회원 메뉴"] { grid-column:3; grid-row:1; }
+@media(max-width:1100px){
+ :root[data-theme] .site-header .shop-nav,:root[data-theme] .site-header .shop-nav:has(a:nth-child(12)){display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px 12px;text-align:center}
+}
+@media(max-width:600px){
+ :root[data-theme] .site-header .header-row{grid-template-columns:auto minmax(0,1fr)}
+ :root[data-theme] .site-header .header-row nav[aria-label="회원 메뉴"]{grid-column:2;grid-row:1;flex-wrap:wrap;justify-content:flex-end}
+ :root[data-theme] .site-header .search{grid-column:1/-1;grid-row:2;max-width:none;width:100%}
+ :root[data-theme] .site-header .shop-nav,:root[data-theme] .site-header .shop-nav:has(a:nth-child(12)){grid-row:3;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+}
+/* Titles and descriptions occupy the same space; purchase controls share a baseline. */
+:root[data-theme] .product-card { display:flex; flex-direction:column; height:100%; }
+:root[data-theme] .product-card > a { flex:none; }
+:root[data-theme] .product-card .card-body { display:flex; flex-direction:column; flex:1; gap:0; }
+:root[data-theme] .product-card .product-name { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; line-height:1.55; height:3.1em; margin-bottom:8px; }
+:root[data-theme] .product-card .card-body > p { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; line-height:1.6; min-height:3.2em; margin:0 0 16px; }
+:root[data-theme] .product-card .card-buy-row { margin-top:auto; min-height:42px; flex-wrap:nowrap; }
+:root[data-theme] .product-card .card-add-button { flex:none; }
