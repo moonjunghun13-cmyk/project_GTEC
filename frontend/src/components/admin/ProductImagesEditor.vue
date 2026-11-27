@@ -1,5 +1,6 @@
 <script setup>
 import { computed,ref } from 'vue'
+import { api } from '../../api'
 import { imageUrlsFor,validateImageUrl } from '../../services/adminProducts'
 const props=defineProps({model:Object,disabled:Boolean})
 const emit=defineEmits(['busy'])
@@ -17,10 +18,13 @@ async function upload(event){
  error.value='';uploading.value=true;emit('busy',true)
  try{for(const file of files){
    if(!['image/png','image/jpeg','image/webp'].includes(file.type) || file.size>5*1024*1024)throw new Error('PNG·JPG·WebP 형식의 5MB 이하 파일을 선택해 주세요.')
-   const response=await fetch('/__frontend/product-images',{method:'POST',headers:{'Content-Type':file.type},body:file})
-   if(response.status!==201)throw new Error(response.status===404 || response.status===200 ? '현재 배포 환경에는 이미지 파일 저장 기능이 없습니다. 이미지 URL로 등록해 주세요.' : '이미지 파일 저장에 실패했습니다.')
-   add((await response.json()).url)
- }}catch(e){error.value=e.message}finally{uploading.value=false;emit('busy',false)}
+   const {data}=await api.post('/api/admin/product-images',file,{headers:{'Content-Type':file.type}})
+   add(data.url)
+ }}catch(e){
+   const status=e.response?.status
+   error.value=status===413 ? '이미지는 파일당 5MB 이하로 올려 주세요.'
+     : e.response?.data?.message || (e.isAxiosError ? '이미지 파일 저장에 실패했습니다.' : e.message)
+ }finally{uploading.value=false;emit('busy',false)}
 }
 </script>
 <template>
