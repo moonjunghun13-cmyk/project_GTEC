@@ -50,7 +50,10 @@ services:
       AI_RECOMMEND_URL: http://recommend-ai:8002
       AI_REVIEW_URL: http://review-ai:8003
       APP_FRONTEND_URL: http://localhost:5173
+      APP_PRODUCTIMAGES_DIRECTORY: /var/lib/gtec/product-images
       SERVER_FORWARD_HEADERS_STRATEGY: framework
+    volumes:
+      - product-images:/var/lib/gtec/product-images
     networks:
       - web
       - services
@@ -120,3 +123,4 @@ networks:
 volumes:
   postgres-data:
   redis-data:
+  product-images:
